@@ -1,0 +1,153 @@
+{
+    "components": [
+        {
+            "idType": "title",
+            "value": null,
+            "type": "h1",
+            "styles": {
+               "paddingTop":"0px",
+               "paddingBottom":"0px",
+               "paddingLeft":"0px",
+               "paddingRight":"0px",
+                "fontWeight": "900",
+                "fontSize": "57px",
+                "lineHeight": "64px",
+                "color": "#000"
+
+            },
+            "className": "font-black text-[57px] leading-[64px] text-[#000] dark:text-[#fff]"
+
+        },
+        {
+            "idType": "paragraph",
+            "value": null,
+            "styles": {
+                "paddingTop":"0px",
+                "paddingBottom":"0px",
+                "paddingLeft":"0px",
+                "paddingRight":"0px",
+                "fontWeight": "400",
+                "fontSize": "16px",
+                "lineHeight": "16px",
+                "color": "#000"
+            },
+            "className": "w-[400px] font-normal text-[16px] leading-[24px] text-[#000] dark:text-[#fff]"
+
+        },
+        {
+            "idType": "image",
+            "value": null,
+            "styles": {
+                "paddingTop":"0px",
+                "paddingBottom":"0px",
+                "paddingLeft":"0px",
+                "paddingRight":"0px",
+                "borderRadius":"0px",
+                "objectFit":"cover",
+                "width": "100%",
+                "height": "400px"
+            },
+            "className": "w-full h-[400px]"
+
+        },
+        {
+            "idType": "button",
+            "value": null,
+            "link":null,
+            "styles": {
+                "paddingTop":"0px",
+                "paddingBottom":"0px",
+                "paddingLeft":"24px",
+                "paddingRight":"24px",
+                "fontWeight": "500",
+                "height": "40px",
+                "width":"auto",
+                "borderRadius": "24px",
+                "fontSize": "14px",
+                "lineHeight": "20px",
+                "display": "flex",
+                "displayItems": "center",
+                "justifyContent": "center",
+                "alignItems":"center",
+                "color": "#fff",
+                "backgroundColor": "#000"
+            },
+            "className": "px-6 h-[40px] w-fit flex items-center justify-center rounded-full bg-white text-black dark:bg-black dark:text-white text-[14px] leading-[20px] font-medium"
+
+        },
+        {
+            "idType": "container",
+            "addedItems": [],
+            "styles": {
+                "general": {
+                    "isContainer": true,
+                    "padding": [0, 0, 0, 0],
+                    "height": "auto",
+                    "borderRadius": "0"
+                },
+                "light": {
+
+                    "backgroundColor": "transparent"
+                },
+                "dark": {
+
+                    "backgroundColor": "transparent"
+                }
+            },
+            "className": "container mx-auto"
+
+        },
+        {
+            "idType": "grid",
+            "gridNumber": 2,
+            "gap": 16,
+            "uniqueId": 3,
+            "className": "grid grid-cols-2 gap-4",
+            "addedItems": [
+                {
+                    "addedItems": [],
+                    "widthNumber":1,
+                    "styles": {
+                        "general": {
+                            "padding": [0, 0, 0, 0],
+                            "height": "auto",
+                            "borderRadius": "0"
+                        },
+                        "light": {
+                            "backgroundColor": "transparent"
+                        },
+                        "dark": {
+                            "backgroundColor": "transparent"
+                        }
+                    }
+                },
+                {
+                    "addedItems": [],
+                    "widthNumber":1,
+                    "styles": {
+                        "general": {
+                            "padding": [0, 0, 0, 0],
+                            "height": "auto",
+                            "borderRadius": "0"
+                        },
+                        "light": {
+                            "backgroundColor": "transparent"
+                        },
+                        "dark": {
+                            "backgroundColor": "transparent"
+                        }
+                    }
+                }
+            ]
+
+        },
+        {
+            "idType": "slider",
+            "type":1,
+            "slides": [
+
+            ]
+
+        }
+    ]
+}
