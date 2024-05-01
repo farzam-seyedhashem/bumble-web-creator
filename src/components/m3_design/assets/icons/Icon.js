@@ -1,30 +1,20 @@
-import {useState} from "react";
+'use client'
+import {useState,useEffect} from "react";
 
-export default function Icon({type, size, weight, grade, children,className,onClick}) {
-    let resTypeStyle;
-    const [gradeV, setGradeV] = useState(grade ? grade : 0)
-    const [sizeV, setSizeV] = useState(size ? size < 24 ? 24 : size : 24)
-    const [weightV, setWeightV] = useState(weight ? weight : 400)
-    const outline = `material-symbols-outlined font-vs-[0_${weightV}_${gradeV}_${sizeV}]`
-    const fill = `material-symbols-outlined font-vs-[1_${weightV}_${gradeV}_${sizeV}]`
-    const rounded = `material-symbols-rounded font-vs-[0_${weightV}_${gradeV}_${sizeV}]`
-    const sharp = `material-symbols-sharp font-vs-[0_${weightV}_${gradeV}_${sizeV}]`
-    switch (type) {
-        case "outline":
-            resTypeStyle = outline
-            break;
-        case "fill":
-            resTypeStyle = fill
-            break;
-        case "rounded":
-            resTypeStyle = rounded
-            break;
-        case "sharp":
-            resTypeStyle = sharp
-            break;
-    }
+export default function Icon({type,fill, size, weight, grade,style, children,className,onClick}) {
+    const [resTypeStyle,setResTypeStyle] = useState("")
+
+    useEffect(() => {
+        let gradeV = grade ? grade : 0
+        let sizeV = (size !== 18 || size !== 20 || size !== 24 || size!==40 || size!==48 ) ? 24 : size
+        let weightV = weight ? weight : 400
+
+        const value = `material-symbols-outlined font-vs-[${fill}_${weightV}_${gradeV}_${sizeV}]`
+        setResTypeStyle(value)
+    }, [size,grade,weight,type,fill]);
+
     return (
-        <i onClick={onClick&&onClick} className={`${resTypeStyle} text-[${size?size + "px":"24px"}] ${className?className:""}`}>
+        <i style={style} onClick={onClick&&onClick} className={`${resTypeStyle}  text-[${size?size + "px":"24px"}] ${className?className:""}`}>
             {children}
         </i>
     )

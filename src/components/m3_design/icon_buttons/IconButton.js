@@ -1,37 +1,40 @@
+'use client'
+
 import React, {useRef} from "react";
-import {createRipple} from "../effect/Ripple";
-import Icon from "../assets/Icon";
+import Icon from "../assets/icons/Icon";
 
 export default function IconButton(props) {
-    const {component, onClick, type, children, className, selected,...other} = props
-    // const filledButtonStyle = "bg-primary-light dark:bg-primary-dark text-on-primary-light dark:text-on-primary-dark"
-    const filledTonalButtonStyle = "bg-secondary-container-light dark:bg-secondary-container-dark text-on-secondary-container-light dark:text-on-secondary-container-dark"
-    const outlineButtonStyle = `border border-outline-light dark:border-outline-dark ${selected?"text-on-inverse-surface-light dark:text-on-inverse-surface-dark dark:hover:bg-opacity-[8%] hover:bg-opacity-[8%] dark:hover:bg-on-inverse-surface-dark hover:bg-on-inverse-surface-light":"text-on-surface-variant-light dark:text-on-surface-variant-dark dark:hover:bg-opacity-[8%] dark:hover:bg-on-surface-variant-dark hover:bg-opacity-[8%] hover:bg-on-surface-variant-light"}`
-    const standardButtonStyle = selected?"text-primary-light dark:text-primary-dark hover:bg-primary-light dark:bg-primary-dark hover:bg-opacity-[8%]":"text-on-surface-variant-light dark:text-on-surface-variant-dark dark:hover:bg-opacity-[8%] dark:hover:bg-on-surface-variant-dark hover:bg-opacity-[8%] hover:bg-on-surface-variant-light"
+    const {component,color, onClick, type, children, className, selected, ...other} = props
     let Component = `${component || 'button'}`
-    // const button = useRef(null)
-    let resTypeStyle = null
+    let classes = null
     switch (type) {
-        // case "filled":
-        //     resTypeStyle = filledButtonStyle
-        //     break;
-        case "tonal":
-            resTypeStyle = filledTonalButtonStyle
+        case "filled":
+            classes = props.disabled ? "filled-icon-button-disabled" : selected ? "filled-icon-button-selected" : "filled-icon-button"
             break;
-        case "outline":
-            resTypeStyle = outlineButtonStyle
+        case "tonal":
+            classes = props.disabled ? "filled-tonal-icon-button-disabled" : selected ? "filled-tonal-icon-button-selected" : "filled-tonal-icon-button"
+            break;
+        case "outlined":
+            classes = selected ? props.disabled ? "outlined-icon-button-selected-disabled" : "outlined-icon-button-selected" : props.disabled ? "outlined-icon-button-disabled" : "outlined-icon-button"
             break;
         default:
-            resTypeStyle = standardButtonStyle
+            classes = props.disabled ? "standard-icon-disabled" : selected ? "standard-icon-button-selected" : "standard-icon-button"
     }
     return (
-        <Component onClick={(e)=>{
+        <Component onClick={(e) => {
             // createRipple(e)
-            onClick&&onClick()
-        }} {...other} className={`overflow-hidden rounded-full justify-center flex items-center w-10 h-10 ${resTypeStyle} ${className}`}>
-            <Icon size={24} type={"outline"}>
-            {children}
-            </Icon>
+            onClick && onClick()
+        }} {...other} className={`group/icon-button icon-button-container`}>
+            <div className={`icon-button ${classes} ${className}`}>
+                <div className={"icon-button-state-layer"}>
+                    {!selected ? <Icon size={24} type={"outline"}>
+                            {children}
+                        </Icon> :
+                        <Icon size={24} type={"fill"}>
+                            {children}
+                        </Icon>}
+                </div>
+            </div>
         </Component>
 
     )

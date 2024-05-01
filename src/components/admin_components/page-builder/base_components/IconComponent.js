@@ -7,14 +7,17 @@ import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {Dialog, Transition} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
+import IconPicker from "@page_builder/editor_components/IconPicker";
 
-export default function TextComponents({editItem, item, key}) {
-    let [Component, setComponent] = useState(item.type)
+export default function IconComponent({editItem, item, key}) {
     let [isSelected, setIsSelected] = useState(false)
-    let [value, setValue] = useState(item.value || item.idType)
+    let [value, setValue] = useState(item.value || "star")
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
     let [renderStyles, setRenderStyles] = useState(item?.styles)
+    let [isFill, setIsFill] = useState(item?.isFill)
+    let [isIconPickerOpen, setIsIconPickerOpen] = useState(false)
+
     const valueChangeHandler = (value) => {
         setValue(value)
         editItem("value", value)
@@ -41,6 +44,12 @@ export default function TextComponents({editItem, item, key}) {
         editItem("styles", styles)
         editItem("className", className)
     }
+    let onIconSelect = (selectedIcon, isFilled) => {
+        setValue(selectedIcon)
+        setIsFill(isFilled)
+        editItem("value", value)
+        editItem("isFill", selectedIcon)
+    }
     const changeTypeHandler = (type) => [
         setComponent(type),
         editItem("type", type)
@@ -51,7 +60,8 @@ export default function TextComponents({editItem, item, key}) {
 
     return (
         <>
-            <Component id={key} className="relative group" style={renderStyles}>
+            <Icon fill={isFill ? 1 : 0} weight={renderStyles.fontWeight} size={renderStyles.fontWeight} id={key}
+                  className="relative group w-full" style={renderStyles}>
                 {value}
                 <div
                     className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
@@ -77,53 +87,31 @@ export default function TextComponents({editItem, item, key}) {
                         </button>
                     </div>
                 </div>
-            </Component>
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected} >
+            </Icon>
+            <IconPicker onIconSelect={onIconSelect} setIsOpen={setIsIconPickerOpen} isOpen={isIconPickerOpen}/>
+            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
 
 
-                <TextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
-                           defaultValue={value}/>
+                <div className={"flex items-center justify-between pb-2"}>
+                    <label
+                        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                        Icon
+                    </label>
+                    <div onClick={() => setIsIconPickerOpen(true)}
+                         className={"w-[40px] rounded-[8px] flex items-center justify-center h-[40px] bg-surface-container-highest-light dark:bg-surface-dark"}>
+                        <Icon fill={isFill ? 1 : 0} weight={renderStyles.fontWeight} size={renderStyles.fontWeight}>
+                            {value}
+                        </Icon>
+                    </div>
+                </div>
                 <div className={"flex justify-between items-center pt-4 pb-2"}>
                     <label
                         className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Theme color
+                        Color
                     </label>
                     <ColorPicker onChange={(value) => onChange("color", value)}
                                  value={renderStyles.color}/>
 
-                </div>
-                <div className={" mt-2 justify-end"}>
-                    <label
-                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Headline Type
-                    </label>
-                    <div
-                        className={"flex w-fit ml-auto mt-2  border border-primary-light dark:border-primary-dark rounded-full"}>
-                        <button onClick={() => changeTypeHandler("h1")}
-                                className={`${Component === "h1" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H1
-                        </button>
-                        <button onClick={() => changeTypeHandler("h2")}
-                                className={`${Component === "h2" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H2
-                        </button>
-                        <button onClick={() => changeTypeHandler("h3")}
-                                className={`${Component === "h3" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H3
-                        </button>
-                        <button onClick={() => changeTypeHandler("h4")}
-                                className={`${Component === "h4" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H4
-                        </button>
-                        <button onClick={() => changeTypeHandler("h5")}
-                                className={`${Component === "h5" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H5
-                        </button>
-                        <button onClick={() => changeTypeHandler("h6")}
-                                className={`${Component === "h6" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H6
-                        </button>
-                    </div>
                 </div>
                 <div className={"col-span-8 justify-between items-center "}>
                     <label
@@ -162,11 +150,13 @@ export default function TextComponents({editItem, item, key}) {
                                     type={"text"}
                                     value={renderStyles.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
-                                <option label={"light"} value={"300"}/>
-                                <option label={"normal"} value={"400"}/>
-                                <option label={"medium"} value={"500"}/>
-                                <option label={"bold"} value={"700"}/>
-                                <option label={"black"} value={"900"}/>
+                                <option label={"Thin"} value={"100"}/>
+                                <option label={"Extra Light"} value={"200"}/>
+                                <option label={"Light"} value={"300"}/>
+                                <option label={"Normal"} value={"400"}/>
+                                <option label={"Medium"} value={"500"}/>
+                                <option label={"Semi Bold"} value={"600"}/>
+                                <option label={"Bold"} value={"700"}/>
                             </select>
                         </div>
                     </div>
@@ -298,81 +288,6 @@ export default function TextComponents({editItem, item, key}) {
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                 Left
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={"block items-center justify-between py-2"}>
-                    <label
-                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Border
-                    </label>
-                    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderTop"} onChange={onChange}
-                                                 defValue={renderStyles.borderTop}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Top
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderRight"} onChange={onChange}
-                                                 defValue={renderStyles.borderRight}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Right
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderBottom"} onChange={onChange}
-                                                 defValue={renderStyles.borderBottom}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Bottom
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderLeft"} onChange={onChange}
-                                                 defValue={renderStyles.borderLeft}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Left
-                            </div>
-                        </div>
-                        <div className={"col-span-2"}>
-                            {/*<div className={"w-full justify-between items-center "}>*/}
-                            {/*    <label*/}
-                            {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                            {/*        Border Style*/}
-                            {/*    </label>*/}
-                            {/*    <div className={"w-full mt-2 justify-end"}>*/}
-                            {/*        <select*/}
-                            {/*            onChange={(e) => onChange("borderStyle", `${e.target.value} ${e.target.value} ${e.target.value} ${e.target.value}`)}*/}
-                            {/*            value={renderStyles.borderStyle.split(" ")[0]}*/}
-                            {/*            className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark border border-outline-light dark:border-outline-dark "}>*/}
-                            {/*            <option label={"Solid"} value={"solid"}/>*/}
-                            {/*            <option label={"Doted"} value={"dotted"}/>*/}
-                            {/*            <option label={"Dashed"} value={"dashed"}/>*/}
-                            {/*        </select>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            <div className={"flex justify-between items-center pt-4 pb-2"}>
-                                <label
-                                    className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                                    Border color
-                                </label>
-                                <ColorPicker
-                                    onChange={(value) => onChange("borderColor", value)}
-                                    value={renderStyles.borderColor}/>
                             </div>
                         </div>
                     </div>

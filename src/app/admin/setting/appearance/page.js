@@ -10,7 +10,7 @@ import Switch from "@m3/switch/Switch";
 import {ThemeContext, useThemeContext} from "@/app/theme-provider";
 
 export default function Page({children}) {
-    const [selectedSetting, setSelectedSetting] = useState(null);
+    const [selectedSetting, setSelectedSetting] = useState(1);
     const {theme, setTheme} = useThemeContext();
     const [selectedFonts, setSelectedFonts] = useState(0);
     const {isDark, colorSystem} = theme;
@@ -75,48 +75,48 @@ export default function Page({children}) {
     return (
         <div>
 
-            <div className={"grid grid-cols-12 h-[100vh]"}>
+            {/*<div className={"grid grid-cols-12 h-[100vh]"}>*/}
 
-                <div
-                    className={"col-span-4 border-l border-l-outline-light dark:border-l-outline-dark border-r border-outline-variant-light dark:border-outline-variant-dark h-full"}>
+                {/*<div*/}
+                {/*    className={"col-span-4 border-l border-l-outline-light dark:border-l-outline-dark border-r border-outline-variant-light dark:border-outline-variant-dark h-full"}>*/}
+                {/*    <div*/}
+                {/*        className={"border-b text-on-surface-light dark:text-on-surface-dark bg-surface-light dark:bg-surface-dark border-outline-variant-light dark:border-outline-variant-dark flex items-center justify-between px-4 h-[64px]"}>*/}
+                {/*        <h1 className={"font-bold text-title-large"}>*/}
+                {/*            Setting*/}
+                {/*        </h1>*/}
+                {/*    </div>*/}
+                {/*    <ul>*/}
+                {/*        {SettingItems.map((item, index) =>*/}
+                {/*            <>*/}
+                {/*                <li onClick={() => setSelectedSetting(index)}*/}
+                {/*                    className={`transition-all duration-300 ${selectedSetting === index ? "bg-secondary-container-light dark:bg-secondary-container-dark" : "text-surface-light dark:text-surface-dark "} flex items-center h-[72px] py-2 px-4 `}*/}
+                {/*                    key={index}>*/}
+                {/*                    {<Icon*/}
+                {/*                        className={"mr-4 text-on-secondary-container-light dark:text-on-secondary-container-dark"}>*/}
+                {/*                        {item.icon}*/}
+                {/*                    </Icon>}*/}
+                {/*                    <div>*/}
+                {/*                        <h3 className={`${selectedSetting === index ? "text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-light dark:text-on-surface-dark"} text-body-large  `}>*/}
+                {/*                            {item.title}*/}
+                {/*                        </h3>*/}
+                {/*                        <p className={`${selectedSetting === index ? "text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} text-body-medium `}>*/}
+                {/*                            {item.description}*/}
+                {/*                        </p>*/}
+                {/*                    </div>*/}
+                {/*                </li>*/}
+                {/*                {selectedSetting !== index && <div className={"px-4"}>*/}
+                {/*                    <div className={"h-[1px] bg-surface-variant-light dark:bg-surface-variant-dark"}/>*/}
+                {/*                </div>}*/}
+                {/*            </>*/}
+                {/*        )}*/}
+                {/*    </ul>*/}
+                {/*</div>*/}
+                {selectedSetting !== null && <div className={"w-full"}>
                     <div
-                        className={"border-b text-on-surface-light dark:text-on-surface-dark bg-surface-light dark:bg-surface-dark border-outline-variant-light dark:border-outline-variant-dark flex items-center justify-between px-4 h-[64px]"}>
-                        <h1 className={"font-bold text-title-large"}>
-                            Setting
-                        </h1>
-                    </div>
-                    <ul>
-                        {SettingItems.map((item, index) =>
-                            <>
-                                <li onClick={() => setSelectedSetting(index)}
-                                    className={`transition-all duration-300 ${selectedSetting === index ? "bg-secondary-container-light dark:bg-secondary-container-dark" : "text-surface-light dark:text-surface-dark "} flex items-center h-[72px] py-2 px-4 `}
-                                    key={index}>
-                                    {<Icon
-                                        className={"mr-4 text-on-secondary-container-light dark:text-on-secondary-container-dark"}>
-                                        {item.icon}
-                                    </Icon>}
-                                    <div>
-                                        <h3 className={`${selectedSetting === index ? "text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-light dark:text-on-surface-dark"} text-body-large  `}>
-                                            {item.title}
-                                        </h3>
-                                        <p className={`${selectedSetting === index ? "text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} text-body-medium `}>
-                                            {item.description}
-                                        </p>
-                                    </div>
-                                </li>
-                                {selectedSetting !== index && <div className={"px-4"}>
-                                    <div className={"h-[1px] bg-surface-variant-light dark:bg-surface-variant-dark"}/>
-                                </div>}
-                            </>
-                        )}
-                    </ul>
-                </div>
-                {selectedSetting !== null && <div className={"col-span-8"}>
-                    <div
-                        className={" bg-surface-container-high-light dark:bg-surface-container-high-dark border-outline-variant-light dark:border-outline-variant-dark flex items-center  px-2 h-[64px]"}>
-                        <IconButton className={"mr-2"}>
-                            arrow_back
-                        </IconButton>
+                        className={" border-b border-outline-variant-light dark:border-outline-variant-dark flex items-center  px-4 h-[64px]"}>
+                        {/*<IconButton className={"mr-2"}>*/}
+                        {/*    arrow_back*/}
+                        {/*</IconButton>*/}
                         <h1 className={"text-on-surface-light dark:text-on-surface-dark font-medium text-title-large"}>
                             {SettingItems[selectedSetting].title}
                         </h1>
@@ -198,7 +198,7 @@ export default function Page({children}) {
                             Fonts
                         </h2>
                         {fonts.map((item, i) => <div key={i}>
-                            <div onClick={() => setSelectedFonts(i)} className={"group/radio flex w-fit cursor-pointer items-center"}>
+                            <div onClick={() => setSelectedFonts(i)} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark group/radio flex w-fit cursor-pointer items-center "}>
                                 <div className={`flex items-center justify-center w-[48px] h-[48px]`}>
                                     <div
                                         className={`${selectedFonts === i ? "dark:group-hover/radio:bg-primary-dark/[8%] group-hover/radio:bg-primary-light/[8%]" : "dark:group-hover/radio:bg-on-surface-dark/[8%] group-hover/radio:bg-on-surface-light/[8%]"} rounded-full w-[40px] h-[40px] flex items-center justify-center`}>
@@ -216,7 +216,7 @@ export default function Page({children}) {
 
                     </div>}
                 </div>}
-            </div>
+            {/*</div>*/}
         </div>
     )
 }

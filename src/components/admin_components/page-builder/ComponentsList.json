@@ -1,0 +1,15 @@
+{
+  "components": [
+    {
+      "id": "text",
+      "variables": [
+        {
+          "value": {
+            "type": "input",
+            "label": "text"
+          }
+        }
+      ]
+    }
+  ]
+}

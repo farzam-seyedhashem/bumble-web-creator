@@ -198,7 +198,7 @@ export default function Page({children}) {
                             Fonts
                         </h2>
                         {fonts.map((item, i) => <div key={i}>
-                            <div onClick={() => setSelectedFonts(i)} className={"group/radio flex w-fit cursor-pointer items-center"}>
+                            <div onClick={() => setSelectedFonts(i)} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark group/radio flex w-fit cursor-pointer items-center"}>
                                 <div className={`flex items-center justify-center w-[48px] h-[48px]`}>
                                     <div
                                         className={`${selectedFonts === i ? "dark:group-hover/radio:bg-primary-dark/[8%] group-hover/radio:bg-primary-light/[8%]" : "dark:group-hover/radio:bg-on-surface-dark/[8%] group-hover/radio:bg-on-surface-light/[8%]"} rounded-full w-[40px] h-[40px] flex items-center justify-center`}>

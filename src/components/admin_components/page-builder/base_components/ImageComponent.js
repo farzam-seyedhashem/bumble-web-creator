@@ -1,12 +1,16 @@
 'use client';
-import {useEffect, useState} from "react";
+import {useEffect, useState, Fragment} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
+import Icon from "@m3/assets/icons/Icon";
+import {Transition, Dialog} from "@headlessui/react";
+import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
+import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function TextComponents({item}) {
+export default function ImageComponent({item,editItem}) {
     let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
-    let [value, setValue] = useState(item.value || item.id)
+    let [value, setValue] = useState(item.value)
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
     let [renderStyles, setRenderStyles] = useState(item?.styles)
@@ -25,141 +29,234 @@ export default function TextComponents({item}) {
         let styles = {...renderStyles, [name]: value}
 
         setRenderStyles(styles)
-
+        editItem("styles", styles)
         classGenerator(styles)
+    }
+    let handleChangeValue = (value) => {
+        setValue(value)
+        editItem("value", value)
+    }
+    const checkPX = (value) => {
+        return value.match("^\\d+$")
     }
 
     return (
         <>
-            <Component style={renderStyles} onClick={() => setIsSelected(true)}>
-                {value}
-            </Component>
-            {isSelected && <div
-                className={"fixed   z-1001 h-[calc(100vh_-_124px)] bg-surface-container-high-light rounded-[24px] dark:bg-surface-container-high-dark right-6 top-1/2 transform -translate-y-1/2 w-[360px] "}>
-                <div className={"flex px-4 justify-end border-b py-2 mb-4"}>
-                    <IconButton onClick={()=>setIsSelected(false)}>
-                        close
-                    </IconButton>
+            <div className={"relative group"}>
+                {value ?
+                    <img className={"z-[1]"} style={renderStyles} onClick={() => setIsSelected(true)} src={value}/> :
+                    <div style={renderStyles} onClick={() => setIsSelected(true)}
+                         className={"flex justify-center items-center bg-surface-variant-light dark:bg-surface-variant-dark " + item?.className}>
+                        <Icon className={"text-[48px] text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                            image
+                        </Icon>
+                    </div>
+                }
+                <div
+                    className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    <div
+                        className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
+                        <button onClick={() => setIsSelected(true)}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
+                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                edit
+                            </Icon>
+                        </button>
+                        <button
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
+                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                drag_indicator
+                            </Icon>
+                        </button>
+                        <button
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
+                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                delete
+                            </Icon>
+                        </button>
+                    </div>
                 </div>
-                <div className={"px-4"}>
-                    <TextField label={"Text"} onChange={(e) => setValue(e.target.value)} defaultValue={value}/>
-                    <div className={"flex justify-between items-center pt-4 pb-2"}>
+
+            </div>
+            <EditorDialog setIsOpen={setIsSelected} isOpen={isSelected}>
+                <div className={"grid grid-cols-12 gap-4 py-2"}>
+                    <div className={"col-span-12 flex item justify-between items-center py-2"}>
                         <label
-                            className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Light theme color
+                            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                            Upload Image
                         </label>
-                        <div className={"flex relative w-[24px] h-[24px] overflow-hidden rounded-[8px]"}>
-                            <label htmlFor="colorPicker" className={"absolute inset-0  "}
-                                   style={{background: renderStyles.color}}
-                            >
+                        <div className={""}>
+                            <label className={"text-on-surface-light dark:text-on-surface-dark"}
+                                   htmlFor={"imageFile"}>
+                                {value ? <img className={"rounded-[4px] w-[40px] h-[40px]"}
+                                              src={value}/>
+                                    :
+                                    <div
+                                        className={"rounded-[4px] flex justify-center items-center w-[40px] h-[40px]"}
+                                    >
+                                        <Icon
+                                            className={"text-[24px] text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                            image
+                                        </Icon>
+                                    </div>}
                             </label>
-                            <input id={"colorPicker"} className={"invisible"}
-                                   onChange={(e) => onChange("color", e.target.value)} type={"color"}/>
+                            <input
+                                onChange={(e) => handleChangeValue(URL.createObjectURL(e.target.files[0]))}
+                                id={"imageFile"} type={"file"}
+                                className={"hidden w-0"}/>
                         </div>
-
                     </div>
-                    <div className={"flex justify-between items-center py-2"}>
+                    <div className={"col-span-4 justify-between items-center"}>
                         <label
                             className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Font Size
+                            Rounded
                         </label>
-                        <div className={"flex mt-2 justify-end"}>
-                            <input onChange={(e) => onChange("fontSize", e.target.value)} type={"text"}
-                                   value={renderStyles.fontSize}
-                                   className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}/>
+                        <div className={"mt-2"}>
+                            <TextFieldEditor id={"borderRadius"} onChange={onChange}
+                                             defValue={renderStyles.borderRadius}/>
                         </div>
-
                     </div>
-                    <div className={"flex justify-between items-center py-2"}>
+                    <div className={"col-span-4 justify-between items-center"}>
                         <label
                             className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Line Height
+                            Width
                         </label>
-                        <div className={"flex mt-2 justify-end"}>
-                            <input onChange={(e) => onChange("lineHeight", e.target.value)} type={"text"}
-                                   value={renderStyles.lineHeight}
-                                   className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}/>
+                        <div className={"mt-2"}>
+                            <TextFieldEditor id={"width"} onChange={onChange}
+                                             defValue={renderStyles.width}/>
                         </div>
-
                     </div>
-                    <div className={"block justify-between items-center py-2"}>
+                    <div className={"col-span-4 justify-between items-center"}>
                         <label
                             className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Font Weight
+                            Height
                         </label>
-                        <div className={"flex mt-2 justify-end"}>
-                            <div className={"flex  border border-primary-light dark:border-primary-dark rounded-full"}>
-                                <button onClick={() => onChange("fontWeight", "300")}
-                                        className={`${renderStyles.fontWeight === "300" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                                    light
-                                </button>
-                                <button onClick={() => onChange("fontWeight", "400")}
-                                        className={`${renderStyles.fontWeight === "400" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                                    normal
-                                </button>
-                                <button onClick={() => onChange("fontWeight", "500")}
-                                        className={`${renderStyles.fontWeight === "500" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                                    medium
-                                </button>
-                                <button onClick={() => onChange("fontWeight", "700")}
-                                        className={`${renderStyles.fontWeight === "700" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                                    bold
-                                </button>
-                                <button onClick={() => onChange("fontWeight", "900")}
-                                        className={`${renderStyles.fontWeight === "900" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                                    black
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className={"block items-center justify-between py-2"}>
-                        <label
-                            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Padding
-                        </label>
-                        <div className={"grid mt-2  ml-auto grid-cols-4 gap-4 items-center"}>
-                            <div className={"w-full"}>
-                                <input onChange={(e) => onChange("paddingTop", e.target.value)} type={"text"}
-                                       value={renderStyles.paddingTop}
-                                       className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Top
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <input onChange={(e) => onChange("paddingRight", e.target.value)} type={"text"}
-                                       value={renderStyles.paddingRight}
-                                       className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Right
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <input onChange={(e) => onChange("paddingBottom", e.target.value)} type={"text"}
-                                       value={renderStyles.paddingBottom}
-                                       className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Bottom
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <input onChange={(e) => onChange("paddingLeft", e.target.value)} type={"text"}
-                                       value={renderStyles.paddingLeft}
-                                       className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Left
-                                </div>
-                            </div>
+                        <div className={"mt-2"}>
+                            <TextFieldEditor id={"height"} onChange={onChange}
+                                             defValue={renderStyles.height}/>
                         </div>
                     </div>
 
                 </div>
-            </div>}
+
+                <div className={"block justify-between items-center py-2"}>
+                    <label
+                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                        Image Preview
+                    </label>
+                    <div className={"flex mt-2 justify-end"}>
+                        <div
+                            className={"flex  border border-primary-light dark:border-primary-dark rounded-full"}>
+                            <button onClick={() => onChange("objectFit", "cover")}
+                                    className={`${renderStyles.objectFit === "cover" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
+                                cover
+                            </button>
+                            <button onClick={() => onChange("objectFit", "contain")}
+                                    className={`${renderStyles.objectFit === "contain" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
+                                contain
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className={"block items-center justify-between py-2"}>
+                    <label
+                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                        Padding
+                    </label>
+                    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"paddingTop"} onChange={onChange}
+                                                 defValue={renderStyles.paddingTop}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Top
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"paddingRight"} onChange={onChange}
+                                                 defValue={renderStyles.paddingRight}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Right
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"paddingBottom"} onChange={onChange}
+                                                 defValue={renderStyles.paddingBottom}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Bottom
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"paddingLeft"} onChange={onChange}
+                                                 defValue={renderStyles.paddingLeft}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Left
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={"block items-center justify-between py-2"}>
+                    <label
+                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                        Margin
+                    </label>
+                    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginTop"} onChange={onChange}
+                                                 defValue={renderStyles.marginTop}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Top
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginRight"} onChange={onChange}
+                                                 defValue={renderStyles.marginRight}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Right
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginBottom"} onChange={onChange}
+                                                 defValue={renderStyles.marginBottom}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Bottom
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginLeft"} onChange={onChange}
+                                                 defValue={renderStyles.marginLeft}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Left
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </EditorDialog>
 
         </>
     )

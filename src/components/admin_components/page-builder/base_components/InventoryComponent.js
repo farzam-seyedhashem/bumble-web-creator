@@ -5,9 +5,20 @@ import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import InventoryCard from "@admin/admin-panel/inventory-card/InventoryCard";
 
-export default function BlogPostComponent({item, editItem}) {
+export default function InventoryComponent({item, editItem}) {
     const [gridNumber, setGridNumber] = useState(item.options.gridNumber)
     const [numberOfBlog, setNumberOfBlog] = useState(item.options.numberOfBlog)
+    const [inventoryInfoSelected, setInventoryInfoSelected] = useState(["miles", "interior", "est"])
+
+    const [inventoryCard, setInventoryCard] = useState({
+        showReadMoreButton: true,
+        showInventoryInfo: true,
+        buttonType: 0,
+        titleType: "h3",
+        readMore: true,
+        showVehicleInfo:true,
+
+    });
     const [cardShape, setCardShape] = useState(item.cardShape)
     let [isSelected, setIsSelected] = useState(false)
 
@@ -15,7 +26,7 @@ export default function BlogPostComponent({item, editItem}) {
         <div className={`relative group/blog grid grid-cols-${gridNumber} gap-4`}>
             {[0,1,2,3,4,5,6,7,8,9,10,11,12].map((item,index)=>item<numberOfBlog&&
                     // eslint-disable-next-line react/jsx-key
-            <InventoryCard type={1}/>
+            <InventoryCard inventoryInfoSelected={inventoryInfoSelected} inventoryCard={inventoryCard} type={0}/>
             )}
             <div
                 className={"absolute hidden group-hover/blog:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>

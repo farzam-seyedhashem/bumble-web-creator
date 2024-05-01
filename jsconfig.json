@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@m3/*": ["./src/components/m3_design/*"],
+      "@admin/*": ["./src/components/admin_components/*"],
+      "@page_builder/*": ["./src/components/admin_components/page-builder/*"],
+      "@builder/*": ["./src/components/website_builder/*"]
     }
   }
 }
