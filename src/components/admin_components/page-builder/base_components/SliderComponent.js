@@ -13,10 +13,15 @@ import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
 
-export default function SliderComponent({item, editItem,idNumber}) {
+export default function SliderComponent({isDesktop,item, editItem,idNumber,removeItemFunc,dragFunc}) {
     const [isSelected, setIsSelected] = useState(false)
-    const [options, setOptions] = useState(item?.options);
-
+    const [options,setOptions] = useState(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
+    const [globalOptions,setGlobalOptions] = useState(item.globalOptions)
+    const [deviceOptions,setDeviceOptions] = useState(isDesktop?item.desktopOptions:item.mobileOptions)
+    useEffect(() => {
+        setOptions(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
+        setDeviceOptions(isDesktop?item.desktopOptions:item.mobileOptions)
+    },[isDesktop])
     const [sliderOptions, setSliderOptions] = useState(item.options || options)
     const slides = [
         {
@@ -56,33 +61,46 @@ export default function SliderComponent({item, editItem,idNumber}) {
     ]
 
     const handleOptionChange = (key, value) => {
-        let op = {...options, [key]: value}
-        setOptions(op)
-        editItem("options", op)
+        let newOptions = {...options,[key]:value}
+        if (deviceOptions[key]) {
+            setDeviceOptions({...deviceOptions,[key]:value})
+            editItem(isDesktop?"desktopOptions":"mobileOptions",{...deviceOptions,[key]:value})
+        }else{
+            setGlobalOptions({...globalOptions,[key]:value})
+            editItem("globalOptions",{...globalOptions,[key]:value})
+        }
+        setOptions(newOptions)
+
     }
 
     return (
         <>
             <div>
                 <div
-                    className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
-                        className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
+                        className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -91,16 +109,16 @@ export default function SliderComponent({item, editItem,idNumber}) {
                 <Swiper style={{height: options.sliderHeight}} centeredSlides={options.isCenter} loop={options.isLoop}
                         className={" relative rounded-[0px]"}
                         spaceBetween={options.spaceBetween}
-                        slidesPerView={options.sliderPerView}>
+                        slidesPerView={options.slidesPerView}>
                     {slides.map((item, i) =>
                         options?.slideType === 0 ? <SwiperSlide style={{borderRadius: options.sliderRounded}} key={i}
-                                                                 className={"z-20 w-full relative overflow-hidden rounded-[0px] h-screen"}>
+                                                                className={"z-20 w-full relative overflow-hidden rounded-[0px] h-screen"}>
                             <img className={"object-cover w-full h-full"} src={item.image}/>
                             <div style={{
                                 borderRadius: parseInt(options.sliderRounded.replace("px", "").replace("%", "")) - 4,
                                 backgroundColor: options.backgroundColor
                             }}
-                                 className={"px-6 py-6 bg-white/80 backdrop-blur text-black w-full md:w-4/12 bottom-6 left-6 absolute"}>
+                                 className={` bg-white/80 backdrop-blur text-black ${isDesktop ? "w-4/12 bottom-6 left-6 px-6 py-6" : "px-4 py-4 w-11/12 bottom-4 left-4"}  absolute`}>
                                 {options.showTitle && <h3 style={{color: options.titleColor}}
                                                           className={"mb-2 text-title-large font-black"}>
                                     {item.title}
@@ -151,7 +169,7 @@ export default function SliderComponent({item, editItem,idNumber}) {
                                 backgroundColor: options.backgroundColor
                             }} className={"flex items-center justify-center h-full"}>
                                 <div
-                                    className={"px-4 flex items-center  backdrop-blur text-black rounded-[12px] h-full w-4/12 "}>
+                                    className={`px-4 flex items-center  backdrop-blur text-black rounded-[12px] h-full ${isDesktop?" w-4/12":" w-6/12"} `}>
                                     <div>
                                         {options.showTitle && <h3 style={{color: options.titleColor}}
                                                                   className={"mb-2 text-title-large font-black"}>
@@ -172,7 +190,7 @@ export default function SliderComponent({item, editItem,idNumber}) {
                                 </div>
                                 <div
                                     style={{borderRadius: parseInt(options.sliderRounded.replace("px", "").replace("%", ""))}}
-                                    className={"overflow-hidden w-8/12 h-full"}>
+                                    className={`overflow-hidden ${isDesktop?" w-8/12":" w-6/12"} h-full`}>
                                     <img className={"object-cover w-full h-full"} src={item.image}/>
                                 </div>
                             </div>
@@ -240,8 +258,8 @@ export default function SliderComponent({item, editItem,idNumber}) {
                                             Slider Per View
                                         </label>
                                         <div className={"w-full py-1 flex justify-end"}>
-                                            <input value={options.sliderPerView}
-                                                   onChange={(e) => handleOptionChange("sliderPerView", e.target.value)}
+                                            <input value={options.slidesPerView}
+                                                   onChange={(e) => handleOptionChange("slidesPerView", e.target.value)}
                                                    className={"text-center h-[40px]  bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-3/12 border border-outline-light dark:border-outline-dark "}/>
                                         </div>
 

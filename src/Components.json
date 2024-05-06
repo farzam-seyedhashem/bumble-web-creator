@@ -5,8 +5,7 @@
       "idType": "title",
       "value": null,
       "type": "h1",
-      "styles": {
-        "textAlign": "left",
+      "mobileStyles": {
         "paddingTop": "0px",
         "paddingBottom": "0px",
         "paddingLeft": "0px",
@@ -15,16 +14,29 @@
         "marginBottom": "0px",
         "marginLeft": "0px",
         "marginRight": "0px",
+        "fontWeight": "900",
+        "fontSize": "57px"
+      },
+      "desktopStyles": {
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "paddingRight": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
+        "fontWeight": "900",
+        "fontSize": "57px"
+      },
+      "globalStyles": {
+        "textAlign": "left",
         "borderTop": "0px",
         "borderBottom": "0px",
         "borderLeft": "0px",
         "borderRight": "0px",
         "borderColor": "#000",
-        "fontWeight": "900",
-        "fontSize": "57px",
         "color": "#000"
-      },
-      "mobileVersionStyles": {
       },
       "className": "font-black text-[57px] text-[#000] dark:text-[#fff]"
     },
@@ -32,8 +44,7 @@
       "uid": "2",
       "idType": "paragraph",
       "value": null,
-      "styles": {
-        "textAlign": "left",
+      "mobileStyles": {
         "paddingTop": "0px",
         "paddingBottom": "0px",
         "paddingLeft": "0px",
@@ -43,16 +54,9 @@
         "marginLeft": "0px",
         "marginRight": "0px",
         "fontWeight": "400",
-        "fontSize": "16px",
-        "color": "#000"
+        "fontSize": "16px"
       },
-      "className": "w-[400px] font-normal text-[16px] text-[#000] dark:text-[#fff]"
-    },
-    {
-      "uid": "3",
-      "idType": "image",
-      "value": null,
-      "styles": {
+      "desktopStyles": {
         "paddingTop": "0px",
         "paddingBottom": "0px",
         "paddingLeft": "0px",
@@ -61,10 +65,47 @@
         "marginBottom": "0px",
         "marginLeft": "0px",
         "marginRight": "0px",
-        "borderRadius": "0px",
+        "fontWeight": "400",
+        "fontSize": "16px"
+      },
+      "globalStyles": {
+        "textAlign": "left",
+        "color": "#000"
+      },
+      "className": "w-[400px] font-normal text-[16px] text-[#000] dark:text-[#fff]"
+    },
+    {
+      "uid": "3",
+      "idType": "image",
+      "value": null,
+      "desktopStyles": {
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "paddingRight": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
         "objectFit": "cover",
         "width": "100%",
         "height": "400px"
+      },
+      "mobileStyles": {
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "paddingRight": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
+        "objectFit": "cover",
+        "width": "100%",
+        "height": "400px"
+      },
+      "globalStyles": {
+        "borderRadius": "0px"
       },
       "className": "w-full h-[400px]"
     },
@@ -73,7 +114,7 @@
       "idType": "button",
       "value": null,
       "link": null,
-      "styles": {
+      "desktopStyles": {
         "paddingTop": "0px",
         "paddingBottom": "0px",
         "paddingLeft": "24px",
@@ -85,13 +126,30 @@
         "fontWeight": "500",
         "height": "40px",
         "width": "auto",
+        "fontSize": "14px"
+      },
+      "mobileStyles": {
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "24px",
+        "paddingRight": "24px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
+        "fontWeight": "500",
+        "height": "40px",
+        "width": "auto",
+        "fontSize": "14px"
+      },
+
+      "globalStyles": {
         "borderRadius": "24px",
-        "fontSize": "14px",
+        "color": "#fff",
         "display": "flex",
         "displayItems": "center",
         "justifyContent": "center",
         "alignItems": "center",
-        "color": "#fff",
         "backgroundColor": "#000"
       },
       "className": "px-6 h-[40px] w-fit flex items-center justify-center rounded-full bg-white text-black dark:bg-black dark:text-white text-[14px] leading-[20px] font-medium"
@@ -101,7 +159,7 @@
       "idType": "container",
       "addedItems": [],
       "isBox": false,
-      "styles": {
+      "desktopStyles": {
         "marginTop": "0px",
         "marginBottom": "0px",
         "marginLeft": "auto",
@@ -111,7 +169,21 @@
         "paddingLeft": "auto",
         "paddingRight": "auto",
         "width": "100%",
-        "height": "auto",
+        "height": "auto"
+      },
+      "mobileStyles": {
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "auto",
+        "paddingRight": "auto",
+        "width": "100%",
+        "height": "auto"
+      },
+      "globalStyles": {
         "borderRadius": "0px",
         "display": "flex",
         "justifyContent": "center",
@@ -124,10 +196,14 @@
       "uid": "6",
       "idType": "grid",
       "gridNumber": 12,
-      "gap": 4,
+      "gapDesktop": 4,
+      "gapMobile": 4,
       "uniqueId": 3,
-      "columnsSize": [
+      "columnSizeDesktop": [
         6
+      ],
+      "columnSizeMobile": [
+        12
       ],
       "styles": {
         "marginTop": "0px",
@@ -168,12 +244,9 @@
       "uid": "7",
       "idType": "slider",
       "type": 1,
-      "options": {
+      "desktopOptions": {
         "sliderHeight": "600px",
         "sliderRounded": "0px",
-        "titleColor": "#000",
-        "descriptionColor": "#525252",
-        "backgroundColor": "#fff",
         "spaceBetween": "0px",
         "slidesPerView": 1,
         "isLoop": true,
@@ -181,9 +254,26 @@
         "showDescription": true,
         "showTitle": true,
         "showLinkButton": true,
+        "slideType": 0
+      },
+      "mobileOptions": {
+        "sliderHeight": "600px",
+        "sliderRounded": "0px",
+        "spaceBetween": "0px",
+        "slidesPerView": 1,
+        "isLoop": true,
+        "isCenter": false,
+        "showDescription": true,
+        "showTitle": true,
+        "showLinkButton": true,
+        "slideType": 0
+      },
+      "globalOptions": {
+        "titleColor": "#000",
+        "descriptionColor": "#525252",
+        "backgroundColor": "#fff",
         "linkButtonBackgroundColor": "#000",
         "linkButtonTextColor": "#fff",
-        "slideType": 0,
         "duration": "300ms"
       },
       "slides": [
@@ -192,20 +282,29 @@
     {
       "uid": "8",
       "idType": "featuredSection",
-      "options": {
+      "mobileOptions": {
+        "titleFontSize": "24px",
+        "titleFontWeight": "700",
+        "paragraphFontSize": "16px",
+        "gridNumber": "3",
+        "paragraphFontWeight": "400"
+      },
+      "desktopOptions": {
+        "titleFontSize": "24px",
+        "titleFontWeight": "700",
+        "paragraphFontSize": "16px",
+        "gridNumber": "3",
+        "paragraphFontWeight": "400"
+      },
+      "globalOptions": {
         "cardShape": 1,
         "iconColor": "#001B3B",
         "iconBgColor": "#D5E3FF",
         "cardColor": "#fafafa",
         "paragraphColor": "#212121",
         "titleColor": "#000000",
-        "titleFontSize": "24px",
-        "titleFontWeight": "700",
-        "paragraphFontSize": "16px",
-        "paragraphFontWeight": "400",
         "cardRounded": "12px",
-        "titleType": "h3",
-        "gridNumber": "3"
+        "titleType": "h3"
       },
       "featuredSections": [
         {
@@ -222,22 +321,67 @@
     {
       "uid": "9",
       "idType": "blogPosts",
-      "options": {
+      "mobileOptions": {
+        "gridNumber": 3
+      },
+      "desktopOptions": {
+        "gridNumber": 3
+      },
+      "globalOptions": {
         "cardShape": 1,
-        "gridNumber": 3,
+
+        "numberOfBlog": 3
+      }
+    },
+    {
+      "uid": "10",
+      "idType": "inventoryCard",
+      "mobileOptions": {
+        "gridNumber": 3
+      },
+      "desktopOptions": {
+        "gridNumber": 3
+      },
+      "globalOptions": {
+        "cardShape": 1,
         "numberOfBlog": 3
       }
 
     },
     {
-      "uid": "10",
-      "idType": "inventoryCard",
-      "options": {
-        "cardShape": 1,
-        "gridNumber": 3,
-        "numberOfBlog": 3
-      }
+      "uid": "11",
+      "idType": "iconPicker",
+      "value": "star",
+      "globalStyles": {
+        "color": "#000",
+        "textAlign": "left"
+      },
+      "mobileStyles": {
 
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "paddingRight": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
+        "fontWeight": 400,
+        "fontSize": "24px"
+      },
+      "desktopStyles": {
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "paddingRight": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "marginRight": "0px",
+        "fontWeight": 400,
+        "fontSize": "24px"
+      },
+      "className": "font-black text-[57px] text-[#000] dark:text-[#fff]"
     }
   ]
 }

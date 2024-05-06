@@ -8,13 +8,23 @@ import {Dialog, Transition} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function TextComponents({editItem, item, key}) {
+export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editItem, item, key}) {
     let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
+    const [itemUpdate,setItemUpdate] = useState(item)
+    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
+    let [desktopRenderStyles, setDesktopRenderStyles] = useState(item?.desktopStyles)
+    let [mobileRenderStyles, setMobileRenderStyles] = useState(item?.mobileStyles)
+    // useEffect(()=>{
+        // setItemUpdate(item)
+        // setGlobalRenderStyles(item?.globalStyles)
+        // setDesktopRenderStyles(item?.desktopStyles)
+        // setMobileRenderStyles(item?.mobileStyles)
+    // },[item])
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
-    let [renderStyles, setRenderStyles] = useState(item?.styles)
+
     const valueChangeHandler = (value) => {
         setValue(value)
         editItem("value", value)
@@ -34,12 +44,24 @@ export default function TextComponents({editItem, item, key}) {
         setClassName(classes)
         console.log(classes)
     }
-    let onChange = (name, value) => {
-        let styles = {...renderStyles, [name]: value}
-        setRenderStyles(styles)
-        classGenerator(styles)
-        editItem("styles", styles)
+    let onChangeGlobal = (name, value) => {
+        let styles = {...globalRenderStyles, [name]: value}
+        setGlobalRenderStyles(styles)
+        editItem("globalStyles", styles)
         editItem("className", className)
+    }
+    let onChange = (name, value) => {
+        console.log(isDesktop)
+        if (isDesktop){
+            let styles = {...desktopRenderStyles, [name]: value}
+            setDesktopRenderStyles(styles)
+            editItem("desktopStyles", styles)
+        }else{
+            let styles = {...mobileRenderStyles, [name]: value}
+            setMobileRenderStyles(styles)
+            editItem("mobileStyles", styles)
+        }
+
     }
     const changeTypeHandler = (type) => [
         setComponent(type),
@@ -51,34 +73,41 @@ export default function TextComponents({editItem, item, key}) {
 
     return (
         <>
-            <Component id={key} className="relative group/typography" style={renderStyles}>
+            <Component id={key} className="relative group/typography" style={isDesktop? {...desktopRenderStyles,...globalRenderStyles}: {...mobileRenderStyles,...globalRenderStyles}}>
                 {value}
                 <div
-                    className={"absolute hidden group-hover/typography:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute hidden group-hover/typography:block z-[888]  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button  onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon  size={16}
+                                  className={`${item.uniqueId} !text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]`}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
                     </div>
                 </div>
+
             </Component>
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected} >
+            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
 
 
                 <TextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
@@ -88,8 +117,8 @@ export default function TextComponents({editItem, item, key}) {
                         className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
                         Theme color
                     </label>
-                    <ColorPicker onChange={(value) => onChange("color", value)}
-                                 value={renderStyles.color}/>
+                    <ColorPicker onChange={(value) => onChangeGlobal("color", value)}
+                                 value={item.globalStyles.color}/>
 
                 </div>
                 <div className={" mt-2 justify-end"}>
@@ -101,7 +130,7 @@ export default function TextComponents({editItem, item, key}) {
                         className={"flex w-fit ml-auto mt-2  border border-primary-light dark:border-primary-dark rounded-full"}>
                         <button onClick={() => changeTypeHandler("h1")}
                                 className={`${Component === "h1" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                            H1
+                        H1
                         </button>
                         <button onClick={() => changeTypeHandler("h2")}
                                 className={`${Component === "h2" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
@@ -131,20 +160,20 @@ export default function TextComponents({editItem, item, key}) {
                         Text Align
                     </label>
                     <div className={"mt-2 flex justify-end space-x-2"}>
-                        <button onClick={(e) => onChange("textAlign", "left")}
-                                className={`${renderStyles.textAlign === "left" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "left")}
+                                className={`${globalRenderStyles.textAlign === "left" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_left
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "center")}
-                                className={`${renderStyles.textAlign === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "center")}
+                                className={`${globalRenderStyles.textAlign === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_center
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "right")}
-                                className={`${renderStyles.textAlign === "right" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "right")}
+                                className={`${globalRenderStyles.textAlign === "right" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_right
                             </Icon>
@@ -160,7 +189,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full mt-2 justify-end"}>
                             <select onChange={(e) => onChange("fontWeight", e.target.value)}
                                     type={"text"}
-                                    value={renderStyles.fontWeight}
+                                    value={isDesktop?desktopRenderStyles.fontWeight:mobileRenderStyles.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
                                 <option label={"light"} value={"300"}/>
                                 <option label={"normal"} value={"400"}/>
@@ -188,7 +217,7 @@ export default function TextComponents({editItem, item, key}) {
                         {/*</div>*/}
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"fontSize"} onChange={onChange}
-                                             defValue={renderStyles.fontSize}/>
+                                             defValue={isDesktop?desktopRenderStyles.fontSize:mobileRenderStyles.fontSize}/>
                         </div>
                     </div>
                 </div>
@@ -215,7 +244,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                 defValue={renderStyles.paddingTop}/>
+                                                 defValue={isDesktop?desktopRenderStyles.paddingTop:mobileRenderStyles.paddingTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -225,7 +254,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                 defValue={renderStyles.paddingRight}/>
+                                                 defValue={isDesktop?desktopRenderStyles.paddingRight:mobileRenderStyles.paddingRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -235,7 +264,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                 defValue={renderStyles.paddingBottom}/>
+                                                 defValue={isDesktop?desktopRenderStyles.paddingBottom:mobileRenderStyles.paddingBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -245,7 +274,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                 defValue={renderStyles.paddingLeft}/>
+                                                 defValue={isDesktop?desktopRenderStyles.paddingLeft:mobileRenderStyles.paddingLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -263,7 +292,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                 defValue={renderStyles.marginTop}/>
+                                                 defValue={isDesktop?desktopRenderStyles.marginTop:mobileRenderStyles.marginTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -273,7 +302,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                 defValue={renderStyles.marginRight}/>
+                                                 defValue={isDesktop?desktopRenderStyles.marginRight:mobileRenderStyles.marginRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -283,7 +312,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                 defValue={renderStyles.marginBottom}/>
+                                                 defValue={isDesktop?desktopRenderStyles.marginBottom:mobileRenderStyles.marginBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -293,7 +322,7 @@ export default function TextComponents({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                 defValue={renderStyles.marginLeft}/>
+                                                 defValue={isDesktop?desktopRenderStyles.marginLeft:mobileRenderStyles.marginLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -302,81 +331,81 @@ export default function TextComponents({editItem, item, key}) {
                         </div>
                     </div>
                 </div>
-                <div className={"block items-center justify-between py-2"}>
-                    <label
-                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Border
-                    </label>
-                    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderTop"} onChange={onChange}
-                                                 defValue={renderStyles.borderTop}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Top
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderRight"} onChange={onChange}
-                                                 defValue={renderStyles.borderRight}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Right
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderBottom"} onChange={onChange}
-                                                 defValue={renderStyles.borderBottom}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Bottom
-                            </div>
-                        </div>
-                        <div className={"w-full"}>
-                            <div>
-                                <TextFieldEditor id={"borderLeft"} onChange={onChange}
-                                                 defValue={renderStyles.borderLeft}/>
-                            </div>
-                            <div
-                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Left
-                            </div>
-                        </div>
-                        <div className={"col-span-2"}>
-                            {/*<div className={"w-full justify-between items-center "}>*/}
-                            {/*    <label*/}
-                            {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                            {/*        Border Style*/}
-                            {/*    </label>*/}
-                            {/*    <div className={"w-full mt-2 justify-end"}>*/}
-                            {/*        <select*/}
-                            {/*            onChange={(e) => onChange("borderStyle", `${e.target.value} ${e.target.value} ${e.target.value} ${e.target.value}`)}*/}
-                            {/*            value={renderStyles.borderStyle.split(" ")[0]}*/}
-                            {/*            className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark border border-outline-light dark:border-outline-dark "}>*/}
-                            {/*            <option label={"Solid"} value={"solid"}/>*/}
-                            {/*            <option label={"Doted"} value={"dotted"}/>*/}
-                            {/*            <option label={"Dashed"} value={"dashed"}/>*/}
-                            {/*        </select>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            <div className={"flex justify-between items-center pt-4 pb-2"}>
-                                <label
-                                    className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                                    Border color
-                                </label>
-                                <ColorPicker
-                                    onChange={(value) => onChange("borderColor", value)}
-                                    value={renderStyles.borderColor}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/*<div className={"block items-center justify-between py-2"}>*/}
+                {/*    <label*/}
+                {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
+                {/*        Border*/}
+                {/*    </label>*/}
+                {/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
+                {/*        <div className={"w-full"}>*/}
+                {/*            <div>*/}
+                {/*                <TextFieldEditor id={"borderTop"} onChange={onChange}*/}
+                {/*                                 defValue={globalRenderStyles.borderTop}/>*/}
+                {/*            </div>*/}
+                {/*            <div*/}
+                {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
+                {/*                Top*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className={"w-full"}>*/}
+                {/*            <div>*/}
+                {/*                <TextFieldEditor id={"borderRight"} onChange={onChange}*/}
+                {/*                                 defValue={globalRenderStyles.borderRight}/>*/}
+                {/*            </div>*/}
+                {/*            <div*/}
+                {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
+                {/*                Right*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className={"w-full"}>*/}
+                {/*            <div>*/}
+                {/*                <TextFieldEditor id={"borderBottom"} onChange={onChange}*/}
+                {/*                                 defValue={globalRenderStyles.borderBottom}/>*/}
+                {/*            </div>*/}
+                {/*            <div*/}
+                {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
+                {/*                Bottom*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className={"w-full"}>*/}
+                {/*            <div>*/}
+                {/*                <TextFieldEditor id={"borderLeft"} onChange={onChange}*/}
+                {/*                                 defValue={globalRenderStyles.borderLeft}/>*/}
+                {/*            </div>*/}
+                {/*            <div*/}
+                {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
+                {/*                Left*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className={"col-span-2"}>*/}
+                {/*            /!*<div className={"w-full justify-between items-center "}>*!/*/}
+                {/*            /!*    <label*!/*/}
+                {/*            /!*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*!/*/}
+                {/*            /!*        Border Style*!/*/}
+                {/*            /!*    </label>*!/*/}
+                {/*            /!*    <div className={"w-full mt-2 justify-end"}>*!/*/}
+                {/*            /!*        <select*!/*/}
+                {/*            /!*            onChange={(e) => onChange("borderStyle", `${e.target.value} ${e.target.value} ${e.target.value} ${e.target.value}`)}*!/*/}
+                {/*            /!*            value={renderStyles.borderStyle.split(" ")[0]}*!/*/}
+                {/*            /!*            className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark border border-outline-light dark:border-outline-dark "}>*!/*/}
+                {/*            /!*            <option label={"Solid"} value={"solid"}/>*!/*/}
+                {/*            /!*            <option label={"Doted"} value={"dotted"}/>*!/*/}
+                {/*            /!*            <option label={"Dashed"} value={"dashed"}/>*!/*/}
+                {/*            /!*        </select>*!/*/}
+                {/*            /!*    </div>*!/*/}
+                {/*            /!*</div>*!/*/}
+                {/*            <div className={"flex justify-between items-center pt-4 pb-2"}>*/}
+                {/*                <label*/}
+                {/*                    className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
+                {/*                    Border color*/}
+                {/*                </label>*/}
+                {/*                <ColorPicker*/}
+                {/*                    onChange={(value) => onChange("borderColor", value)}*/}
+                {/*                    value={renderStyles.borderColor}/>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
 
             </EditorDialog>

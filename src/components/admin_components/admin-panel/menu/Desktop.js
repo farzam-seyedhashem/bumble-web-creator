@@ -9,7 +9,7 @@ import {useState} from "react";
 export default function DesktopMenu() {
     const pathname = usePathname()
     // const [selected,setSelected] = useState()
-    const [menuOpen,setMenuOpen] = useState(true)
+    const [menuOpen, setMenuOpen] = useState(true)
     const Categories = [
         {
             id: 1,
@@ -48,56 +48,56 @@ export default function DesktopMenu() {
             link: "/admin",
             id: 1
         },
-        {
-            title: "Analytics",
-            icon: "analytics",
-            link: "/admin/analytics",
-            id: 1
-        },
+        // {
+        //     title: "Analytics",
+        //     icon: "analytics",
+        //     link: "/admin/analytics",
+        //     id: 1
+        // },
         {
             title: "Website Builder",
             icon: "layers",
             link: "/admin/pages",
             id: 1
         },
-        {
-            title: "Blogs",
-            icon: "post",
-            link: "/admin/blogs",
-            id: 2
-        },
-        {
-            title: "Testimonials",
-            icon: "reviews",
-            link: "/admin/testimonials",
-            id: 2
-        },
-        {
-            title: "Sliders",
-            icon: "photo_library",
-            link: "/admin/sliders",
-            id: 2
-        },
+        // {
+        //     title: "Blogs",
+        //     icon: "post",
+        //     link: "/admin/blogs",
+        //     id: 2
+        // },
+        // {
+        //     title: "Testimonials",
+        //     icon: "reviews",
+        //     link: "/admin/testimonials",
+        //     id: 2
+        // },
+        // {
+        //     title: "Sliders",
+        //     icon: "photo_library",
+        //     link: "/admin/sliders",
+        //     id: 2
+        // },
         {
             title: "Mails",
             icon: "mail",
             link: "/admin/mails",
             id: 3
         },
-        {
-            title: "Forms",
-            icon: "assignment",
-            link: "/admin/forms",
-            subItem: [
-                {
-                    icon: "monitoring",
-                    title: "SEO",
-                    link: "/admin/setting/monitoring",
-                    description: "Edit global SEO settings"
-                },
-        ],
-            id: 3
-        },
+        // {
+        //     title: "Forms",
+        //     icon: "assignment",
+        //     link: "/admin/forms",
+        //     subItem: [
+        //         {
+        //             icon: "monitoring",
+        //             title: "SEO",
+        //             link: "/admin/setting/monitoring",
+        //             description: "Edit global SEO settings"
+        //         },
+        //     ],
+        //     id: 3
+        // },
         {
             title: "Setting",
             icon: "settings",
@@ -135,20 +135,27 @@ export default function DesktopMenu() {
     ]
     return (
         <>
-            <div className={"h-screen pt-4 bg-surface-container-high-light dark:bg-surface-container-high-dark w-[80px] items-center   flex justify-center px-3"}>
-                <div className={"w-full"}>
-                    {/*<div className={"flex w-full justify-center items-center"}>*/}
-                    {/*    <IconButton onClick={()=>setMenuOpen(!menuOpen)} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*        {menuOpen?"menu_open":"menu"}*/}
-                    {/*    </IconButton>*/}
-                    {/*</div>*/}
-                    {menuList.map((item, i) => <Link
-                        className={`rounded-full ${(item.link === pathname || item.subItem && item.subItem.find(si=>si.link===pathname)) ? "bg-secondary-container-light dark:bg-secondary-container-dark text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} flex items-center justify-center h-[56px] w-[56px]`}
-                        key={i} href={item.link}>
-                        <Icon fill={item.link === pathname?1:0}>
-                            {item.icon}
-                        </Icon>
-                    </Link>)}
+            <div className={"md:block hidden fixed left-0 h-fit bottom-0 bg-surface-container-low-light dark:bg-surface-container-low-dark "}>
+                <div className={"relative  h-screen  w-[80px] items-center   flex justify-center px-3"}>
+                    <div className={"w-full"}>
+                        {/*<div className={"flex w-full justify-center items-center"}>*/}
+                        {/*    <IconButton onClick={()=>setMenuOpen(!menuOpen)} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
+                        {/*        {menuOpen?"menu_open":"menu"}*/}
+                        {/*    </IconButton>*/}
+                        {/*</div>*/}
+                        {menuList.map((item, i) => <Link
+                            className={`rounded-full ${(item.link === pathname || item.subItem && item.subItem.find(si => si.link === pathname)) ? "bg-secondary-container-light dark:bg-secondary-container-dark text-on-secondary-container-light dark:text-on-secondary-container-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} flex items-center justify-center h-[56px] w-[56px]`}
+                            key={i} href={item.link}>
+                            <Icon fill={item.link === pathname ? 1 : 0}>
+                                {item.icon}
+                            </Icon>
+                        </Link>)}
+
+                    </div>
+                    <IconButton type={"outlined"} selected={false}
+                                className={"h-[56px] w-[56px] absolute bottom-4 transform left-1/2 -translate-x-1/2 "}>
+                        account_circle
+                    </IconButton>
                 </div>
             </div>
             {/*{menuOpen&&menuList.find(mi=>mi.subItem&&mi.subItem.find(si=>si.link === pathname))&&<div*/}

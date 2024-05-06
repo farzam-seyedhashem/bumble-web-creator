@@ -8,13 +8,15 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function Paragraph({item, key, editItem}) {
+export default function Paragraph({isDesktop,item, key, editItem,removeItemFunc,dragFunc}) {
     let [Component, setComponent] = useState("p")
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
-    let [renderStyles, setRenderStyles] = useState(item?.styles)
+    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
+    let [desktopRenderStyles, setDesktopRenderStyles] = useState(item?.desktopStyles)
+    let [mobileRenderStyles, setMobileRenderStyles] = useState(item?.mobileStyles)
     let classGenerator = (newStyles) => {
         let classes = ""
         newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
@@ -26,12 +28,24 @@ export default function Paragraph({item, key, editItem}) {
         console.log(classes)
 
     }
+    let onChangeGlobal = (name, value) => {
+        let styles = {...globalRenderStyles, [name]: value}
+        setGlobalRenderStyles(styles)
+        editItem("globalStyles", styles)
+        // editItem("className", className)
+    }
     let onChange = (name, value) => {
-        let styles = {...renderStyles, [name]: value}
-        setRenderStyles(styles)
-        classGenerator(styles)
-        editItem("styles", styles)
-        editItem("className", className)
+        console.log(isDesktop)
+        if (isDesktop){
+            let styles = {...desktopRenderStyles, [name]: value}
+            setDesktopRenderStyles(styles)
+            editItem("desktopStyles", styles)
+        }else{
+            let styles = {...mobileRenderStyles, [name]: value}
+            setMobileRenderStyles(styles)
+            editItem("mobileStyles", styles)
+        }
+
     }
     const valueChangeHandler = (value) => {
         setValue(value)
@@ -42,28 +56,34 @@ export default function Paragraph({item, key, editItem}) {
     }
     return (
         <>
-            <p className={"min-h-[32px] relative group"} id={key} style={renderStyles}
+            <p className={"min-h-[32px] relative group"} id={key} style={isDesktop? {...desktopRenderStyles,...globalRenderStyles}: {...mobileRenderStyles,...globalRenderStyles}}
                onClick={() => setIsSelected(true)}>
                 {value}
                 <div
-                    className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                            removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -80,8 +100,8 @@ export default function Paragraph({item, key, editItem}) {
                         theme color
                     </label>
 
-                    <ColorPicker value={renderStyles.color}
-                                 onChange={(color) => onChange("color", color)}/>
+                    <ColorPicker onChange={(value) => onChangeGlobal("color", value)}
+                                 value={item.globalStyles.color}/>
 
                 </div>
                 <div className={"col-span-8 justify-between items-center "}>
@@ -90,20 +110,20 @@ export default function Paragraph({item, key, editItem}) {
                         Text Align
                     </label>
                     <div className={"mt-2 flex justify-end space-x-2"}>
-                        <button onClick={(e) => onChange("textAlign", "left")}
-                                className={`${renderStyles.textAlign === "left" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "left")}
+                                className={`${globalRenderStyles.textAlign === "left" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_left
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "center")}
-                                className={`${renderStyles.textAlign === "center" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "center")}
+                                className={`${globalRenderStyles.textAlign === "center" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_center
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "right")}
-                                className={`${renderStyles.textAlign === "right" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "right")}
+                                className={`${globalRenderStyles.textAlign === "right" ? "border-primary-dark bg-primary-container-dark/[12%] text-primary-dark" : "text-on-surface-variant-dark border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_right
                             </Icon>
@@ -119,7 +139,7 @@ export default function Paragraph({item, key, editItem}) {
                         <div className={"w-full mt-2 justify-end"}>
                             <select onChange={(e) => onChange("fontWeight", e.target.value)}
                                     type={"text"}
-                                    value={renderStyles.fontWeight}
+                                    value={isDesktop ? desktopRenderStyles.fontWeight : mobileRenderStyles.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
                                 <option label={"light"} value={"300"}/>
                                 <option label={"normal"} value={"400"}/>
@@ -137,7 +157,7 @@ export default function Paragraph({item, key, editItem}) {
                         </label>
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"fontSize"} onChange={onChange}
-                                             defValue={renderStyles.fontSize}/>
+                                             defValue={isDesktop?desktopRenderStyles.fontSize:mobileRenderStyles.fontSize}/>
                         </div>
                     </div>
                 </div>
@@ -150,7 +170,7 @@ export default function Paragraph({item, key, editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                 defValue={renderStyles.paddingTop}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingTop : mobileRenderStyles.paddingTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -160,7 +180,7 @@ export default function Paragraph({item, key, editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                 defValue={renderStyles.paddingRight}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingRight : mobileRenderStyles.paddingRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -170,7 +190,7 @@ export default function Paragraph({item, key, editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                 defValue={renderStyles.paddingBottom}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingBottom : mobileRenderStyles.paddingBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -180,7 +200,55 @@ export default function Paragraph({item, key, editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                 defValue={renderStyles.paddingLeft}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingLeft : mobileRenderStyles.paddingLeft}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Left
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={"block items-center justify-between py-2"}>
+                    <label
+                        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+                        Margin
+                    </label>
+                    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginTop"} onChange={onChange}
+                                                 defValue={isDesktop ? desktopRenderStyles.marginTop : mobileRenderStyles.marginTop}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Top
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginRight"} onChange={onChange}
+                                                 defValue={isDesktop ? desktopRenderStyles.marginRight : mobileRenderStyles.marginRight}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Right
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginBottom"} onChange={onChange}
+                                                 defValue={isDesktop ? desktopRenderStyles.marginBottom : mobileRenderStyles.marginBottom}/>
+                            </div>
+                            <div
+                                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                                Bottom
+                            </div>
+                        </div>
+                        <div className={"w-full"}>
+                            <div>
+                                <TextFieldEditor id={"marginLeft"} onChange={onChange}
+                                                 defValue={isDesktop ? desktopRenderStyles.marginLeft : mobileRenderStyles.marginLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

@@ -8,14 +8,18 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function ButtonComponent({item,editItem}) {
+export default function ButtonComponent({isDesktop, item, editItem,removeItemFunc,dragFunc}) {
     // let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
     let [link, setLink] = useState(item.link || "")
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
-    let [renderStyles, setRenderStyles] = useState(item?.styles)
+    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
+    let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    useEffect(() => {
+        setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    }, [isDesktop]);
     let classGenerator = (newStyles) => {
         let classes = ""
         newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
@@ -27,39 +31,52 @@ export default function ButtonComponent({item,editItem}) {
         console.log(classes)
 
     }
+    let onChangeGlobal = (name, value) => {
+        let styles = {...globalRenderStyles, [name]: value}
+        setGlobalRenderStyles(styles)
+        editItem("globalStyles", styles)
+        editItem("className", className)
+    }
     let onChange = (name, value) => {
-        let styles = {...renderStyles, [name]: value}
 
-        setRenderStyles(styles)
-        editItem("styles", styles)
-        classGenerator(styles)
+        let styles = {...deviceStyle, [name]: value}
+        setDeviceStyle(styles)
+        editItem(isDesktop ? "desktopStyles" : "mobileStyles", styles)
+
+
     }
 
     return (
         <>
-            <div className={"relative group/button"}>
-                <button style={renderStyles}>
+            <div className={"flex relative group/button"}>
+                <button style={{...globalRenderStyles,...deviceStyle}}>
                     {value}
                 </button>
                 <div
-                    className={"absolute hidden group-hover/button:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute z-[888] hidden group-hover/button:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"dark:!text-on-tertiary-container-dark !text-on-tertiary-container-light text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -76,18 +93,18 @@ export default function ButtonComponent({item,editItem}) {
                 <div className={"flex justify-between items-center pt-4 pb-2"}>
                     <label
                         className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Text Color
+                    Text Color
                     </label>
-                    <ColorPicker value={renderStyles.color}
-                                 onChange={(color) => onChange("color", color)}/>
+                    <ColorPicker value={globalRenderStyles.color}
+                                 onChange={(color) => onChangeGlobal("color", color)}/>
                 </div>
                 <div className={"flex justify-between items-center pt-4 pb-2"}>
                     <label
                         className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
                         Background Color
                     </label>
-                    <ColorPicker value={renderStyles.backgroundColor}
-                                 onChange={(color) => onChange("backgroundColor", color)}/>
+                    <ColorPicker value={globalRenderStyles.backgroundColor}
+                                 onChange={(color) => onChangeGlobal("backgroundColor", color)}/>
 
                 </div>
                 <div className={"grid grid-cols-12 gap-4 py-2"}>
@@ -98,7 +115,7 @@ export default function ButtonComponent({item,editItem}) {
                         </label>
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"width"} onChange={onChange}
-                                             defValue={renderStyles.width}/>
+                                             defValue={deviceStyle.width}/>
                         </div>
                     </div>
                     <div className={"col-span-4 justify-between items-center"}>
@@ -108,7 +125,7 @@ export default function ButtonComponent({item,editItem}) {
                         </label>
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"height"} onChange={onChange}
-                                             defValue={renderStyles.height}/>
+                                             defValue={deviceStyle.height}/>
                         </div>
                     </div>
 
@@ -119,7 +136,7 @@ export default function ButtonComponent({item,editItem}) {
                         </label>
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"borderRadius"} onChange={onChange}
-                                             defValue={renderStyles.borderRadius}/>
+                                             defValue={globalRenderStyles.borderRadius}/>
                         </div>
                     </div>
                     <div className={"col-span-8 justify-between items-center "}>
@@ -130,7 +147,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full mt-2 justify-end"}>
                             <select onChange={(e) => onChange("fontWeight", e.target.value)}
                                     type={"text"}
-                                    value={renderStyles.fontWeight}
+                                    value={deviceStyle.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
                                 <option label={"light"} value={"300"}/>
                                 <option label={"normal"} value={"400"}/>
@@ -147,7 +164,7 @@ export default function ButtonComponent({item,editItem}) {
                         </label>
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"fontSize"} onChange={onChange}
-                                             defValue={renderStyles.fontSize}/>
+                                             defValue={deviceStyle.fontSize}/>
                         </div>
                     </div>
                 </div>
@@ -160,7 +177,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                 defValue={renderStyles.paddingTop}/>
+                                                 defValue={deviceStyle.paddingTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -170,7 +187,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                 defValue={renderStyles.paddingRight}/>
+                                                 defValue={deviceStyle.paddingRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -180,7 +197,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                 defValue={renderStyles.paddingBottom}/>
+                                                 defValue={deviceStyle.paddingBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -190,7 +207,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                 defValue={renderStyles.paddingLeft}/>
+                                                 defValue={deviceStyle.paddingLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -208,7 +225,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                 defValue={renderStyles.marginTop}/>
+                                                 defValue={deviceStyle.marginTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -218,7 +235,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                 defValue={renderStyles.marginRight}/>
+                                                 defValue={deviceStyle.marginRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -228,7 +245,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                 defValue={renderStyles.marginBottom}/>
+                                                 defValue={deviceStyle.marginBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -238,7 +255,7 @@ export default function ButtonComponent({item,editItem}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                 defValue={renderStyles.marginLeft}/>
+                                                 defValue={deviceStyle.marginLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

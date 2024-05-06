@@ -524,16 +524,16 @@ Switch Classes
 
 
 .switch-indicator {
-    @apply transition items-center justify-center duration-300 group-active:w-[28px] group-active:h-[28px] inline-flex rounded-full
+    @apply transition items-center justify-center duration-300 group-active/switch:w-[28px] group-active/switch:h-[28px] inline-flex rounded-full
 }
 
 
 .switch-indicator-open {
-    @apply group-focus:bg-primary-container-light dark:group-focus:bg-primary-container-dark group-hover:bg-primary-container-light dark:group-hover:bg-primary-container-dark bg-on-primary-light dark:bg-on-primary-dark
+    @apply group-focus/switch:bg-primary-container-light dark:group-focus/switch:bg-primary-container-dark group-hover/switch:bg-primary-container-light dark:group-hover/switch:bg-primary-container-dark bg-on-primary-light dark:bg-on-primary-dark
 }
 
 .switch-indicator-close {
-    @apply group-focus:bg-on-surface-variant-light dark:group-focus:bg-on-surface-variant-dark group-hover:bg-on-surface-variant-light dark:group-hover:bg-on-surface-variant-dark bg-outline-light dark:bg-outline-dark
+    @apply group-focus/switch:bg-on-surface-variant-light dark:group-focus/switch:bg-on-surface-variant-dark group-hover/switch:bg-on-surface-variant-light dark:group-hover/switch:bg-on-surface-variant-dark bg-outline-light dark:bg-outline-dark
 }
 .switch-indicator-close-size-small{
     @apply h-4 w-4

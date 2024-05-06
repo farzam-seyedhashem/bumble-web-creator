@@ -16,7 +16,7 @@ export default function IconPicker({defValue,isFill, onIconSelect, label}) {
     return (
         <>
             <div className={"flex justify-between items-center"}>
-                <label className={"text-on-surface-light dark:text-on-surface-dark text-label-large"}>
+                <label className={" text-on-surface-light dark:text-on-surface-dark text-label-large"}>
                     {label}
                 </label>
                 <div onClick={() => setIsOpen(true)}

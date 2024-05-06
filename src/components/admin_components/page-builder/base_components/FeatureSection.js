@@ -1,5 +1,5 @@
 import Icon from "@m3/assets/icons/Icon";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import TextField from "@m3/text_fields/TextField";
 import TextArea from "@m3/TextArea";
@@ -8,12 +8,18 @@ import Button from "@m3/buttons/Button";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 
-export default function FeatureSection({item, editItem}) {
+export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,dragFunc}) {
     // const [cardShape, setCardShape] = useState(item)
     const [isSelected, setIsSelected] = useState(false)
     const [featuredSections, setFeaturedSections] = useState(item?.featuredSections)
     const [selectedTab,setSelectedTab] = useState(0)
-    const [options,setOptions] = useState(item?.options)
+    const [options,setOptions] = useState(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
+   const [globalOptions,setGlobalOptions] = useState(item.globalOptions)
+   const [deviceOptions,setDeviceOptions] = useState(isDesktop?item.desktopOptions:item.mobileOptions)
+    useEffect(() => {
+        setOptions(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
+        setDeviceOptions(isDesktop?item.desktopOptions:item.mobileOptions)
+    },[isDesktop])
     const handleAddItem = (index, name, value) => {
         let featuredSectionsC = [...featuredSections]
         featuredSectionsC[index][name] = value
@@ -37,8 +43,15 @@ export default function FeatureSection({item, editItem}) {
     }
     const editOptions = (name,value) => {
         let newOptions = {...options,[name]:value}
+        if (deviceOptions[name]) {
+            setDeviceOptions({...deviceOptions,[name]:value})
+            editItem(isDesktop?"desktopOptions":"mobileOptions",{...deviceOptions,[name]:value})
+        }else{
+            setGlobalOptions({...globalOptions,[name]:value})
+            editItem("globalOptions",{...globalOptions,[name]:value})
+        }
         setOptions(newOptions)
-        editItem("options",newOptions)
+
     }
     const removeFeaturedSections = (index) => {
         let newFeatruedSections = [...featuredSections]
@@ -125,25 +138,32 @@ export default function FeatureSection({item, editItem}) {
                     </div>)}
 
                 </div>
+
                 <div
-                    className={`absolute hidden group-hover/featured-section:block  -top-[24px] left-1/2 -translate-x-1/2 transform `}>
+                    className={`absolute z-[888] hidden group-hover/featured-section:block  -top-[24px] left-1/2 -translate-x-1/2 transform `}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -152,14 +172,18 @@ export default function FeatureSection({item, editItem}) {
             </div>
             <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
                 <div className={"flex items-center justify-center"}>
-                    <div className={`w-6/12 h-[40px] flex items-center justify-center  ${selectedTab ===0 ?"border-b-2 border-primary-light dark:border-primary-dark":"border-b border-outline-variant-light dark:border-outline-variant-dark"} `} onClick={()=>setSelectedTab(0)}>
+                    <div
+                        className={`w-6/12 h-[40px] flex items-center justify-center  ${selectedTab === 0 ? "border-b-2 border-primary-light dark:border-primary-dark" : "border-b border-outline-variant-light dark:border-outline-variant-dark"} `}
+                        onClick={() => setSelectedTab(0)}>
                         Content
                     </div>
-                    <div className={`w-6/12 h-[40px] flex items-center justify-center ${selectedTab ===1 ?"border-b-2 border-primary-light dark:border-primary-dark":"border-b border-outline-variant-light dark:border-outline-variant-dark"} `} onClick={()=>setSelectedTab(1)}>
+                    <div
+                        className={`w-6/12 h-[40px] flex items-center justify-center ${selectedTab === 1 ? "border-b-2 border-primary-light dark:border-primary-dark" : "border-b border-outline-variant-light dark:border-outline-variant-dark"} `}
+                        onClick={() => setSelectedTab(1)}>
                         Styles
                     </div>
                 </div>
-                <div className={`p-4 ${selectedTab===0 ? "block" : "hidden"}`}>
+                <div className={`p-4 ${selectedTab === 0 ? "block" : "hidden"}`}>
                     <label
                         className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-medium"}>
                         Add Item

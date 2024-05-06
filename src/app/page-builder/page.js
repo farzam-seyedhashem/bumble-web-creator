@@ -9,6 +9,7 @@ import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
 import AddedComponentListItem from "@admin/page-builder/AddedComponentListItem";
 import IconPicker from "@page_builder/editor_components/IconPicker";
+import Link from "next/link";
 
 export default function Home() {
     const devices = [
@@ -39,36 +40,35 @@ export default function Home() {
     }
     const editItem =  (number, key, value) => {
         let items = addedItems
-        // items[number][key] = value;
         items[number] = {...items[number],[key]:value}
         setAddedItems(items)
-        console.log(items)
-        // console.log('itemslist',items)
-        // console.log(addedItems)
-
-        // console.log(item)
+    }
+    const removeItemFunc =  (number) => {
+        let items = [...addedItems]
+        items.splice(number,1)
+        setAddedItems(items)
     }
 
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
+    function drag(ev,id) {
+
+        // console.log(addedItems[idNumber])
+        if(typeof id !== undefined && typeof id === "number"){
+            let item = addedItems[id]
+            console.log(item,id)
+            ev.dataTransfer.setData("text", item.uid);
+            ev.dataTransfer.setData("item", JSON.stringify(item));
+            // removeItemFunc()
+
+            // if (cb){
+            //     cb()
+            // }
+        }else {
+
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
         // ev.dataTransfer.setData("item", null);
     }
-    // function renderAddedItems (addedItems) {
-    //     let items = ""
-    //     {addedItems.map((item, i) =>
-    //         items += `<li onClick={()=>setSelectedItem(i)} key={i}
-    //             className={"group relative justify-between py-2 px-4 h-[56px] text-body-large flex items-center text-on-surface-light dark:text-on-surface-dark bg-surface-light dark:bg-surface-dark"}>
-    //             {item.id}
-    //             <Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-    //                 chevron_right
-    //             </Icon>
-    //             <div
-    //                 className={"hidden bg-on-surface-light/[8%] dark:bg-on-surface-dark/[8%] group-hover:block top-0 left-0 w-full absolute h-full "}/>
-    //         </li>`
-    //     )}
-    //
-    //
-    // }
+
 
     return (
         <div className={"flex  bg-surface-container-low-light dark:bg-surface-container-low-dark"}>
@@ -77,11 +77,11 @@ export default function Home() {
                 className={"hidden  md:block md:w-[360px] sticky top-0 h-screen  bg-surface-light dark:bg-surface-dark "}>
                 <div
                     className={"flex items-center px-4 relative justify-center top-0 left-0 w-full h-[64px] bg-surface-light dark:bg-surface-dark"}>
-                    <div className={"absolute left-4 top-1/2  transform -translate-y-1/2"}>
+                    <Link href={"/admin/pages"} className={"absolute left-4 top-1/2  transform -translate-y-1/2"}>
                         <IconButton>
                             arrow_back
                         </IconButton>
-                    </div>
+                    </Link>
                     <h2 className={"text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark"}>
                         Page Components
                     </h2>
@@ -153,7 +153,7 @@ export default function Home() {
             {/*</FAB>*/}
             {/*<IconPicker/>*/}
             <div
-                className={`px-4 pb-4 pt-8 transition-all duration-300 mx-auto ease-in-out mt-[64px] w-full ${device === 0 ? "md:max-w-[490px] w-full" : "md:w-[calc(100%_-_360px)] "} `}>
+                className={`px-4 pb-4 pt-8 transition-all duration-300 mx-auto ease-in-out mt-[64px] w-full ${device === 0 ? "md:max-w-[490px] w-[490px] min-w-[490px]" : "md:w-[calc(100%_-_360px)] "} `}>
                 <div className={"z-10 rounded-[16px] min-h-screen bg-white"}>
                     {/*<div className={"bg-white h-[4px] focus-within:h-[40px]"} id="div1" onDrop={(e) => drop(e)}*/}
                     {/*     onDragOver={(e) => allowDrop(e)}></div>*/}
@@ -164,7 +164,7 @@ export default function Home() {
                     {addedItems.map((item, i) =>
                         <div key={item.uniqueId + i + "-top"} className={"relative  group"}>
                             <DropContainer idNumber={i} handleAddedItems={handleAddedItems}/>
-                            <ComponentGenerator setComponentEditor={setComponentEditor} editItem={editItem} idNumber={i} item={item}/>
+                            <ComponentGenerator dragFunc={drag} removeItemFunc={removeItemFunc} isDesktop={device===1} setComponentEditor={setComponentEditor} editItem={editItem} idNumber={i} item={item}/>
                             {/*{(i!==addedItems.length-1)&&<DropContainer id={i} handleAddedItems={handleAddedItems}/>}*/}
                         </div>
                     )}

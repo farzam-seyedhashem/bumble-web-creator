@@ -72,21 +72,27 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
     // }
     const drop = (ev) => {
         let dragId = ev.dataTransfer.getData("text");
-        const componets = [...Data.components]
-        let component = componets.find(c => c.uid === dragId)
-        component.uniqueId = uuidv4()
-        if (component.idType === "grid") {
-            component.addedItems.map(item =>
-                item.uniqueId = uuidv4()
-            )
-        }
-        // console.log('dddd', Data)
-        // setData(Data)
-        // console.log(data)
-        // handleAddedItems(componentIndex,id)
-        if (component) {
-            handleAddedItems(component, idNumber)
 
+        let item = ev.dataTransfer.getData("item");
+        console.log(item);
+        if (!item) {
+            const componets = [...Data.components]
+            let component = componets.find(c => c.uid === dragId)
+            component.uniqueId = uuidv4()
+            if (component.idType === "grid") {
+                component.addedItems.map(item =>
+                    item.uniqueId = uuidv4()
+                )
+            }
+
+            if (component) {
+                handleAddedItems(component, idNumber)
+
+            }
+        }else{
+            const itemu =JSON.parse(item)
+            itemu.uniqueId = uuidv4()
+            handleAddedItems(itemu, idNumber)
         }
         // console.log(data)
         // setItems()
@@ -106,7 +112,7 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
     return (
 
         <div key={Date.now()}
-             className={`transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem && !onDrop) ? firstItemClasses : normalClasses}`}
+             className={`className transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem && !onDrop) ? firstItemClasses : normalClasses}`}
             // id={Math.random().toString()}
             // key={Math.random()}
              onDrop={(event) => {

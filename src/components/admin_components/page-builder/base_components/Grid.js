@@ -9,12 +9,12 @@ import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 
-function Column({item, idNumber, editItem, columnSize}) {
+function Column({isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
 
     useEffect(() => {
         // setAddedItems(item.addedItems)
-        console.log("colsize", columnSize)
+        // console.log("colsize", columnSize)
 
     }, []);
     const handleAddedItemsToItem = (component, number) => {
@@ -22,7 +22,6 @@ function Column({item, idNumber, editItem, columnSize}) {
             return alert("You can not add container or grid in grid")
         }
         let items = [...addedItems]
-        console.log("main component", component)
         if (number === 0) {
             items = [
                 component,
@@ -45,16 +44,43 @@ function Column({item, idNumber, editItem, columnSize}) {
         items[number] = {...items[number], [key]: value}
         setAddedItems(items)
         editItem(idNumber, "addedItems", items)
-        // editItem(idNumber,"addedItems",items)
     }
-    // useCallback( editItem(idNumber,"addedItems",addedItems),[addedItems])
+    const removeItemFuncM =  (number) => {
+        let items = [...addedItems]
+        items.splice(number,1)
+        setAddedItems(items)
+        editItem(idNumber,"addedItems", items)
+        console.log(items.length)
+        if (items.length === 0) {
+            removeColumnFunc()
+        }
+    }
+    function drag(ev,id) {
+
+        // console.log(addedItems[idNumber])
+        if(typeof id !== undefined && typeof id === "number"){
+            let item = addedItems[id]
+            console.log(item,id)
+            ev.dataTransfer.setData("text", item.uid);
+            ev.dataTransfer.setData("item", JSON.stringify(item));
+            // removeItemFunc()
+
+            // if (cb){
+            //     cb()
+            // }
+        }else {
+
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        // ev.dataTransfer.setData("item", null);
+    }
     return (
         <div key={item.uniqueId + "-gridm"}
-             className={"z-[100]" + item?.widthNumber ? item.uniqueId + " " + `col-span-${columnSize}` : item.uniqueId + " " + "" + " " + item?.className}>
+             className={"z-[100]" + item?.widthNumber ? item.uniqueId + " " + `col-span-${isDesktop?columnSizeDesktop:columnSizeMobile}` : item.uniqueId + " " + "" + " " + item?.className}>
             {addedItems.map((l, i) =>
                 <div key={item.uniqueId + i + "-g"} className={"relative group"}>
                     <DropContainer idNumber={i} handleAddedItems={handleAddedItemsToItem}/>
-                    <ComponentGenerator idNumber={i} editItem={editItemC} item={l}/>
+                    <ComponentGenerator dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop} idNumber={i} editItem={editItemC} item={l}/>
                 </div>
             )}
             <div className={"relative"}>
@@ -70,23 +96,28 @@ class Grid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            columnSize: [...this.props.item.columnsSize],
+            columnSizeDesktop: [...this.props.item.columnSizeDesktop],
+            columnSizeMobile: [...this.props.item.columnSizeMobile],
             addedItems: [...this.props.item.addedItems],
             renderStyles: this.props.item.styles,
-            gap: this.props.item.gap,
+            gapDesktop:  this.props.item.gapDesktop,
+            gapMobile:  this.props.item.gapMobile,
+
             isSelected: false
         }
         this.editItemC = this.editItemC.bind(this);
     }
 
-
     // {item, idNumber, editItem}
     // const [addedItems, setAddedItems] = useState()
     editItemC = (number, key, value) => {
+        const {isDesktop} = this.props;
         let items = [...this.state.addedItems]
-        let columnSizes = [...this.state.columnSize]
+        let columnSizesDesktop = [...this.state.columnSizeDesktop]
+        let columnSizesMobile =  [...this.state.columnSizeMobile]
         items[number] = {...items[number], [key]: value}
-        columnSizes.push(6);
+        columnSizesDesktop.push(6);
+        columnSizesMobile.push(12);
         // setAddedItems(items)
         if (items[items.length - 1].addedItems.length !== 0) {
             items = [...items, {
@@ -113,31 +144,37 @@ class Grid extends React.Component {
             }]
         }
         this.setState({addedItems: items})
+        this.setState({columnSizeDesktop: columnSizesDesktop})
+        this.setState({columnSizeMobile: columnSizesMobile})
 
-
-        this.setState({columnSize: columnSizes});
-        this.props.editItem("columnsSize", columnSizes)
+        this.props.editItem("columnSizeDesktop" , columnSizesDesktop)
+        this.props.editItem( "columnSizeMobile", columnSizesMobile)
         this.props.editItem("addedItems", items)
     }
 
 
-
     render() {
-        let {item, idNumber, editItem} = this.props
+        let {item, idNumber, editItem,removeItemFunc,dragFunc} = this.props
         let {isSelected, renderStyles} = this.state;
-        const baseClass = `grid grid-cols-${item?.gridNumber} justify-end w-full`
+        const {isDesktop} = this.props;
+        const baseClass = `grid grid-cols-12 justify-end w-full`
         const setIsSelected = (v) => {
             this.setState({isSelected: v});
         }
         const changeColumnSizeHandler = (number, value) => {
-            let columnSizes = [...this.state.columnSize]
+            let columnSizes = isDesktop ? [...this.state.columnSizeDesktop] : [...this.state.columnSizeMobile]
             columnSizes[number] = value;
-            this.setState({columnSize: columnSizes});
-            editItem("columnsSize", columnSizes)
+            if (isDesktop){
+                this.setState({columnSizeDesktop: columnSizes})
+                editItem("columnSizeDesktop", columnSizes)
+            }else{
+                this.setState({columnSizeMobile: columnSizes})
+                editItem("columnSizeMobile", columnSizes)
+            }
         }
         const gapHandler = (value) => {
-            this.setState({gap: value});
-            editItem("gap", value)
+            isDesktop?this.setState({gapDesktop: value}) : this.setState({gapMobile: value});
+            isDesktop?editItem("gapDesktop", value):editItem("gapMobile", value)
         }
         const checkIsNumber = (value) => {
             return value.match("^\\d+$") && parseInt(value) >= 0
@@ -154,32 +191,52 @@ class Grid extends React.Component {
             editItem("styles", styles)
             // editItem("className", className)
         }
+        const removeColumnFunc = (number)=>{
+            let items = [...this.state.addedItems]
+            let columnSizesDesktop = [...this.state.columnSizeDesktop]
+            let columnSizesMobile =  [...this.state.columnSizeMobile]
+            items.splice(number, 1)
+            columnSizesDesktop.splice(number, 1)
+            columnSizesMobile.splice(number, 1)
+            this.setState({addedItems: items})
+            this.setState({columnSizeDesktop: columnSizesDesktop})
+            this.setState({columnSizeMobile: columnSizesMobile})
+            this.props.editItem("columnSizeDesktop" , columnSizesDesktop)
+            this.props.editItem( "columnSizeMobile", columnSizesMobile)
+            this.props.editItem("addedItems", items)
+        }
         return (
-            <div style={{justifyContent:"end",gridGap: this.state.gap + "px" , ...renderStyles}} className={baseClass}>
+            <div style={{justifyContent: "end", gridGap: this.state.gap + "px", ...renderStyles}} className={baseClass}>
                 {this.state.addedItems.map((m, i) =>
-                    <Column columnSize={this.state.columnSize[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
+                    <Column removeColumnFunc={()=>removeColumnFunc(i)} isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]} columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
                             idNumber={i} editItem={this.editItemC}
                             item={m}/>
                 )}
                 <div
-                    className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
-                        className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
+                        className={"px-3  space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark"}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -197,7 +254,7 @@ class Grid extends React.Component {
                         </label>
                         <div
                             className={"w-4/12 mt-2 rounded-full ml-auto"}>
-                            <input value={this.state.gap}
+                            <input value={isDesktop?this.state.gapDesktop:this.state.gapMobile}
                                    onChange={(e) => checkIsNumber(e.target.value) ? gapHandler(e.target.value) : (e.target.value === null || e.target.value === "") ? gapHandler(0) : ""}
                                    className={"mt-2 text-center text-body-large px-4 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark"}/>
                         </div>
@@ -239,7 +296,9 @@ class Grid extends React.Component {
                         </div>
                     </div>
                     {this.state.addedItems.map((item, i) =>
-                        <div key={i}>
+
+                        this.state.addedItems.length-1>i&&<div key={i}>
+
                             <label
                                 className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
                                 Column Number {i} Size is
@@ -248,7 +307,7 @@ class Grid extends React.Component {
                                 className={"w-11/12 mt-2 rounded-full ml-auto bg-surface-variant-light dark:bg-surface-variant-dark"}>
                                 <div className={"grid grid-cols-12 gap-1 h-[40px]"}>
                                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m, index) => <div
-                                        className={`${m === this.state.columnSize[i] ? "bg-primary-light text-on-primary-light dark:bg-primary-dark dark:text-on-primary-dark" : "bg-transparent text-on-surface-variant-light dark:text-on-surface-variant-dark"} h-[40px] cursor-pointer w-full flex justify-center items-center text-label-large rounded-full`}
+                                        className={`${(isDesktop?m === this.state.columnSizeDesktop[i]:m === this.state.columnSizeMobile[i]) ? "bg-primary-light text-on-primary-light dark:bg-primary-dark dark:text-on-primary-dark" : "bg-transparent text-on-surface-variant-light dark:text-on-surface-variant-dark"} h-[40px] cursor-pointer w-full flex justify-center items-center text-label-large rounded-full`}
                                         key={index} onClick={() => changeColumnSizeHandler(i, m)}>
                                         {m}
                                     </div>)}

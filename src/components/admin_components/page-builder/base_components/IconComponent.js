@@ -9,15 +9,33 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import IconPicker from "@page_builder/editor_components/IconPicker";
 
-export default function IconComponent({editItem, item, key}) {
+export default function IconComponent({isDesktop,editItem, item, key,removeItemFunc,dragFunc}) {
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || "star")
     // const [styles, setStyles] = useState(item?.styles)
     let [className, setClassName] = useState(item?.className)
     let [renderStyles, setRenderStyles] = useState(item?.styles)
     let [isFill, setIsFill] = useState(item?.isFill)
-    let [isIconPickerOpen, setIsIconPickerOpen] = useState(false)
+    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
+    let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    useEffect(() => {
+        setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    }, [isDesktop]);
 
+    let onChangeGlobal = (name, value) => {
+        let styles = {...globalRenderStyles, [name]: value}
+        setGlobalRenderStyles(styles)
+        editItem("globalStyles", styles)
+        editItem("className", className)
+    }
+    let onChange = (name, value) => {
+
+        let styles = {...deviceStyle, [name]: value}
+        setDeviceStyle(styles)
+        editItem(isDesktop ? "desktopStyles" : "mobileStyles", styles)
+
+
+    }
     const valueChangeHandler = (value) => {
         setValue(value)
         editItem("value", value)
@@ -37,13 +55,13 @@ export default function IconComponent({editItem, item, key}) {
         setClassName(classes)
         console.log(classes)
     }
-    let onChange = (name, value) => {
-        let styles = {...renderStyles, [name]: value}
-        setRenderStyles(styles)
-        classGenerator(styles)
-        editItem("styles", styles)
-        editItem("className", className)
-    }
+    // let onChange = (name, value) => {
+    //     let styles = {...renderStyles, [name]: value}
+    //     setRenderStyles(styles)
+    //     classGenerator(styles)
+    //     editItem("styles", styles)
+    //     editItem("className", className)
+    // }
     let onIconSelect = (selectedIcon, isFilled) => {
         setValue(selectedIcon)
         setIsFill(isFilled)
@@ -60,57 +78,56 @@ export default function IconComponent({editItem, item, key}) {
 
     return (
         <>
-            <Icon fill={isFill ? 1 : 0} weight={renderStyles.fontWeight} size={renderStyles.fontWeight} id={key}
-                  className="relative group w-full" style={renderStyles}>
+            <Icon fill={isFill ? 1 : 0} weight={deviceStyle.fontWeight} size={deviceStyle.fontSize} id={key}
+                  className="relative group w-full" style={{...deviceStyle,...globalRenderStyles}}>
                 {value}
                 <div
                     className={"absolute hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragOver={(event)=>{
+                            event.preventDefault();
+                              removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
                     </div>
                 </div>
             </Icon>
-            <IconPicker onIconSelect={onIconSelect} setIsOpen={setIsIconPickerOpen} isOpen={isIconPickerOpen}/>
+
+
             <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
 
 
-                <div className={"flex items-center justify-between pb-2"}>
-                    <label
-                        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                        Icon
-                    </label>
-                    <div onClick={() => setIsIconPickerOpen(true)}
-                         className={"w-[40px] rounded-[8px] flex items-center justify-center h-[40px] bg-surface-container-highest-light dark:bg-surface-dark"}>
-                        <Icon fill={isFill ? 1 : 0} weight={renderStyles.fontWeight} size={renderStyles.fontWeight}>
-                            {value}
-                        </Icon>
-                    </div>
+                <div className={" pb-2"}>
+                    <IconPicker label={"Icon"} isFill={isFill} defValue={value}
+                                onIconSelect={onIconSelect}/>
                 </div>
                 <div className={"flex justify-between items-center pt-4 pb-2"}>
                     <label
                         className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
                         Color
                     </label>
-                    <ColorPicker onChange={(value) => onChange("color", value)}
-                                 value={renderStyles.color}/>
+                    <ColorPicker onChange={(value) => onChangeGlobal("color", value)}
+                                 value={globalRenderStyles.color}/>
 
                 </div>
                 <div className={"col-span-8 justify-between items-center "}>
@@ -119,20 +136,20 @@ export default function IconComponent({editItem, item, key}) {
                         Text Align
                     </label>
                     <div className={"mt-2 flex justify-end space-x-2"}>
-                        <button onClick={(e) => onChange("textAlign", "left")}
-                                className={`${renderStyles.textAlign === "left" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "left")}
+                                className={`${globalRenderStyles.textAlign === "left" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_left
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "center")}
-                                className={`${renderStyles.textAlign === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "center")}
+                                className={`${globalRenderStyles.textAlign === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_center
                             </Icon>
                         </button>
-                        <button onClick={(e) => onChange("textAlign", "right")}
-                                className={`${renderStyles.textAlign === "right" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+                        <button onClick={(e) => onChangeGlobal("textAlign", "right")}
+                                className={`${globalRenderStyles.textAlign === "right" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
                             <Icon className={"text-[24px]"}>
                                 format_align_right
                             </Icon>
@@ -148,7 +165,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full mt-2 justify-end"}>
                             <select onChange={(e) => onChange("fontWeight", e.target.value)}
                                     type={"text"}
-                                    value={renderStyles.fontWeight}
+                                    value={deviceStyle.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
                                 <option label={"Thin"} value={"100"}/>
                                 <option label={"Extra Light"} value={"200"}/>
@@ -178,7 +195,7 @@ export default function IconComponent({editItem, item, key}) {
                         {/*</div>*/}
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"fontSize"} onChange={onChange}
-                                             defValue={renderStyles.fontSize}/>
+                                             defValue={deviceStyle.fontSize}/>
                         </div>
                     </div>
                 </div>
@@ -205,7 +222,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                 defValue={renderStyles.paddingTop}/>
+                                                 defValue={deviceStyle.paddingTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -215,7 +232,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                 defValue={renderStyles.paddingRight}/>
+                                                 defValue={deviceStyle.paddingRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -225,7 +242,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                 defValue={renderStyles.paddingBottom}/>
+                                                 defValue={deviceStyle.paddingBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -235,7 +252,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                 defValue={renderStyles.paddingLeft}/>
+                                                 defValue={deviceStyle.paddingLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -253,7 +270,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                 defValue={renderStyles.marginTop}/>
+                                                 defValue={deviceStyle.marginTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -263,7 +280,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                 defValue={renderStyles.marginRight}/>
+                                                 defValue={deviceStyle.marginRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -273,7 +290,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                 defValue={renderStyles.marginBottom}/>
+                                                 defValue={deviceStyle.marginBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -283,7 +300,7 @@ export default function IconComponent({editItem, item, key}) {
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                 defValue={renderStyles.marginLeft}/>
+                                                 defValue={deviceStyle.marginLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

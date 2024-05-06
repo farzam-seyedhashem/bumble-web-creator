@@ -78,7 +78,7 @@ export default function Page({children}) {
             <div className={"grid grid-cols-12 h-[100vh]"}>
 
                 <div
-                    className={"col-span-4 border-l border-l-outline-light dark:border-l-outline-dark border-r border-outline-variant-light dark:border-outline-variant-dark h-full"}>
+                    className={"md:col-span-4 col-span-12  border-l-outline-light dark:border-l-outline-dark border-r border-outline-variant-light dark:border-outline-variant-dark h-full"}>
                     <div
                         className={"border-b text-on-surface-light dark:text-on-surface-dark bg-surface-light dark:bg-surface-dark border-outline-variant-light dark:border-outline-variant-dark flex items-center justify-between px-4 h-[64px]"}>
                         <h1 className={"font-bold text-title-large"}>
@@ -111,10 +111,10 @@ export default function Page({children}) {
                         )}
                     </ul>
                 </div>
-                {selectedSetting !== null && <div className={"col-span-8"}>
+                {selectedSetting !== null && <div className={"bg-surface-light dark:bg-surface-dark md:relative md:z-20 z-999 md:w-auto w-full fixed md:left-auto md:right-auto left-0 top-0 md:col-span-8"}>
                     <div
                         className={" bg-surface-container-high-light dark:bg-surface-container-high-dark border-outline-variant-light dark:border-outline-variant-dark flex items-center  px-2 h-[64px]"}>
-                        <IconButton className={"mr-2"}>
+                        <IconButton onClick={()=>setSelectedSetting(null)} className={"mr-2"}>
                             arrow_back
                         </IconButton>
                         <h1 className={"text-on-surface-light dark:text-on-surface-dark font-medium text-title-large"}>

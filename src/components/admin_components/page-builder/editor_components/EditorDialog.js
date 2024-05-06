@@ -6,7 +6,7 @@ import {Fragment} from "react";
 export default function EditorDialog({children,setIsOpen,isOpen}) {
     return(
         <Transition.Root show={isOpen} as={Fragment}>
-            <Dialog as="div" className="absolute w-[360px] h-screen flex z-[999] overflow-hidden"
+            <div as="div" className="absolute w-[360px] h-screen flex z-[999] overflow-hidden"
                     onClose={()=>{}}>
                 <div
                     className={`fixed z-[999]  h-full w-[360px] justify-center transform bottom-0 left-0  `}>
@@ -20,23 +20,23 @@ export default function EditorDialog({children,setIsOpen,isOpen}) {
                         leaveTo="-translate-x-full"
                     >
 
-                        <Dialog.Panel
+                        <div
                             className={" w-[360px] h-full overflow-hidden rounded-[16px] bg-surface-light dark:bg-surface-dark"}>
                             <div className={"px-4 space-x-2 flex items-center justify-start border-b py-2 mb-4"}>
                                 <IconButton onClick={() => setIsOpen(false)}>
                                     chevron_left
                                 </IconButton>
-                                <h2 className={"text-title-small font-bold"}>
+                                <h2 className={"text-title-small text-on-surface-light dark:text-on-surface-dark font-bold"}>
                                     Edit Element
                                 </h2>
                             </div>
                             <div className={"px-4 h-[calc(100%_-_80px)] overflow-scroll"}>
                                 {children}
                             </div>
-                        </Dialog.Panel>
+                        </div>
                     </Transition.Child>
                 </div>
-            </Dialog>
+            </div>
         </Transition.Root>
     )
 }

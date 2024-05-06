@@ -30,7 +30,7 @@ export default function IconButton(props) {
                     {!selected ? <Icon size={24} type={"outline"}>
                             {children}
                         </Icon> :
-                        <Icon size={24} type={"fill"}>
+                        <Icon size={24} fill={1}>
                             {children}
                         </Icon>}
                 </div>

@@ -14,7 +14,7 @@ export default function Icon({type,fill, size, weight, grade,style, children,cla
     }, [size,grade,weight,type,fill]);
 
     return (
-        <i style={style} onClick={onClick&&onClick} className={`${resTypeStyle}  text-[${size?size + "px":"24px"}] ${className?className:""}`}>
+        <i  style={style} onClick={onClick&&onClick} className={`${resTypeStyle}  text-[${size?size + "px":"24px"}] ${className?className:""}`}>
             {children}
         </i>
     )

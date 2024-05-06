@@ -14,7 +14,7 @@ export default function Switch({withIcon,isDisable,isCheck,setIsCheck}) {
             checked={isOpen}
             disabled={isDisable}
             onChange={handleChange}
-            className={`switch ${isDisable&&"switch-disabled"} group ${
+            className={`switch ${isDisable&&"switch-disabled"} group/switch ${
                   isOpen ? isDisable?"switch-disable-open":'switch-open' :  isDisable?"switch-disable-close":'switch-close'
             } `}
         >

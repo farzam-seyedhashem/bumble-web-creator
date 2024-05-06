@@ -1,7 +1,7 @@
 'use client'
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
-import {useState, Fragment} from "react";
+import {useState, Fragment, useEffect} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import IconButton from "@m3/icon_buttons/IconButton";
 import TextField from "@m3/text_fields/TextField";
@@ -11,11 +11,18 @@ import Icon from "@m3/assets/icons/Icon";
 import Switch from "@m3/switch/Switch";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function Container({item, idNumber, editItem}) {
+export default function Container({item,isDesktop, editItem,removeItemFunc,dragFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
     const [isSelected, setIsSelected] = useState(false)
     let [className, setClassName] = useState(item?.className)
-    let [renderStyles, setRenderStyles] = useState(item?.styles)
+    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
+    let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    useEffect(() => {
+        setAddedItems(item.addedItems)
+    },[item])
+    useEffect(() => {
+        setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+    }, [isDesktop]);
     let [isBox, setIsBox] = useState(item?.isBox)
     const handleAddedItems = (component, number) => {
         if (component.id === "container") {
@@ -34,16 +41,15 @@ export default function Container({item, idNumber, editItem}) {
                 ...addedItems.slice(number)
             ]
         }
-        console.log(items, "container", idNumber)
         setAddedItems(items)
-        editItem(idNumber, "addedItems", items)
+        editItem("addedItems", items)
     }
     const editItemC = (number, key, value) => {
         let items = addedItems
         // items[number][key] = value;
         items[number] = {...items[number], [key]: value}
         setAddedItems(items)
-        editItem(idNumber, "addedItems", items)
+        editItem("addedItems", items)
     }
     let classGenerator = (newStyles) => {
         let classes = ""
@@ -60,12 +66,44 @@ export default function Container({item, idNumber, editItem}) {
         setClassName(classes)
         console.log(classes)
     }
-    let onChange = (name, value) => {
-        let styles = {...renderStyles, [name]: value}
-        setRenderStyles(styles)
-        classGenerator(styles)
-        editItem("styles", styles)
+    let onChangeGlobal = (name, value) => {
+        let styles = {...globalRenderStyles, [name]: value}
+        setGlobalRenderStyles(styles)
+        editItem("globalStyles", styles)
         editItem("className", className)
+    }
+    let onChange = (name, value) => {
+
+        let styles = {...deviceStyle, [name]: value}
+        setDeviceStyle(styles)
+        editItem(isDesktop ? "desktopStyles" : "mobileStyles", styles)
+
+
+    }
+    const removeItemFuncM =  (number) => {
+        let items = [...addedItems]
+        items.splice(number,1)
+        setAddedItems(items)
+        editItem("addedItems", items)
+    }
+    function drag(ev,id) {
+
+        // console.log(addedItems[idNumber])
+        if(typeof id !== undefined && typeof id === "number"){
+            let item = addedItems[id]
+            console.log(item,id)
+            ev.dataTransfer.setData("text", item.uid);
+            ev.dataTransfer.setData("item", JSON.stringify(item));
+            // removeItemFunc()
+
+            // if (cb){
+            //     cb()
+            // }
+        }else {
+
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        // ev.dataTransfer.setData("item", null);
     }
     // let handleBoxChange = (value) => {
     //     setIsBox(value)
@@ -73,7 +111,7 @@ export default function Container({item, idNumber, editItem}) {
     // }
     return (
         <>
-            <div style={renderStyles} className={`${item?.className} group/container relative ${isBox ? "" : "container mx-auto"}`}>
+            <div style={{...deviceStyle,...globalRenderStyles}} className={`${item?.className} group/container relative ${isBox ? "" : "container mx-auto"}`}>
                 {/*{addedItems.length!==0 && <div onClick={() => setIsSelected(true)}*/}
                 {/*      className={"hidden group-hover:block absolute top-1/2 -translate-y-1/2 transform right-4 "}>*/}
                 {/*    <button*/}
@@ -84,24 +122,30 @@ export default function Container({item, idNumber, editItem}) {
                 {/*    </button>*/}
                 {/*</div>}*/}
                 <div
-                    className={"absolute hidden group-hover/container:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute  z-[888] hidden group-hover/container:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
                         className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
                                 className={"flex items-center h-[24px] w-[24px] justify-center rounded-full dark:!bg-secondary-container-dark !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            <Icon size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full dark:!bg-secondary-container-dark !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                        <button onDragEnterCapture={(event) => {
+
+                            removeItemFunc()
+                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                            <Icon size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full dark:!bg-secondary-container-dark !bg-secondary-container-light "}>
-                            <Icon size={16} className={"!text-on-tertiary-container-light text-[20px]"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                            <Icon onClick={removeItemFunc} size={16}
+                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
@@ -115,7 +159,8 @@ export default function Container({item, idNumber, editItem}) {
                         <div key={item.uniqueId + i + "-container"} className={"relative group"}>
                             <DropContainer idNumber={i} selected={addedItems}
                                            handleAddedItems={handleAddedItems}/>
-                            <ComponentGenerator editItem={editItemC} idNumber={i} item={l}/>
+                            <ComponentGenerator dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
+                                                editItem={editItemC} idNumber={i} item={l}/>
                         </div>
                     )}
                     <div className={"relative"}>
@@ -134,8 +179,8 @@ export default function Container({item, idNumber, editItem}) {
                             className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
                             Background color
                         </label>
-                        <ColorPicker onChange={(value) => onChange("backgroundColor", value)}
-                                     value={renderStyles.backgroundColor}/>
+                        <ColorPicker onChange={(value) => onChangeGlobal("backgroundColor", value)}
+                                     value={globalRenderStyles.backgroundColor}/>
 
                     </div>
 
@@ -146,8 +191,8 @@ export default function Container({item, idNumber, editItem}) {
                                 Rounded
                             </label>
                             <div className={"mt-2"}>
-                                <TextFieldEditor id={"borderRadius"} onChange={onChange}
-                                                 defValue={renderStyles.borderRadius}/>
+                                <TextFieldEditor id={"borderRadius"} onChange={onChangeGlobal}
+                                                 defValue={globalRenderStyles.borderRadius}/>
                             </div>
                         </div>
                         <div className={"col-span-4 justify-between items-center"}>
@@ -157,7 +202,7 @@ export default function Container({item, idNumber, editItem}) {
                             </label>
                             <div className={"mt-2"}>
                                 <TextFieldEditor id={"width"} onChange={onChange}
-                                                 defValue={renderStyles.width}/>
+                                                 defValue={deviceStyle.width}/>
                             </div>
                         </div>
                         <div className={"col-span-4 justify-between items-center"}>
@@ -167,7 +212,7 @@ export default function Container({item, idNumber, editItem}) {
                             </label>
                             <div className={"mt-2"}>
                                 <TextFieldEditor id={"height"} onChange={onChange}
-                                                 defValue={renderStyles.height}/>
+                                                 defValue={deviceStyle.height}/>
                             </div>
                         </div>
                     </div>
@@ -191,7 +236,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                     defValue={renderStyles.paddingTop}/>
+                                                     defValue={deviceStyle.paddingTop}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -201,7 +246,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                     defValue={renderStyles.paddingRight}/>
+                                                     defValue={deviceStyle.paddingRight}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -211,7 +256,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                     defValue={renderStyles.paddingBottom}/>
+                                                     defValue={deviceStyle.paddingBottom}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -221,7 +266,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                     defValue={renderStyles.paddingLeft}/>
+                                                     defValue={deviceStyle.paddingLeft}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -239,7 +284,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                     defValue={renderStyles.marginTop}/>
+                                                     defValue={deviceStyle.marginTop}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -249,7 +294,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                     defValue={renderStyles.marginRight}/>
+                                                     defValue={deviceStyle.marginRight}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -259,7 +304,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                     defValue={renderStyles.marginBottom}/>
+                                                     defValue={deviceStyle.marginBottom}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -269,7 +314,7 @@ export default function Container({item, idNumber, editItem}) {
                             <div className={"w-full"}>
                                 <div>
                                     <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                     defValue={renderStyles.marginLeft}/>
+                                                     defValue={deviceStyle.marginLeft}/>
                                 </div>
                                 <div
                                     className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

@@ -3,7 +3,7 @@ import {Popover} from "@headlessui/react";
 import TextField from "@m3/text_fields/TextField";
 import Icon from "@m3/assets/icons/Icon";
 
-export default function ColorPicker({value,onChange}) {
+export default function ColorPicker({value,onChange,isLeft}) {
     const [color, setColor] = useState(value || "#000")
     const [isOpen, setIsOpen] = useState(false)
     const defColors = [
@@ -48,7 +48,7 @@ export default function ColorPicker({value,onChange}) {
                 </Popover.Button>
 
                 <Popover.Panel
-                    className="overflow-hidden bg-surface-container-highest-dark rounded-[12px] right-0 w-[190px] absolute z-10">
+                    className={`${isLeft?"left-0":"right-0"} overflow-hidden bg-surface-container-highest-dark rounded-[12px]  w-[190px] absolute z-[999]`}>
                     <div style={{backgroundColor: color}} className={"h-[84px] flex justify-center items-center w-full "}>
                         <label style={{color: wc_hex_is_light(color)?"#000":"#fff"}} className={"flex items-center  text-body-large "}>
                             <Icon className={"text-[18px]"} size={18}>

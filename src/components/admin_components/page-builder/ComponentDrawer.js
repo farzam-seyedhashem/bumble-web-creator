@@ -122,7 +122,7 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 Column
                                             </label>
                                         </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"9"}
+                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <div
