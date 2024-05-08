@@ -2,6 +2,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import Data from '../../../Components.json'
 import {v4 as uuidv4} from 'uuid';
+import {useDrop} from "react-dnd";
 // import fs from 'fs';
 
 // const DropZone = styled(MuiBox, {
@@ -54,6 +55,7 @@ function deepFreeze(object) {
 export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
     // const file = await fs.readFile(process.cwd() + '/app/Components.json', 'utf8');
     // const Data = JSON.parse(file);
+
     const [onDrag, setOnDrag] = React.useState(false)
     const [onDrop, setOnDrop] = React.useState(false)
     const [data, setData] = useState()
@@ -67,75 +69,86 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
         ev.preventDefault();
 
     }
-    // const getData = () => {
-    //     return Data.components
-    // }
-    const drop = (ev) => {
-        let dragId = ev.dataTransfer.getData("text");
 
-        let item = ev.dataTransfer.getData("item");
-        console.log(item);
-        if (!item) {
-            const componets = [...Data.components]
-            let component = componets.find(c => c.uid === dragId)
-            component.uniqueId = uuidv4()
-            if (component.idType === "grid") {
-                component.addedItems.map(item =>
-                    item.uniqueId = uuidv4()
-                )
-            }
+    // const drop = (ev) => {
 
-            if (component) {
-                handleAddedItems(component, idNumber)
-
-            }
-        }else{
-            const itemu =JSON.parse(item)
-            itemu.uniqueId = uuidv4()
-            handleAddedItems(itemu, idNumber)
-        }
         // console.log(data)
         // setItems()
         // const item = Sections.sections[props.selectedTab].childes.find(item => item.id === data)
         // handleSelected(item, props.itemNumber)
+    //
+    // }
 
-    }
-    // useState(()=>{
-    //     setIsShow(true)
-    // })
     const removeStyle = () => {
 
     }
     const onDragClass = "h-[64px] bg-secondary-container-light  text-on-secondary-container-light "
     const firstItemClasses = "bg-surface-container-high-light   text-on-surface-variant-light  h-[64px]"
-    const normalClasses = "bg-transparent h-[8px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
+    const normalClasses = "border-y border-outline-light dark:border-outline-dark bg-transparent h-[14px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
+    const [{canDrop, isOver}, drop] = useDrop(() => ({
+        accept: "components",
+        drop: (drobj,monitor) => {
+                let dragId = drobj.name
+                let item = drobj?.item;
+                if (!item) {
+
+                    const componets = [...Data.components]
+                    console.log(componets)
+                    let component = componets.find(c => c.uid === dragId)
+                    component.uniqueId = uuidv4()
+                    if (component.idType === "grid") {
+                        component.addedItems.map(item =>
+                            item.uniqueId = uuidv4()
+                        )
+                    }
+                    if (component) {
+                        handleAddedItems(component, idNumber)
+                    }
+                }else{
+                    const itemu =JSON.parse(item)
+                    itemu.uniqueId = uuidv4()
+                    handleAddedItems(itemu, idNumber)
+                }
+            }
+
+
+        ,
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    }))
+    const isActive = canDrop && isOver
     return (
+        <>
+            <div className={`${isActive?onDragClass:firstItem?firstItemClasses:normalClasses} transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center`} ref={drop} data-testid="drop-container">
+                {isActive ? 'Drop item here' : firstItem?'Drag a box here':""}
+            </div>
+            {/*<div key={Date.now()}*/}
+            {/*     className={`className transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem && !onDrop) ? firstItemClasses : normalClasses}`}*/}
+            {/*    // id={Math.random().toString()}*/}
+            {/*    // key={Math.random()}*/}
+            {/*     onDrop={(event) => {*/}
+            {/*         drop(event)*/}
+            {/*         setOnDrag(false)*/}
+            {/*         setOnDrop(true)*/}
+            {/*     }}*/}
+            {/*     onDragLeave={() => setOnDrag(false)}*/}
+            {/*     onDragOver={(event) => {*/}
+            {/*         allowDrop(event)*/}
+            {/*         setOnDrag(true)*/}
+            {/*     }}*/}
 
-        <div key={Date.now()}
-             className={`className transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem && !onDrop) ? firstItemClasses : normalClasses}`}
-            // id={Math.random().toString()}
-            // key={Math.random()}
-             onDrop={(event) => {
-                 drop(event)
-                 setOnDrag(false)
-                 setOnDrop(true)
-             }}
-             onDragLeave={() => setOnDrag(false)}
-             onDragOver={(event) => {
-                 allowDrop(event)
-                 setOnDrag(true)
-             }}
 
-
-            // onDrag={onDrag}
-        >
-            {!(firstItem && !onDrop) && onDrag && <div>
-                {"Drop Item Here"}
-            </div>}
-            {firstItem && !onDrop && <div>
-                {"Drag and Drop item here"}
-            </div>}
-        </div>
-
+            {/*    // onDrag={onDrag}*/}
+            {/*>*/}
+            {/*    {!(firstItem && !onDrop) && onDrag && <div>*/}
+            {/*        {"Drop Item Here"}*/}
+            {/*    </div>}*/}
+            {/*    {firstItem && !onDrop && <div>*/}
+            {/*        {"Drag and Drop item here"}*/}
+            {/*    </div>}*/}
+            {/*</div>*/}
+        </>
     )
 }

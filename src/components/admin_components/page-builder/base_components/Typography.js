@@ -7,12 +7,15 @@ import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {Dialog, Transition} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
+import {useDrag} from "react-dnd";
+import DragContainer from "@page_builder/DragContainer";
 
 export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editItem, item, key}) {
     let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
     const [itemUpdate,setItemUpdate] = useState(item)
+
     let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
     let [desktopRenderStyles, setDesktopRenderStyles] = useState(item?.desktopStyles)
     let [mobileRenderStyles, setMobileRenderStyles] = useState(item?.mobileStyles)
@@ -86,16 +89,15 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                                 edit
                             </Icon>
                         </button>
-                        <button  onDragOver={(event)=>{
-                            event.preventDefault();
-                              removeItemFunc()
-                        }} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
+
+                        <button draggable={true}
                             className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
                             <Icon  size={16}
-                                  className={`${item.uniqueId} !text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]`}>
+                                  className={` !text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]`}>
                                 drag_indicator
                             </Icon>
                         </button>
+
                         <button
                             className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
                             <Icon onClick={removeItemFunc} size={16}

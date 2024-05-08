@@ -3,6 +3,8 @@ import {useState, Fragment} from "react";
 import Icon from "@m3/assets/icons/Icon";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Button from "@m3/buttons/Button";
+import {useDrag} from "react-dnd";
+import DragContainer from "@page_builder/DragContainer";
 
 export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
 
@@ -45,7 +47,7 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                         </button>
                                     </div>
                                     <div className={"grid mt-3 grid-cols-2 gap-4"}>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"1"}
+                                        <DragContainer name={"1"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <div
@@ -59,8 +61,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Title
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"2"}
+                                        </DragContainer>
+                                        <DragContainer name={"2"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
 
@@ -72,8 +74,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Paragraph
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"3"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"3"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -84,8 +86,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Image
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"4"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"4"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
 
@@ -96,9 +98,9 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Button
                                             </label>
-                                        </div>
+                                        </DragContainer>
 
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"5"}
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"5"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -109,8 +111,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Container
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"6"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"6"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -121,8 +123,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Column
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"11"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <div
@@ -136,9 +138,9 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Icon Picker
                                             </label>
-                                        </div>
+                                        </DragContainer>
 
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"7"}
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"7"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -149,8 +151,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Slider
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"8"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"8"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -161,8 +163,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Feature Section
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"9"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"9"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -173,8 +175,8 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Blog Post
                                             </label>
-                                        </div>
-                                        <div onDragStart={(e) => dragFunc(e)} draggable={true} id={"10"}
+                                        </DragContainer>
+                                        <DragContainer onDragStart={(e) => dragFunc(e)} draggable={true} name={"10"}
                                              className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>
                                             <div className={"z-10 absolute inset-0 w-full h-full"}/>
                                             <Icon
@@ -185,7 +187,7 @@ export default function ComponentDrawer({isOpen,dragFunc, setIsOpen}) {
                                                 className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
                                                 Inventories
                                             </label>
-                                        </div>
+                                        </DragContainer>
                                         {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}*/}
                                         {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
                                         {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
