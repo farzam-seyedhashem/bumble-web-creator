@@ -25,31 +25,32 @@ class ComponentGenerator  extends React.Component {
 
 
     render() {
-        const {editItem,isDesktop, item, idNumber,dragFunc,setComponentEditor,removeItemFunc} = this.props
+        const {editItem,siteSetting,isDesktop, item, idNumber,dragFunc,removeItemFunc} = this.props
         return (
             <div
                  className={"group relative  outline-tertiary-container-light dark:outline-tertiary-container-dark hover:outline hover:outline-2"}>
 
                 {item.idType === "title" &&
-                    <Typography dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} setComponentEditor={setComponentEditor} item={item}/>}
+                    <Typography color={siteSetting.color} dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value,uniqueId)=>editItem(idNumber,key,value,uniqueId)}  item={item}/>}
 
-                {item.idType === "paragraph" && <Paragraph dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} setComponentEditor={setComponentEditor} item={item}/>}
+                {item.idType === "paragraph" && <Paragraph color={siteSetting.color} dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value,uniqueId)=>editItem(idNumber,key,value,uniqueId)}  item={item}/>}
                 {
-                    item.idType === "button" && <ButtonComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} editItem={(key,value)=>editItem(idNumber,key,value)} key={item.uniqueId} item={item}/>
+                    item.idType === "button" && <ButtonComponent color={siteSetting?.color} dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} editItem={(key,value,uniqueId)=>editItem(idNumber,key,value,uniqueId)} key={item.uniqueId} item={item}/>
                 }
                 {
                     item.idType === "image" && <ImageComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} editItem={(key,value)=>editItem(idNumber,key,value)} item={item}/>
                 }
                 {item.idType === "container" &&
-                    <Container dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item} editItem={(key,value)=>editItem(idNumber,key,value)}/>}
+                    <Container siteSetting={siteSetting} dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item} editItem={(key,value,uniqueId)=>editItem(idNumber,key,value,uniqueId)}/>}
                 {item.idType === "grid" &&
-                    <Grid dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item} editItem={(key,value)=>editItem(idNumber,key,value)}/> }
+                    <Grid siteSetting={siteSetting} dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item} editItem={(key,value)=>editItem(idNumber,key,value)}/> }
                 {/*{item.id === "grid" && <Grid key={item.uniqueId} item={item} editItem={editItem}/>}*/}
                 {item.idType === "slider" && <SliderComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} idNumber={idNumber} item={item} />}
                 {item.idType === "featuredSection" && <FeatureSection dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} idNumber={idNumber} item={item} />}
                 {item.idType === "iconPicker" && <IconComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item} />}
                 {item.idType === "blogPosts" && <BlogPostComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item} />}
                 {item.idType === "inventoryCard" && <InventoryComponent dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item} />}
+                {/*{item.idType === "component" && <ComponentGenerator dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item.addedItems} />}*/}
                 {/*{item.idType === "iconPicker" && <Paragraph />}*/}
             </div>
         )

@@ -9,7 +9,7 @@ import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 
-function Column({isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
+function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function Column({isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, ed
 
     }, []);
     const handleAddedItemsToItem = (component, number) => {
-        if (component.idType === "container" || component.idType === "grid") {
+        if (component.idType === "grid") {
             return alert("You can not add container or grid in grid")
         }
         let items = [...addedItems]
@@ -80,7 +80,7 @@ function Column({isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, ed
             {addedItems.map((l, i) =>
                 <div key={item.uniqueId + i + "-g"} className={"relative group"}>
                     <DropContainer idNumber={i} handleAddedItems={handleAddedItemsToItem}/>
-                    <ComponentGenerator dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop} idNumber={i} editItem={editItemC} item={l}/>
+                    <ComponentGenerator siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop} idNumber={i} editItem={editItemC} item={l}/>
                 </div>
             )}
             <div className={"relative"}>
@@ -102,7 +102,6 @@ class Grid extends React.Component {
             renderStyles: this.props.item.styles,
             gapDesktop:  this.props.item.gapDesktop,
             gapMobile:  this.props.item.gapMobile,
-
             isSelected: false
         }
         this.editItemC = this.editItemC.bind(this);
@@ -208,7 +207,7 @@ class Grid extends React.Component {
         return (
             <div style={{justifyContent: "end", gridGap: this.state.gap + "px", ...renderStyles}} className={baseClass}>
                 {this.state.addedItems.map((m, i) =>
-                    <Column removeColumnFunc={()=>removeColumnFunc(i)} isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]} columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
+                    <Column siteSetting={this.props.siteSetting} removeColumnFunc={()=>removeColumnFunc(i)} isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]} columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
                             idNumber={i} editItem={this.editItemC}
                             item={m}/>
                 )}

@@ -1,4 +1,4 @@
-export default function Divider({type,isVertical}) {
+export default function Divider({type,isVertical,className}) {
 
     let classes = ""
     switch (type){
@@ -13,6 +13,6 @@ export default function Divider({type,isVertical}) {
             break;
     }
     return(
-        <hr className={`divider ${classes}`}/>
+        <hr className={`divider ${classes} ${className}`}/>
     )
 }

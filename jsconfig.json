@@ -3,8 +3,13 @@
     "paths": {
       "@/*": ["./src/*"],
       "@m3/*": ["./src/components/m3_design/*"],
+      "@controller/*": ["./src/app/(backend)/_controller/*"],
+      "@model/*": ["./src/app/(backend)/_models/*"],
+      "@backend/*": ["./src/app/(backend)/*"],
+      "@frontend/*": ["./src/app/(frontend)/*"],
       "@admin/*": ["./src/components/admin_components/*"],
       "@page_builder/*": ["./src/components/admin_components/page-builder/*"],
+      "@website/*": ["./src/components/website/*"],
       "@builder/*": ["./src/components/website_builder/*"]
     }
   }

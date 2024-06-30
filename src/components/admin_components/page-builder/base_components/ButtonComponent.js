@@ -1,5 +1,5 @@
 'use client';
-import {useEffect, useState, Fragment} from "react";
+import {useEffect, useState, Fragment, useMemo} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
@@ -7,8 +7,9 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-
-export default function ButtonComponent({isDesktop, item, editItem,removeItemFunc,dragFunc}) {
+import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
+export default function ButtonComponent({color,isDesktop, item, editItem,removeItemFunc,dragFunc}) {
     // let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
@@ -17,25 +18,29 @@ export default function ButtonComponent({isDesktop, item, editItem,removeItemFun
     let [className, setClassName] = useState(item?.className)
     let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
     let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
+
+    useEffect(() => {
+        if (!globalRenderStyles.color){
+            onChangeGlobal('color',rgbaObjToRgba(color.onPrimary))
+        }
+        if (!globalRenderStyles.backgroundColor) {
+            onChangeGlobal('backgroundColor',rgbaObjToRgba(color.primary))
+        }
+    }, [globalRenderStyles])
+    useEffect(() => {
+        const deviceClass = StyleToClass(deviceStyle,isDesktop,item.uniqueId)
+        const globalClass = StyleToClass(globalRenderStyles,false,item.uniqueId)
+        const classNames = globalClass+deviceClass
+        editItem("className", classNames,item.usniqueId)
+        // fs.writeFileSync()
+    },[deviceStyle,globalRenderStyles])
     useEffect(() => {
         setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
     }, [isDesktop]);
-    let classGenerator = (newStyles) => {
-        let classes = ""
-        newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
-        newStyles.fontSize ? classes += `text-${newStyles.fontSize}px ` : ""
-        newStyles.color ? classes += `text-[${newStyles.color}] ` : ""
-        // newStyles.dark.color ? classes += `dark:text-[${styles.dark.color}] ` : ""
-        // newStyles.general.fontSize ? classes += `text-${styles.general.fontSize}` : ""
-        setClassName(classes)
-        console.log(classes)
-
-    }
     let onChangeGlobal = (name, value) => {
         let styles = {...globalRenderStyles, [name]: value}
         setGlobalRenderStyles(styles)
         editItem("globalStyles", styles)
-        editItem("className", className)
     }
     let onChange = (name, value) => {
 

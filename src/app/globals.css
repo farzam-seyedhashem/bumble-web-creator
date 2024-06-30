@@ -1,11 +1,101 @@
 @import 'material-symbols';
 @import "m3.css";
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /*@import 'swiper/css/pagination';*/
+
+.sketch-picker{
+@apply !shadow-none !w-full !p-0 !bg-surface-container-high-light dark:!bg-surface-container-high-dark
+}
+.flexbox-fix{
+  @apply !px-4 !py-2 !m-0
+}
+.flexbox-fix input{
+  @apply !rounded-[8px] !appearance-none focus-within:!outline-none !shadow-none !w-full !border-2 !border-outline-light dark:!border-outline-dark !bg-surface-container-low-light dark:!bg-surface-container-low-dark
+}
+.sketch-picker .flexbox-fix:last-child{
+  @apply !justify-between !grid !grid-cols-12 gap-y-1
+}
+.sketch-picker .flexbox-fix:last-child > :first-child span div{
+  @apply !rounded-tl-[12px]
+}
+.sketch-picker .flexbox-fix:last-child > :nth-child(17) span div{
+  @apply !rounded-bl-[12px]
+}
+.sketch-picker .flexbox-fix:last-child > :nth-child(4) span div{
+  @apply !rounded-tr-[12px]
+}
+.sketch-picker .flexbox-fix:last-child > :nth-child(20) span div{
+  @apply !rounded-br-[12px]
+}
+.sketch-picker .flexbox-fix:last-child div span div[title]:hover::after {
+  @apply  h-[24px] flex items-center content-[attr(title)] absolute -top-[28px] z-[400] left-1/2 transform -translate-x-1/2 px-2 !font-normal !text-body-small text-inverse-on-surface-light dark:text-inverse-on-surface-dark dark:bg-inverse-surface-dark bg-inverse-surface-light rounded-[4px]
+}
+/*.flexbox-fix div span div{*/
+/*  @apply !col-span-4 !rounded-full !shadow-none !w-[24px] !h-[24px]*/
+/*}*/
+.sketch-picker .flexbox-fix:last-child div{
+  @apply !col-span-3 !w-full !h-[28px] !mr-0 !mb-0 !border-0
+}
+
+.sketch-picker .flexbox-fix:last-child div span{
+  @apply !w-full !h-[28px] !border-0 relative
+}
+.sketch-picker .flexbox-fix:last-child div span div{
+  @apply !w-full !h-[28px] !rounded-none !border-0 !shadow-none
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/fonts/OpenSans-VariableFont_wdth,wght.woff2") format("woff2 supports variations"),
+  url("/fonts/OpenSans-VariableFont_wdth,wght.woff2") format("woff2-variations");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-VariableFont_slnt,wght.woff2") format("woff2 supports variations"),
+  url("/fonts/Inter-VariableFont_slnt,wght.woff2") format("woff2-variations");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "NotoSans";
+  src: url("/fonts/NotoSans-VariableFont_wdth,wght.woff2") format("woff2 supports variations"),
+  url("/fonts/NotoSans-VariableFont_wdth,wght.woff2") format("woff2-variations");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RobotoFlex";
+  src: url("/fonts/RobotoFlex[slnt,wdth,wght,opsz].woff2") format("woff2 supports variations"),
+  url("/fonts/RobotoFlex[slnt,wdth,wght,opsz].woff2") format("woff2-variations");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+.roboto-font{
+  font-family: "RobotoFlex", serif !important;
+}
+.inter-font{
+  font-family: "Inter", serif !important;
+}
+.opensans-font{
+  font-family: "OpenSans", sans-serif !important;
+}
+.notosans-font{
+  font-family: "NotoSans", sans-serif !important;
+}
+
+root, html, body {
+  font-family: "RobotoFlex", serif !important;
+}
+
 
 #gjs {
   border: 3px solid #444;
@@ -1239,14 +1329,6 @@ body {
   }
 
 
-  @font-face {
-      font-family: "RobotoFlex";
-      src: url("/fonts/RobotoFlex[slnt,wdth,wght,opsz].woff2") format("woff2 supports variations"),
-      url("/fonts/RobotoFlex[slnt,wdth,wght,opsz].woff2") format("woff2-variations");
-      font-weight: 100 1000;
-      font-stretch: 25% 151%;
-      font-display: swap;
-  }
 
   .list-star li:before {
     display: inline-block;
@@ -1262,9 +1344,7 @@ body {
     content: "";
   }
 
-  root, html, body {
-    font-family: "RobotoFlex", serif !important;
-  }
+
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;

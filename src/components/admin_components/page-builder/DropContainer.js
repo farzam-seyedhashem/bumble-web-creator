@@ -2,6 +2,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import Data from '../../../Components.json'
 import {v4 as uuidv4} from 'uuid';
+import {UniqueCharOTP} from "unique-string-generator";
 // import fs from 'fs';
 
 // const DropZone = styled(MuiBox, {
@@ -78,10 +79,10 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
         if (!item) {
             const componets = [...Data.components]
             let component = componets.find(c => c.uid === dragId)
-            component.uniqueId = uuidv4()
+            component.uniqueId = UniqueCharOTP(12)
             if (component.idType === "grid") {
                 component.addedItems.map(item =>
-                    item.uniqueId = uuidv4()
+                    item.uniqueId = UniqueCharOTP(12)
                 )
             }
 
@@ -91,7 +92,7 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
             }
         }else{
             const itemu =JSON.parse(item)
-            itemu.uniqueId = uuidv4()
+            itemu.uniqueId = UniqueCharOTP(12)
             handleAddedItems(itemu, idNumber)
         }
         // console.log(data)
@@ -108,7 +109,7 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
     }
     const onDragClass = "h-[64px] bg-secondary-container-light  text-on-secondary-container-light "
     const firstItemClasses = "bg-surface-container-high-light   text-on-surface-variant-light  h-[64px]"
-    const normalClasses = "bg-transparent h-[8px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
+    const normalClasses = "border-y bg-transparent h-[16px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
     return (
 
         <div key={Date.now()}

@@ -1,0 +1,52 @@
+.ql-toolbar {
+    @apply bg-surface-container-low-light !border-0 !px-6 !pt-4 !pb-2
+}
+
+.ql-formats button{
+    @apply !text-on-surface-variant-light dark:!text-on-surface-variant-dark mr-2 rounded-full hover:bg-on-surface-variant-light/[8%] dark:hover:bg-on-surface-variant-dark/[8%] !p-0 !h-[40px] !w-[40px] !flex !items-center !justify-center
+}
+.ql-formats button.ql-active{
+    @apply !text-primary-light dark:!text-primary-dark hover:!bg-primary-light/[8%] dark:hover:!bg-primary-dark/[8%] !p-0 !h-[40px] !w-[40px]
+}
+
+.ql-formats {
+    @apply !mr-2 !mb-2
+}
+
+.ql-picker {
+    @apply !w-fit !text-label-large !font-medium !h-[32px] dark:hover:bg-on-surface-dark/[8%] hover:bg-on-surface-light/[8%] rounded-[8px]
+}
+
+.ql-picker-label {
+    @apply  !w-fit !px-2 !flex !items-center hover:!text-on-surface-light dark:hover:!text-on-surface-dark dark:text-on-surface-variant-dark !text-on-surface-variant-light
+}
+
+.ql-picker-options {
+    @apply !rounded-[4px] !px-0 !py-2 !bg-surface-container-light !shadow-none !border-0
+}
+
+.ql-picker-item {
+    @apply   !rounded-none after:!rounded-none after:absolute after:inset-0 relative after:overflow-hidden  dark:hover:after:bg-on-surface-light/[8%] hover:after:bg-on-surface-light/[8%] !h-[48px] !px-3 !min-w-[130px] !max-w-[280px] !flex !items-center !text-label-large !font-medium !text-on-surface-light dark:!text-on-surface-dark
+}
+
+.ql-selected {
+ @apply !text-on-secondary-container-light dark:!text-on-secondary-container-dark bg-secondary-container-light dark:bg-secondary-container-dark
+}
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg{
+    @apply hidden
+}
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label{
+    @apply !border-0 dark:hover:bg-on-surface-dark/[12%] hover:bg-on-surface-light/[12%]
+}
+/*.ql-snow.ql-toolbar button:active:hover, .ql-snow .ql-toolbar button:active:hover{*/
+/*    */
+/*}*/
+.ql-editor{
+@apply !px-6 !py-6
+}
+.ql-editor ::-moz-selection {
+    @apply rounded-full px-2 flex text-on-secondary-container-light dark:text-on-secondary-container-dark bg-secondary-container-light dark:bg-secondary-container-dark
+}
+.ql-editor ::selection {
+    @apply  rounded-full px-2 flex text-on-secondary-container-light dark:text-on-secondary-container-dark bg-secondary-container-light dark:bg-secondary-container-dark
+}

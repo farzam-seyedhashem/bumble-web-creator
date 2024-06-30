@@ -7,8 +7,10 @@ import TextArea from "@m3/TextArea";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
+import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
 
-export default function Paragraph({isDesktop,item, key, editItem,removeItemFunc,dragFunc}) {
+export default function Paragraph({color,isDesktop,item, key, editItem,removeItemFunc,dragFunc}) {
     let [Component, setComponent] = useState("p")
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
@@ -17,6 +19,24 @@ export default function Paragraph({isDesktop,item, key, editItem,removeItemFunc,
     let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
     let [desktopRenderStyles, setDesktopRenderStyles] = useState(item?.desktopStyles)
     let [mobileRenderStyles, setMobileRenderStyles] = useState(item?.mobileStyles)
+    useEffect(() => {
+
+        const desktopClass = StyleToClass(desktopRenderStyles,true,item.uniqueId)
+        const mobileClass = StyleToClass(mobileRenderStyles,false,item.uniqueId)
+        const globalClass = StyleToClass(globalRenderStyles,false,item.uniqueId)
+        const classNames = globalClass+mobileClass+desktopClass
+        editItem("className", classNames,item.uniqueId)
+        // fs.writeFileSync()
+    },[desktopRenderStyles,mobileRenderStyles,globalRenderStyles])
+    useEffect(() => {
+        console.log(rgbaObjToRgba(color.onSurfaceVariant),globalRenderStyles)
+        if (!globalRenderStyles.color){
+            onChangeGlobal('color',rgbaObjToRgba(color.onSurfaceVariant))
+        }
+        // if (!globalRenderStyles.backgroundColor) {
+        //     onChangeGlobal('backgroundColor',rgbaObjToRgba(color.primary))
+        // }
+    }, [globalRenderStyles])
     let classGenerator = (newStyles) => {
         let classes = ""
         newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
@@ -32,7 +52,6 @@ export default function Paragraph({isDesktop,item, key, editItem,removeItemFunc,
         let styles = {...globalRenderStyles, [name]: value}
         setGlobalRenderStyles(styles)
         editItem("globalStyles", styles)
-        // editItem("className", className)
     }
     let onChange = (name, value) => {
         console.log(isDesktop)
@@ -101,7 +120,7 @@ export default function Paragraph({isDesktop,item, key, editItem,removeItemFunc,
                     </label>
 
                     <ColorPicker onChange={(value) => onChangeGlobal("color", value)}
-                                 value={item.globalStyles.color}/>
+                                 value={globalRenderStyles.color}/>
 
                 </div>
                 <div className={"col-span-8 justify-between items-center "}>

@@ -10,11 +10,12 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import Switch from "@m3/switch/Switch";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
+import {StyleToClass} from "@frontend/_helper/StyleToClass";
 
-export default function Container({item,isDesktop, editItem,removeItemFunc,dragFunc}) {
+export default function Container({siteSetting,item,isDesktop, editItem,removeItemFunc,dragFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
     const [isSelected, setIsSelected] = useState(false)
-    let [className, setClassName] = useState(item?.className)
+    let [className, setClassName] = useState({})
     let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
     let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
     useEffect(() => {
@@ -23,6 +24,15 @@ export default function Container({item,isDesktop, editItem,removeItemFunc,dragF
     useEffect(() => {
         setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
     }, [isDesktop]);
+    useEffect(() => {
+
+        const desktopClass = StyleToClass(deviceStyle, isDesktop, item.uniqueId)
+        const globalClass = StyleToClass(globalRenderStyles, false, item.uniqueId)
+        const classNames = globalClass + desktopClass
+        editItem("className", classNames,item.uniqueId)
+
+        // fs.writeFileSync()
+    }, [deviceStyle, globalRenderStyles])
     let [isBox, setIsBox] = useState(item?.isBox)
     const handleAddedItems = (component, number) => {
         if (component.id === "container") {
@@ -44,7 +54,14 @@ export default function Container({item,isDesktop, editItem,removeItemFunc,dragF
         setAddedItems(items)
         editItem("addedItems", items)
     }
-    const editItemC = (number, key, value) => {
+    const editItemC = (number, key, value,unique) => {
+        if (key === "className") {
+            let newClassName =  className
+            newClassName[unique] = value
+            setClassName(newClassName)
+            editItem("className", Object.values(newClassName).toString().replaceAll(",",""),unique)
+            console.log("-------",Object.values(newClassName).toString())
+        }
         let items = addedItems
         // items[number][key] = value;
         items[number] = {...items[number], [key]: value}
@@ -70,7 +87,6 @@ export default function Container({item,isDesktop, editItem,removeItemFunc,dragF
         let styles = {...globalRenderStyles, [name]: value}
         setGlobalRenderStyles(styles)
         editItem("globalStyles", styles)
-        editItem("className", className)
     }
     let onChange = (name, value) => {
 
@@ -124,7 +140,7 @@ export default function Container({item,isDesktop, editItem,removeItemFunc,dragF
                 <div
                     className={"absolute  z-[888] hidden group-hover/container:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
                     <div
-                        className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
+                        className={"px-3 space-x-3 flex rounded-b-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
                         <button onClick={() => setIsSelected(true)}
                                 className={"flex items-center h-[24px] w-[24px] justify-center rounded-full dark:!bg-secondary-container-dark !bg-secondary-container-light "}>
                             <Icon size={16}
@@ -159,7 +175,7 @@ export default function Container({item,isDesktop, editItem,removeItemFunc,dragF
                         <div key={item.uniqueId + i + "-container"} className={"relative group"}>
                             <DropContainer idNumber={i} selected={addedItems}
                                            handleAddedItems={handleAddedItems}/>
-                            <ComponentGenerator dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
+                            <ComponentGenerator siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
                                                 editItem={editItemC} idNumber={i} item={l}/>
                         </div>
                     )}

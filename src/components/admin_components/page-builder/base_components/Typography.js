@@ -7,61 +7,60 @@ import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {Dialog, Transition} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
+import {StyleToTailwind} from "@frontend/_helper/StyleToTailwind";
+import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
 
-export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editItem, item, key}) {
+export default function TextComponents({color,dragFunc, removeItemFunc, isDesktop, editItem, item, key}) {
     let [Component, setComponent] = useState(item.type)
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value || item.idType)
-    const [itemUpdate,setItemUpdate] = useState(item)
+    const [itemUpdate, setItemUpdate] = useState(item)
     let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
     let [desktopRenderStyles, setDesktopRenderStyles] = useState(item?.desktopStyles)
     let [mobileRenderStyles, setMobileRenderStyles] = useState(item?.mobileStyles)
-    // useEffect(()=>{
-        // setItemUpdate(item)
-        // setGlobalRenderStyles(item?.globalStyles)
-        // setDesktopRenderStyles(item?.desktopStyles)
-        // setMobileRenderStyles(item?.mobileStyles)
-    // },[item])
-    // const [styles, setStyles] = useState(item?.styles)
-    let [className, setClassName] = useState(item?.className)
+    useEffect(() => {
+        if (!globalRenderStyles.color){
+            onChangeGlobal('color',rgbaObjToRgba(color.onSurface))
+        }
+    }, [globalRenderStyles])
+    // useEffect(() => {
+    //
+    //     const desktopClass = StyleToClass(desktopRenderStyles, true, item.uniqueId)
+    //     const mobileClass = StyleToClass(mobileRenderStyles, false, item.uniqueId)
+    //     const globalClass = StyleToClass(globalRenderStyles, false, item.uniqueId)
+    //     const classNames = globalClass + mobileClass + desktopClass
+    //     editItem("className", classNames)
+    //     // fs.writeFileSync()
+    // }, [])
+    useEffect(() => {
 
+        const desktopClass = StyleToClass(desktopRenderStyles, true, item.uniqueId)
+        const mobileClass = StyleToClass(mobileRenderStyles, false, item.uniqueId)
+        const globalClass = StyleToClass(globalRenderStyles, false, item.uniqueId)
+        const classNames = globalClass + mobileClass + desktopClass
+        editItem("className", classNames,item.uniqueId)
+        // fs.writeFileSync()
+    }, [desktopRenderStyles, mobileRenderStyles, globalRenderStyles])
     const valueChangeHandler = (value) => {
         setValue(value)
-        editItem("value", value)
-    }
-    let classGenerator = (newStyles) => {
-        let classes = ""
-        newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
-        newStyles.fontSize ? classes += `text-${newStyles.fontSize}px ` : ""
-        newStyles.lineHeight ? classes += `text-${newStyles.lineHeight}px ` : ""
-        newStyles.paddingTop ? classes += `text-${newStyles.paddingTop}px ` : ""
-        newStyles.paddingBottom ? classes += `text-${newStyles.paddingBottom}px ` : ""
-        newStyles.paddingLeft ? classes += `text-${newStyles.paddingLeft}px ` : ""
-        newStyles.paddingRight ? classes += `text-${newStyles.paddingRight}px ` : ""
-        newStyles.color ? classes += `text-[${newStyles.color}] ` : ""
-        // newStyles.dark.color ? classes += `dark:text-[${styles.dark.color}] ` : ""
-        // newStyles.general.fontSize ? classes += `text-${styles.general.fontSize}` : ""
-        setClassName(classes)
-        console.log(classes)
+        editItem("value", value,item.uniqueId)
     }
     let onChangeGlobal = (name, value) => {
         let styles = {...globalRenderStyles, [name]: value}
         setGlobalRenderStyles(styles)
-        editItem("globalStyles", styles)
-        editItem("className", className)
+        editItem("globalStyles", styles,item.uniqueId)
     }
     let onChange = (name, value) => {
-        console.log(isDesktop)
-        if (isDesktop){
+        if (isDesktop) {
             let styles = {...desktopRenderStyles, [name]: value}
             setDesktopRenderStyles(styles)
-            editItem("desktopStyles", styles)
-        }else{
+            editItem("desktopStyles", styles,item.uniqueId)
+        } else {
             let styles = {...mobileRenderStyles, [name]: value}
             setMobileRenderStyles(styles)
-            editItem("mobileStyles", styles)
+            editItem("mobileStyles", styles,item.uniqueId)
         }
-
     }
     const changeTypeHandler = (type) => [
         setComponent(type),
@@ -73,7 +72,8 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
 
     return (
         <>
-            <Component id={key} className="relative group/typography" style={isDesktop? {...desktopRenderStyles,...globalRenderStyles}: {...mobileRenderStyles,...globalRenderStyles}}>
+            <Component id={key} className="relative group/typography"
+                       style={isDesktop ? {...desktopRenderStyles, ...globalRenderStyles} : {...mobileRenderStyles, ...globalRenderStyles}}>
                 {value}
                 <div
                     className={"absolute hidden group-hover/typography:block z-[888]  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
@@ -86,12 +86,12 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                                 edit
                             </Icon>
                         </button>
-                        <button  onDragOver={(event)=>{
+                        <button onDragOver={(event) => {
                             event.preventDefault();
-                              removeItemFunc()
+                            removeItemFunc()
                         }} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-                            <Icon  size={16}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
+                            <Icon size={16}
                                   className={`${item.uniqueId} !text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]`}>
                                 drag_indicator
                             </Icon>
@@ -118,7 +118,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         Theme color
                     </label>
                     <ColorPicker onChange={(value) => onChangeGlobal("color", value)}
-                                 value={item.globalStyles.color}/>
+                                 value={globalRenderStyles.color}/>
 
                 </div>
                 <div className={" mt-2 justify-end"}>
@@ -130,7 +130,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         className={"flex w-fit ml-auto mt-2  border border-primary-light dark:border-primary-dark rounded-full"}>
                         <button onClick={() => changeTypeHandler("h1")}
                                 className={`${Component === "h1" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
-                        H1
+                            H1
                         </button>
                         <button onClick={() => changeTypeHandler("h2")}
                                 className={`${Component === "h2" ? "text-on-primary-light dark:text-on-primary-dark bg-primary-light dark:bg-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} px-2 py-1 rounded-full text-label-large`}>
@@ -189,7 +189,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full mt-2 justify-end"}>
                             <select onChange={(e) => onChange("fontWeight", e.target.value)}
                                     type={"text"}
-                                    value={isDesktop?desktopRenderStyles.fontWeight:mobileRenderStyles.fontWeight}
+                                    value={isDesktop ? desktopRenderStyles.fontWeight : mobileRenderStyles.fontWeight}
                                     className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
                                 <option label={"light"} value={"300"}/>
                                 <option label={"normal"} value={"400"}/>
@@ -217,7 +217,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         {/*</div>*/}
                         <div className={"mt-2"}>
                             <TextFieldEditor id={"fontSize"} onChange={onChange}
-                                             defValue={isDesktop?desktopRenderStyles.fontSize:mobileRenderStyles.fontSize}/>
+                                             defValue={isDesktop ? desktopRenderStyles.fontSize : mobileRenderStyles.fontSize}/>
                         </div>
                     </div>
                 </div>
@@ -244,7 +244,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.paddingTop:mobileRenderStyles.paddingTop}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingTop : mobileRenderStyles.paddingTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -254,7 +254,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.paddingRight:mobileRenderStyles.paddingRight}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingRight : mobileRenderStyles.paddingRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -264,7 +264,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.paddingBottom:mobileRenderStyles.paddingBottom}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingBottom : mobileRenderStyles.paddingBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -274,7 +274,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.paddingLeft:mobileRenderStyles.paddingLeft}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.paddingLeft : mobileRenderStyles.paddingLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -292,7 +292,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.marginTop:mobileRenderStyles.marginTop}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.marginTop : mobileRenderStyles.marginTop}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -302,7 +302,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.marginRight:mobileRenderStyles.marginRight}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.marginRight : mobileRenderStyles.marginRight}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -312,7 +312,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.marginBottom:mobileRenderStyles.marginBottom}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.marginBottom : mobileRenderStyles.marginBottom}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -322,7 +322,7 @@ export default function TextComponents({dragFunc,removeItemFunc,isDesktop,editIt
                         <div className={"w-full"}>
                             <div>
                                 <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                 defValue={isDesktop?desktopRenderStyles.marginLeft:mobileRenderStyles.marginLeft}/>
+                                                 defValue={isDesktop ? desktopRenderStyles.marginLeft : mobileRenderStyles.marginLeft}/>
                             </div>
                             <div
                                 className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

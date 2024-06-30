@@ -108,7 +108,7 @@ export default function MobileMenu({pageTitle}) {
                 menu
             </IconButton>
             <h1 className={"text-on-surface-light dark:text-on-surface-dark mx-auto text-title-large"}>
-                {menuList.find(item => item.link === pathName).title}
+                {menuList.find(item => item.link === pathName)?.title}
             </h1>
             <IconButton>
                 account_circle
