@@ -1,14 +1,17 @@
-import mongoose, {Mongoose} from 'mongoose'
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
-let PageSchema = new Schema({
+let TemplateSchema = new Schema({
     title: {
         type: String,
         required: true,
     },
-    icon:{
+
+
+    type:{
         type: String,
-        required: true,
+        default: 'page',
     },
+
     content: {
         type: String,
         default: null,
@@ -32,8 +35,8 @@ let PageSchema = new Schema({
         virtuals: true,
     }
 });
-export function PageModel() {
-    return mongoose.models.Page || mongoose.model('Page', PageSchema);
+export function TemplateModel() {
+    return mongoose.models.Template || mongoose.model('Template', TemplateSchema);
 }
 
 // module.exports =

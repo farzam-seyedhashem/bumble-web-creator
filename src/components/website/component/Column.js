@@ -6,14 +6,12 @@ import {useState} from "react";
 export default function Column({item,idNumber,editItem}) {
     const [addedItems,setAddedItems] = useState(item.addedItems)
     // useEffect(() => {
-    //     console.log(item)
     // }, []);
     const handleAddedItemsToItem = (component, number) => {
         if (component.idType === "container" || component.idType === "grid"){
             return alert("You can not add container or grid in grid")
         }
         let items = addedItems
-        console.log("main component",component)
         if (number===0){
             items = [
                 component,

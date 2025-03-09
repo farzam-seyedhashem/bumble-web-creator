@@ -16,11 +16,11 @@ export default function IconPicker({defValue,isFill, onIconSelect, label}) {
     return (
         <>
             <div className={"flex justify-between items-center"}>
-                <label className={" text-on-surface-light dark:text-on-surface-dark text-label-large"}>
+                <label className={" text-on-surface-light dark:text-on-surface-dark text-body-large"}>
                     {label}
                 </label>
                 <div onClick={() => setIsOpen(true)}
-                     className={"w-[40px] rounded-[8px] flex items-center justify-center h-[40px] bg-surface-container-highest-light dark:bg-surface-dark"}>
+                     className={"w-[64px] rounded-[8px] flex items-center justify-center h-[64px] bg-surface-container-highest-light dark:bg-surface-dark"}>
                     <Icon fill={isFilled ? 1 : 0} weight={400} size={24}>
                         {defValue}
                     </Icon>
@@ -56,7 +56,7 @@ export default function IconPicker({defValue,isFill, onIconSelect, label}) {
                                 </div>
                             </div>
                             <div className={"pt-2 px-4 grid grid-cols-5 gap-4"}>
-                                {icons.filter(item => search ? item === search : item).map((item, i) =>
+                                {icons.filter(item => search ? item.includes(search) : item).map((item, i) =>
                                     <div onClick={() => {
                                         onIconSelect(item, isFilled)
                                         setValue(item)

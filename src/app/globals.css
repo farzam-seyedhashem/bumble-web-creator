@@ -5,7 +5,29 @@
 @tailwind components;
 @tailwind utilities;
 /*@import 'swiper/css/pagination';*/
+@keyframes  scroll-up-animation {
+  0%{
+    bottom:-100%
+  }
+  100%{
+    bottom:-8px
+  }
+}
+/*.same-size-button-group{*/
+/*  display: grid;*/
+/*  !*grid-template-columns: repeat(3,minmax(min-content, 1fr));*!*/
+/*  grid-template-columns: ;*/
+/*max-width: fit-content;*/
 
+/*}*/
+.same-size-button-group div{
+  /*width: fit-content;*/
+}
+.scroll-up-animation{
+  animation:scroll-up-animation 2s ease-in-out ;
+
+
+}
 .sketch-picker{
 @apply !shadow-none !w-full !p-0 !bg-surface-container-high-light dark:!bg-surface-container-high-dark
 }
@@ -666,7 +688,6 @@ body {
     --custom-color-5-container-dark: 57 53 168;
     --on-custom-color-5-container-light: 12 0 106;
     --on-custom-color-5-container-dark: 226 223 255;
-
     --primary-light: 35 95 166;
     --on-primary-light: 255 255 255;
     --primary-container-light: 213 227 255;

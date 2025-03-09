@@ -11,338 +11,274 @@ import Icon from "@m3/assets/icons/Icon";
 import Switch from "@m3/switch/Switch";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
+import Image from 'next/image'
 
-export default function Container({siteSetting,item,isDesktop, editItem,removeItemFunc,dragFunc}) {
-    const [addedItems, setAddedItems] = useState(item.addedItems)
-    const [isSelected, setIsSelected] = useState(false)
-    let [className, setClassName] = useState({})
-    let [globalRenderStyles, setGlobalRenderStyles] = useState(item?.globalStyles)
-    let [deviceStyle, setDeviceStyle] = useState(isDesktop ? item?.desktopStyles : item?.mobileStyles)
-    useEffect(() => {
-        setAddedItems(item.addedItems)
-    },[item])
-    useEffect(() => {
-        setDeviceStyle(isDesktop ? item?.desktopStyles : item?.mobileStyles)
-    }, [isDesktop]);
-    useEffect(() => {
+export default function Container({editDialogOpenComponentId,setEditDialogOpenComponentId,siteSetting, item, isDesktop, editItem, removeItemFunc, dragFunc}) {
+	const [addedItems, setAddedItems] = useState(item.addedItems)
+	const [isSelected, setIsSelected] = useState(false)
+	let [className, setClassName] = useState({})
+	let [styles, setStyles] = useState(item?.styles)
+	const [imageURL, setImageURL] = useState(item?.backgroundImageURL)
+	const [imageStyle, setImageStyle] = useState(item?.backgroundImageStyle)
+	const [imageOverlay,setImageOverlay] = useState(item?.imageOverlay)
+	const [imageOverlayColor,setImageOverlayColor] = useState(item?.imageOverlayColor)
+const [editMode, setEditMode] = useState("value");
+	let [isBox, setIsBox] = useState(item?.isBox)
+	let onChangeStyles = (name, value, type) => {
+		let nStyles = {...styles}
+		nStyles[type] = {...nStyles[type], [name]: value}
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
+		console.log("styles", nStyles)
+	}
 
-        const desktopClass = StyleToClass(deviceStyle, isDesktop, item.uniqueId)
-        const globalClass = StyleToClass(globalRenderStyles, false, item.uniqueId)
-        const classNames = globalClass + desktopClass
-        editItem("className", classNames,item.uniqueId)
+	let handleChangeBackgroundImageURL = (value) => {
+		setImageURL(value)
+		editItem("backgroundImageURL", value)
+	}
+	let handleImageOverlay = (value) => {
+		setImageOverlay(value)
+		editItem("imageOverlay", value)
+	}
+	let handleImageOverlayColor = (value) => {
+		setImageOverlayColor(value)
+		editItem("imageOverlayColor", value)
+	}
 
-        // fs.writeFileSync()
-    }, [deviceStyle, globalRenderStyles])
-    let [isBox, setIsBox] = useState(item?.isBox)
-    const handleAddedItems = (component, number) => {
-        if (component.id === "container") {
-            return alert("You can not add container in another container")
-        }
-        let items = addedItems
-        if (number === 0) {
-            items = [
-                component,
-                ...items
-            ]
-        } else {
-            items = [
-                ...addedItems.slice(0, number),
-                component,
-                ...addedItems.slice(number)
-            ]
-        }
-        setAddedItems(items)
-        editItem("addedItems", items)
-    }
-    const editItemC = (number, key, value,unique) => {
-        if (key === "className") {
-            let newClassName =  className
-            newClassName[unique] = value
-            setClassName(newClassName)
-            editItem("className", Object.values(newClassName).toString().replaceAll(",",""),unique)
-            console.log("-------",Object.values(newClassName).toString())
-        }
-        let items = addedItems
-        // items[number][key] = value;
-        items[number] = {...items[number], [key]: value}
-        setAddedItems(items)
-        editItem("addedItems", items)
-    }
-    let classGenerator = (newStyles) => {
-        let classes = ""
-        newStyles.fontWeight ? classes += `font-[${newStyles.fontWeight}] ` : ""
-        newStyles.fontSize ? classes += `text-${newStyles.fontSize}px ` : ""
-        newStyles.lineHeight ? classes += `text-${newStyles.lineHeight}px ` : ""
-        newStyles.paddingTop ? classes += `text-${newStyles.paddingTop}px ` : ""
-        newStyles.paddingBottom ? classes += `text-${newStyles.paddingBottom}px ` : ""
-        newStyles.paddingLeft ? classes += `text-${newStyles.paddingLeft}px ` : ""
-        newStyles.paddingRight ? classes += `text-${newStyles.paddingRight}px ` : ""
-        newStyles.color ? classes += `text-[${newStyles.color}] ` : ""
-        // newStyles.dark.color ? classes += `dark:text-[${styles.dark.color}] ` : ""
-        // newStyles.general.fontSize ? classes += `text-${styles.general.fontSize}` : ""
-        setClassName(classes)
-        console.log(classes)
-    }
-    let onChangeGlobal = (name, value) => {
-        let styles = {...globalRenderStyles, [name]: value}
-        setGlobalRenderStyles(styles)
-        editItem("globalStyles", styles)
-    }
-    let onChange = (name, value) => {
+	let handleChangeBackgroundImageStyle = (value) => {
+		setImageStyle(value)
+		editItem("backgroundImageStyle", value)
+	}
+	useEffect(() => {
+		setAddedItems(item.addedItems)
+	}, [item])
+	const handleAddedItems = (component, number) => {
+		if (component.id === "container") {
+			return alert("You can not add container in another container")
+		}
+		let items = addedItems
+		if (number === 0) {
+			items = [
+				component,
+				...items
+			]
+		} else {
+			items = [
+				...addedItems.slice(0, number),
+				component,
+				...addedItems.slice(number)
+			]
+		}
+		setAddedItems(items)
+		editItem("addedItems", items)
+	}
+	const editItemC = (number, key, value, unique) => {
+		if (key === "className") {
+			let newClassName = className
+			newClassName[unique] = value
+			setClassName(newClassName)
+			editItem("className", Object.values(newClassName).join(""), unique)
+		}
+		let items = addedItems
+		items[number] = {...items[number], [key]: value}
+		setAddedItems(items)
+		editItem("addedItems", items)
+	}
+	const removeItemFuncM = (number) => {
+		let items = [...addedItems]
+		items.splice(number, 1)
+		setAddedItems(items)
+		editItem("addedItems", items)
+	}
 
-        let styles = {...deviceStyle, [name]: value}
-        setDeviceStyle(styles)
-        editItem(isDesktop ? "desktopStyles" : "mobileStyles", styles)
+	function drag(ev, id) {
 
+		if (typeof id !== undefined && typeof id === "number") {
+			let item = addedItems[id]
+			ev.dataTransfer.setData("text", item.uid);
+			ev.dataTransfer.setData("item", JSON.stringify(item));
+		} else {
 
-    }
-    const removeItemFuncM =  (number) => {
-        let items = [...addedItems]
-        items.splice(number,1)
-        setAddedItems(items)
-        editItem("addedItems", items)
-    }
-    function drag(ev,id) {
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+	}
 
-        // console.log(addedItems[idNumber])
-        if(typeof id !== undefined && typeof id === "number"){
-            let item = addedItems[id]
-            console.log(item,id)
-            ev.dataTransfer.setData("text", item.uid);
-            ev.dataTransfer.setData("item", JSON.stringify(item));
-            // removeItemFunc()
+	return (
+		<>
+			<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+			     className={`${item?.className}  hover:outline hover:outline-primary-light/[50%] group/container relative ${isBox ? "" : "container mx-auto"}`}>
+				{imageOverlay&&<div style={{backgroundColor: imageOverlayColor}} className={"absolute inset-0 z-10"}/>}
+				{imageURL && <Image objectFit={imageStyle} alt={""} src={imageURL} layout="fill"/>}
+				<div
+					className={"absolute  z-[888] hidden group-hover/container:block  top-0 left-0  transform "}>
+					<div
+						className={"px-4 py-0 space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
+						<button  onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
+							<Icon size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								edit
+							</Icon>
+						</button>
+						<button onDragEnterCapture={(event) => {
+							removeItemFunc()
+						}} onDragStart={(e) => dragFunc(e)} draggable={true}
+						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
+							<Icon size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								drag_indicator
+							</Icon>
+						</button>
+						<button
+							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full"}>
+							<Icon onClick={removeItemFunc} size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								delete
+							</Icon>
+						</button>
+					</div>
+				</div>
+				<div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>
 
-            // if (cb){
-            //     cb()
-            // }
-        }else {
+				</div>
+				<div className={"w-full py-3 z-20"}>
+					{addedItems.map((l, i) =>
+						<div key={item.uniqueId + i + "-container"} className={"relative group"}>
+							<DropContainer idNumber={i} selected={addedItems}
+							               handleAddedItems={handleAddedItems}/>
+							<ComponentGenerator siteSetting={siteSetting} dragFunc={drag}
+							                    removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
+							                    editItem={editItemC} idNumber={i} item={l}/>
+						</div>
+					)}
+					<div className={"relative"}>
+						<DropContainer idNumber={addedItems.length} selected={addedItems}
+						               handleAddedItems={handleAddedItems} key={item.uniqueId + "-container"}
+						               firstItem={addedItems.length === 0}/>
+					</div>
+				</div>
+			</div>
+			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
+				<div
+					className={" flex border-b border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
+					<div onClick={() => setEditMode("value")}
+					     className={`${editMode === "value" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} w-6/12 relative flex justify-center items-center h-full`}>
+						<Icon className={"mr-2"}>
+							Title
+						</Icon>
+						Value
+						{editMode === "value" && <div
+							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+					</div>
+					<div onClick={() => setEditMode("style")}
+					     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+						<Icon className={"mr-2"}>
+							style
+						</Icon>
+						Style
+						{editMode === "style" && <div
+							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        // ev.dataTransfer.setData("item", null);
-    }
-    // let handleBoxChange = (value) => {
-    //     setIsBox(value)
-    //     editItem("isBox", value)
-    // }
-    return (
-        <>
-            <div style={{...deviceStyle,...globalRenderStyles}} className={`${item?.className} group/container relative ${isBox ? "" : "container mx-auto"}`}>
-                {/*{addedItems.length!==0 && <div onClick={() => setIsSelected(true)}*/}
-                {/*      className={"hidden group-hover:block absolute top-1/2 -translate-y-1/2 transform right-4 "}>*/}
-                {/*    <button*/}
-                {/*        className={"flex items-center h-[32px] w-[32px] justify-center rounded-full  !bg-tertiary-container-light "}>*/}
-                {/*        <Icon size={16} className={"!text-on-tertiary-container-light text-[24px]"}>*/}
-                {/*            edit*/}
-                {/*        </Icon>*/}
-                {/*    </button>*/}
-                {/*</div>}*/}
-                <div
-                    className={"absolute  z-[888] hidden group-hover/container:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
-                    <div
-                        className={"px-3 space-x-3 flex rounded-b-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
-                        <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full dark:!bg-secondary-container-dark !bg-secondary-container-light "}>
-                            <Icon size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
-                                edit
-                            </Icon>
-                        </button>
-                        <button onDragEnterCapture={(event) => {
-
-                            removeItemFunc()
-                        }} onDragStart={(e) => dragFunc(e)} draggable={true}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
-                            <Icon size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
-                                drag_indicator
-                            </Icon>
-                        </button>
-                        <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
-                            <Icon onClick={removeItemFunc} size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
-                                delete
-                            </Icon>
-                        </button>
-                    </div>
-                </div>
-                <div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>
-
-                </div>
-                <div className={"w-full z-20"}>
-                    {addedItems.map((l, i) =>
-                        <div key={item.uniqueId + i + "-container"} className={"relative group"}>
-                            <DropContainer idNumber={i} selected={addedItems}
-                                           handleAddedItems={handleAddedItems}/>
-                            <ComponentGenerator siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
-                                                editItem={editItemC} idNumber={i} item={l}/>
-                        </div>
-                    )}
-                    <div className={"relative"}>
-                        <DropContainer idNumber={addedItems.length} selected={addedItems}
-                                       handleAddedItems={handleAddedItems} key={item.uniqueId + "-container"}
-                                       firstItem={addedItems.length === 0}/>
-                    </div>
-                </div>
-            </div>
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
-                <div
-                    className="flex   flex-col gap-y-5 overflow-y-auto  px-6 ring-1 ring-white/10">
-
-                    <div className={"flex justify-between items-center pt-4 pb-2"}>
-                        <label
-                            className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Background color
-                        </label>
-                        <ColorPicker onChange={(value) => onChangeGlobal("backgroundColor", value)}
-                                     value={globalRenderStyles.backgroundColor}/>
-
-                    </div>
-
-                    <div className={"grid grid-cols-12 gap-4 py-2"}>
-                        <div className={"col-span-4 justify-between items-center"}>
-                            <label
-                                className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                                Rounded
-                            </label>
-                            <div className={"mt-2"}>
-                                <TextFieldEditor id={"borderRadius"} onChange={onChangeGlobal}
-                                                 defValue={globalRenderStyles.borderRadius}/>
-                            </div>
-                        </div>
-                        <div className={"col-span-4 justify-between items-center"}>
-                            <label
-                                className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                                Width
-                            </label>
-                            <div className={"mt-2"}>
-                                <TextFieldEditor id={"width"} onChange={onChange}
-                                                 defValue={deviceStyle.width}/>
-                            </div>
-                        </div>
-                        <div className={"col-span-4 justify-between items-center"}>
-                            <label
-                                className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                                Height
-                            </label>
-                            <div className={"mt-2"}>
-                                <TextFieldEditor id={"height"} onChange={onChange}
-                                                 defValue={deviceStyle.height}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={"px-4 flex justify-between mt-4"}>
-                        <label
-                            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Is Box
-                        </label>
-                        <Switch setIsCheck={(value) => {
-                            setIsBox(value)
-                            editItem("isBox", value)
-                        }}
-                                isCheck={isBox}/>
-                    </div>
-                    <div className={"block items-center justify-between py-2"}>
-                        <label
-                            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Padding
-                        </label>
-                        <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"paddingTop"} onChange={onChange}
-                                                     defValue={deviceStyle.paddingTop}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Top
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"paddingRight"} onChange={onChange}
-                                                     defValue={deviceStyle.paddingRight}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Right
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"paddingBottom"} onChange={onChange}
-                                                     defValue={deviceStyle.paddingBottom}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Bottom
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"paddingLeft"} onChange={onChange}
-                                                     defValue={deviceStyle.paddingLeft}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Left
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={"block items-center justify-between py-2"}>
-                        <label
-                            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-                            Margin
-                        </label>
-                        <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"marginTop"} onChange={onChange}
-                                                     defValue={deviceStyle.marginTop}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Top
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"marginRight"} onChange={onChange}
-                                                     defValue={deviceStyle.marginRight}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Right
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"marginBottom"} onChange={onChange}
-                                                     defValue={deviceStyle.marginBottom}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Bottom
-                                </div>
-                            </div>
-                            <div className={"w-full"}>
-                                <div>
-                                    <TextFieldEditor id={"marginLeft"} onChange={onChange}
-                                                     defValue={deviceStyle.marginLeft}/>
-                                </div>
-                                <div
-                                    className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    Left
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </EditorDialog>
-        </>
-    )
+					</div>
+				</div>
+				{editMode === "style" && item.fields.map((field, index) => <StyleFieldGenerator
+					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index} field={field}/>)}
+				{editMode === "value" && <div>
+					<h3 className={"px-4 pt-3 pb-2 mt-6  border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
+						Container Style
+					</h3>
+					<div className={"px-4 h-[64px] flex items-center justify-between mt-0"}>
+						<label
+							className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+							Is Box
+						</label>
+						<Switch setIsCheck={(value) => {
+							setIsBox(value)
+							editItem("isBox", value)
+						}}
+						        isCheck={isBox}/>
+					</div>
+					<h3 className={"px-4 pt-3 pb-2 mt-6 border-t border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
+						Background Image
+					</h3>
+					<div className={" px-4 grid grid-cols-12 gap-4 py-0"}>
+						<div className={"col-span-12 flex item  items-center py-0"}>
+							<div className={"mr-2"}>
+								<label className={"text-on-surface-light dark:text-on-surface-dark"}
+								       htmlFor={"imageFile"}>
+									{imageURL ? <img className={"rounded-[4px] w-[64px] h-[64px]"}
+									                 src={imageURL}/>
+										:
+										<div
+											className={"rounded-[4px] dark:bg-surface-container-high-dark bg-surface-container-high-light flex justify-center items-center w-[64px] h-[64px]"}
+										>
+											<Icon
+												className={"text-[24px] text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+												image
+											</Icon>
+										</div>}
+								</label>
+								<input
+									onChange={(e) => handleChangeBackgroundImageURL(URL.createObjectURL(e.target.files[0]))}
+									id={"imageFile"} type={"file"}
+									className={"hidden w-0"}/>
+							</div>
+							<label
+								className={" text-body-large font-medium text-on-surface-light dark:text-on-surface-dark"}>
+								Upload Image
+							</label>
+						</div>
+					</div>
+					<h3 className={"px-4 pt-3 pb-2 mt-6 border-t border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
+						Background Image Style
+					</h3>
+					<div className={"block justify-between items-center "}>
+						<div className={"py-0 "}>
+							<ul>
+								<li onClick={() => handleChangeBackgroundImageStyle('cover')}
+								    className={"px-4 h-[56px] flex items-center text-on-surface-light dark:text-on-surface-dark text-body-large hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%]"}>
+									<Icon
+										className={`${imageStyle === "cover" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} mr-2 text-primary-light`}>
+										{imageStyle === "cover" ? "radio_button_checked" : "radio_button_unchecked"}
+									</Icon>
+									Cover
+								</li>
+								<li onClick={() => handleChangeBackgroundImageStyle('contain')}
+								    className={"px-4 h-[56px] flex items-center text-on-surface-light dark:text-on-surface-dark text-body-large hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%]"}>
+									<Icon
+										className={`${imageStyle === "contain" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} mr-2 text-primary-light`}>
+										{imageStyle === "contain" ? "radio_button_checked" : "radio_button_unchecked"}
+									</Icon>
+									Contain
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>}
+				<h3 className={"px-4 pt-3 pb-2 mt-6 border-t border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
+					Background Overlay
+				</h3>
+				<div className={"px-4 h-[64px] items-center flex justify-between mt-0"}>
+					<label
+						className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+						Image Overlay
+					</label>
+					<Switch setIsCheck={(value) => {
+						handleImageOverlay(value)
+					}}
+					        isCheck={imageOverlay}/>
+				</div>
+				{imageOverlay&&<div
+					className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
+					<label
+						className={"text-body-large  font-normal text-on-surface-light dark:text-on-surface-dark"}>
+						Background Color
+					</label>
+					<ColorPicker onChange={(value) => handleImageOverlayColor(value)}
+					             value={imageOverlayColor}/>
+				</div>}
+			</EditorDialog>
+		</>
+	)
 }

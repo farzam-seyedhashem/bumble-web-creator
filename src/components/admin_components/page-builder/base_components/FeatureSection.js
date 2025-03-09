@@ -7,19 +7,32 @@ import IconPicker from "@page_builder/editor_components/IconPicker";
 import Button from "@m3/buttons/Button";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
+import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
 
-export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,dragFunc}) {
+export default function FeatureSection({editDialogOpenComponentId,setEditDialogOpenComponentId,color, item, editItem, isDesktop, removeItemFunc, dragFunc}) {
     // const [cardShape, setCardShape] = useState(item)
     const [isSelected, setIsSelected] = useState(false)
     const [featuredSections, setFeaturedSections] = useState(item?.featuredSections)
-    const [selectedTab,setSelectedTab] = useState(0)
-    const [options,setOptions] = useState(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
-   const [globalOptions,setGlobalOptions] = useState(item.globalOptions)
-   const [deviceOptions,setDeviceOptions] = useState(isDesktop?item.desktopOptions:item.mobileOptions)
+    const [selectedTab, setSelectedTab] = useState(0)
+    const [options, setOptions] = useState(isDesktop ? {...item.globalOptions, ...item.desktopOptions} : {...item.globalOptions, ...item.mobileOptions})
+    const [globalOptions, setGlobalOptions] = useState(item.globalOptions)
+    const [deviceOptions, setDeviceOptions] = useState(isDesktop ? item.desktopOptions : item.mobileOptions)
+    // useEffect(() => {
+        // editOptions("cardShape",2)
+        // setOptions({...options,...{titleColor:"#fff",iconColor:"#f00",iconBgColor:"#fff"}})
+        // setGlobalOptions({...globalOptions,...{titleColor:"#fff",iconColor:"#f00",iconBgColor:"#fff"}})
+        // editItem("globalOptions", {...globalOptions, ...{titleColor:"#fff",iconColor:"#f00",iconBgColor:"#fff"}})
+        // editOptions("iconColor", color.onSecondary)
+        // editOptions("iconBgColor", rgbaObjToRgba(color.secondary))
+        // editOptions("cardColor", rgbaObjToRgba(color.secondaryContainer))
+        // editOptions("paragraphColor", rgbaObjToRgba(color.onSurfaceVariant))
+        // editOptions("titleColor", rgbaObjToRgba(color.onSurface))
+
+    // }, [globalOptions])
     useEffect(() => {
-        setOptions(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
-        setDeviceOptions(isDesktop?item.desktopOptions:item.mobileOptions)
-    },[isDesktop])
+        setOptions(isDesktop ? {...item.globalOptions, ...item.desktopOptions} : {...item.globalOptions, ...item.mobileOptions})
+        setDeviceOptions(isDesktop ? item.desktopOptions : item.mobileOptions)
+    }, [isDesktop])
     const handleAddItem = (index, name, value) => {
         let featuredSectionsC = [...featuredSections]
         featuredSectionsC[index][name] = value
@@ -38,17 +51,16 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
             }
         }]
         setFeaturedSections(newFeatruedSections)
-        console.log("welknf", newFeatruedSections)
         editItem("featuredSections", newFeatruedSections)
     }
-    const editOptions = (name,value) => {
-        let newOptions = {...options,[name]:value}
+    const editOptions = (name, value) => {
+        let newOptions = {...options, [name]: value}
         if (deviceOptions[name]) {
-            setDeviceOptions({...deviceOptions,[name]:value})
-            editItem(isDesktop?"desktopOptions":"mobileOptions",{...deviceOptions,[name]:value})
-        }else{
-            setGlobalOptions({...globalOptions,[name]:value})
-            editItem("globalOptions",{...globalOptions,[name]:value})
+            setDeviceOptions({...deviceOptions, [name]: value})
+            editItem(isDesktop ? "desktopOptions" : "mobileOptions", {...deviceOptions, [name]: value})
+        } else {
+            setGlobalOptions({...globalOptions, [name]: value})
+            editItem("globalOptions", {...globalOptions, [name]: value})
         }
         setOptions(newOptions)
 
@@ -77,12 +89,21 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
                     {/*},*/}
                     {featuredSections.map((item, index) => options.cardShape === 1 ? <div key={index}>
 
-                        <div style={{backgroundColor:options.cardColor}}
-                            className="relative group flex rounded-[32px] hover:rounded-2xl transition-all duration-300 ease-in-out dark:hover:bg-surface-container-highest-dark hover:bg-surface-container-highest-light bg-surface-container-light dark:bg-surface-container-dark py-4 px-8">
+                        <div style={{backgroundColor: options.cardColor}}
+                             className="relative group flex rounded-[32px] hover:rounded-2xl transition-all duration-300 ease-in-out  py-4 px-8">
 
                             <dt>
-                                <options.titleType style={{color:options.titleColor,fontSize:options.titleFontSize,fontWeight:options.titleFontWeight}} className="mt-4 text-primary-light dark:text-primary-dark mb-2 text-2xl leading-[40px] font-bold">{item.title}</options.titleType>
-                                <p style={{color:options.paragraphColor,fontSize:options.paragraphFontSize,fontWeight:options.paragraphFontWeight}}  className="mb-4 text-on-surface-variant-light dark:text-on-surface-variant-dark">
+                                <options.titleType style={{
+                                    color: options.titleColor,
+                                    fontSize: options.titleFontSize,
+                                    fontWeight: options.titleFontWeight
+                                }}
+                                                   className="mt-4 mb-2 text-2xl leading-[40px] font-bold">{item.title}</options.titleType>
+                                <p style={{
+                                    color: options.paragraphColor,
+                                    fontSize: options.paragraphFontSize,
+                                    fontWeight: options.paragraphFontWeight
+                                }} className="mb-4 text-on-surface-variant-light dark:text-on-surface-variant-dark">
 
                                     {item.paragraph}
 
@@ -91,13 +112,14 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
 
                             <div
                                 className="h-12 w-12 mt-1 mr-1 flex justify-center items-center">
-                                <svg style={{color: options.iconBgColor}} width="40px" height="40px" viewBox="0 0 40 40"
+                                <svg style={{color: options.iconBgColor}} color={"currentColor"} width="40px" height="40px" viewBox="0 0 40 40"
                                      fill="none" xmlns="http://www.w3.org/2000/svg" className="clover">
                                     <path
                                         d="M.887 14.467C-2.845 5.875 5.875-2.845 14.467.887l1.42.617a10.323 10.323 0 0 0 8.225 0l1.42-.617c8.593-3.732 17.313 4.988 13.581 13.58l-.617 1.42a10.323 10.323 0 0 0 0 8.225l.617 1.42c3.732 8.593-4.989 17.313-13.58 13.581l-1.42-.617a10.323 10.323 0 0 0-8.225 0l-1.42.617C5.874 42.845-2.846 34.125.886 25.533l.617-1.42a10.323 10.323 0 0 0 0-8.225l-.617-1.42Z"
                                         fill="currentColor"></path>
                                 </svg>
-                                <Icon style={{color: options.iconColor}} fill={item.icon.isFilled ? 1 : 0} weight={400} size={24}
+                                <Icon style={{color: options.iconColor}} fill={item.icon.isFilled ? 1 : 0} weight={400}
+                                      size={24}
                                       className={"w-6 h-6 absolute group-hover:scale-110 transition duration-300"}>
                                     {item.icon.name}
                                 </Icon>
@@ -107,31 +129,49 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
 
 
                     </div> : options.cardShape === 2 ? <div className={"flex"}>
-                        <Icon style={{color: options.iconColor}} weight={400} size={24} fill={item.icon.isFilled ? 1 : 0}
+                        <Icon style={{color: options.iconColor}} weight={400} size={24}
+                              fill={item.icon.isFilled ? 1 : 0}
                               className={"text-primary-light dark:text-primary-dark mr-4"}>
                             {item.icon.name}
                         </Icon>
                         <div>
-                            <options.titleType style={{color:options.titleColor,fontSize:options.titleFontSize,fontWeight:options.titleFontWeight}} className={"font-bold mb-1 text-on-surface-light dark:text-on-surface-dark"}>
+                            <options.titleType style={{
+                                color: options.titleColor,
+                                fontSize: options.titleFontSize,
+                                fontWeight: options.titleFontWeight
+                            }} className={"font-bold mb-1 "}>
                                 {item.title}
                             </options.titleType>
-                            <p style={{color:options.paragraphColor,fontSize:options.paragraphFontSize,fontWeight:options.paragraphFontWeight}} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                            <p style={{
+                                color: options.paragraphColor,
+                                fontSize: options.paragraphFontSize,
+                                fontWeight: options.paragraphFontWeight
+                            }} className={""}>
                                 {item.paragraph}
                             </p>
                         </div>
                     </div> : <div>
                         <div style={{backgroundColor: options.iconBgColor}}
-                            className={"flex items-center justify-center rounded-[8px] h-[48px] w-[48px]"}>
-                            <Icon style={{color: options.iconColor}} weight={400} size={24} fill={item.icon.isFilled ? 1 : 0}
-                                  className={"text-on-primary-light dark:text-on-primary-dark"}>
+                             className={"flex items-center justify-center rounded-[8px] h-[48px] w-[48px]"}>
+                            <Icon style={{color: options.iconColor}} weight={400} size={24}
+                                  fill={item.icon.isFilled ? 1 : 0}
+                                  className={""}>
                                 {item.icon.name}
                             </Icon>
                         </div>
                         <div className={"mt-3"}>
-                            <options.titleType style={{color:options.titleColor,fontSize:options.titleFontSize,fontWeight:options.titleFontWeight}} className={"font-bold mb-1 text-on-surface-light dark:text-on-surface-dark"}>
+                            <options.titleType style={{
+                                color: options.titleColor,
+                                fontSize: options.titleFontSize,
+                                fontWeight: options.titleFontWeight
+                            }} className={"font-bold mb-1 "}>
                                 {item.title}
                             </options.titleType>
-                            <p style={{color:options.paragraphColor,fontSize:options.paragraphFontSize,fontWeight:options.paragraphFontWeight}} className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                            <p style={{
+                                color: options.paragraphColor,
+                                fontSize: options.paragraphFontSize,
+                                fontWeight: options.paragraphFontWeight
+                            }} className={""}>
                                 {item.paragraph}
                             </p>
                         </div>
@@ -150,9 +190,9 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
                                 edit
                             </Icon>
                         </button>
-                        <button onDragOver={(event)=>{
+                        <button onDragOver={(event) => {
                             event.preventDefault();
-                              removeItemFunc()
+                            removeItemFunc()
                         }} onDragStart={(e) => dragFunc(e)} draggable={true}
                                 className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
                             <Icon size={16}
@@ -170,7 +210,7 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
                     </div>
                 </div>
             </div>
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
+            <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
                 <div className={"flex items-center justify-center"}>
                     <div
                         className={`w-6/12 h-[40px] flex items-center justify-center  ${selectedTab === 0 ? "border-b-2 border-primary-light dark:border-primary-dark" : "border-b border-outline-variant-light dark:border-outline-variant-dark"} `}
@@ -201,12 +241,13 @@ export default function FeatureSection({item, editItem,isDesktop,removeItemFunc,
                                                 "isFilled": isFilled
                                             })}/>
                                 <div className={"flex justify-end"}>
-                                <button className={"flex items-center text-error-light dark:text-error-dark"} onClick={() => removeFeaturedSections(index)}>
-                                    <Icon size={20} className={"mr-1 text-error-light dark:text-error-dark"}>
-                                        delete
-                                    </Icon>
-                                    remove item
-                                </button>
+                                    <button className={"flex items-center text-error-light dark:text-error-dark"}
+                                            onClick={() => removeFeaturedSections(index)}>
+                                        <Icon size={20} className={"mr-1 text-error-light dark:text-error-dark"}>
+                                            delete
+                                        </Icon>
+                                        remove item
+                                    </button>
                                 </div>
                                 {/*<TextArea label={"description"} value={item.paragraph} onChange={(e)=>handleAddItem(index,"paragraph",e.target.value)} />*/}
                             </div>

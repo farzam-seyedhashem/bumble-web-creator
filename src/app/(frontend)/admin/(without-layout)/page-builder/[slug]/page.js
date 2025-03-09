@@ -1,8 +1,8 @@
 import PageBuilder from "@page_builder/PageBuilder";
 async function getData(slug) {
     'use server'
-    const res = await fetch(`http://localhost:3000/api/page/${slug}`,{ next: { tags: ['pages'] }})
-    const siteSettingRes = await fetch(`http://localhost:3000/api/page/${slug}`,{ next: { tags: ['site-setting'] }})
+    const res = await fetch(`http://localhost:3000/api/page/id/${slug}`,{ next: { tags: ['pages'] }})
+    const siteSettingRes = await fetch(`http://localhost:3000/api/page/id/${slug}`,{ next: { tags: ['site-setting'] }})
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')
@@ -17,6 +17,14 @@ async function getSiteSettingData(slug) {
     const res = await fetch(`http://localhost:3000/api/site-setting`)
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
+        throw new Error('Failed to fetch data')
+    }
+    return res.json()
+}
+async function getTemplateComponent(slug) {
+    'use server'
+    const res = await fetch(`http://localhost:3000/api/site-setting`)
+    if (!res.ok) {
         throw new Error('Failed to fetch data')
     }
     return res.json()

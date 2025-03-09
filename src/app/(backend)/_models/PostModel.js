@@ -12,11 +12,13 @@ let PostSchema = new Schema({
     },
     thumbnail: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Image',
+        ref: 'File',
         required: true,
     },
     tags: [{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PostTag',
+        required: false,
     }],
     content: {
         type: String,

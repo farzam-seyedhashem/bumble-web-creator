@@ -13,7 +13,7 @@ import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
 
-export default function SliderComponent({isDesktop,item, editItem,idNumber,removeItemFunc,dragFunc}) {
+export default function SliderComponent({editDialogOpenComponentId,setEditDialogOpenComponentId,isDesktop,item, editItem,idNumber,removeItemFunc,dragFunc}) {
     const [isSelected, setIsSelected] = useState(false)
     const [options,setOptions] = useState(isDesktop?{...item.globalOptions,...item.desktopOptions}:{...item.globalOptions,...item.mobileOptions})
     const [globalOptions,setGlobalOptions] = useState(item.globalOptions)
@@ -200,7 +200,7 @@ export default function SliderComponent({isDesktop,item, editItem,idNumber,remov
                 </Swiper>
             </div>
 
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected} >
+            <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)} >
                                     <div className={"px-4 "}>
                                         <div className={"flex justify-between items-center pt-4 pb-2"}>
                                             <label

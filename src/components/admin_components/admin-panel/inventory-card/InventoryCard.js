@@ -10,10 +10,10 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
     {/*"exterior","Body Type","Trim","Fuel Type"*/
     }
     return (
-        <div>
+        <div className={"h-fit"}>
 
             {type === 0 && <div style={{backgroundColor:inventoryCard.cardColor}}
-                className={`min-w-[300px] w-full h-fit p-4 relative  rounded-[12px] overflow-hidden`}>
+                className={`min-w-[300px]   w-full h-fit p-4 relative  rounded-[12px] overflow-hidden`}>
                 <div className={"flex pb-3"}>
                     <div className={`flex-1`}>
                         <h4 style={{color:inventoryCard.titleColor}}
@@ -68,7 +68,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                         </div>}
                         {inventoryInfoSelected.indexOf("exterior") !== -1 && <div className={"flex items-center"}>
                             <p className={`text-label-small sm:text-label-medium mr-1  opacity-[80%`}>
-                                Exterior
+                                Exterior :
                             </p>
                             <p className={`text-label-small sm:text-label-medium  `}>
                                 Black
@@ -76,7 +76,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                         </div>}
                         {inventoryInfoSelected.indexOf("body_type") !== -1 && <div className={"flex items-center"}>
                             <p className={`text-label-small sm:text-label-medium mr-1  opacity-[80%`}>
-                                Body Type
+                                Body Type :
                             </p>
                             <p className={`text-label-small sm:text-label-medium  `}>
                                 Coupe
@@ -84,7 +84,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                         </div>}
                         {inventoryInfoSelected.indexOf("trim") !== -1 && <div className={"flex items-center"}>
                             <p className={`text-label-small sm:text-label-medium mr-1  opacity-[80%`}>
-                                Trim
+                                Trim :
                             </p>
                             <p className={`text-label-small sm:text-label-medium  `}>
                                 Gasoline
@@ -147,7 +147,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
 
                             {inventoryInfoSelected.indexOf("exterior") !== -1 && <div className={"flex items-center"}>
                                 <p className={`text-body-large sm:text-body-large mr-1 opacity-[80%]`}>
-                                    Exterior
+                                    Exterior :
                                 </p>
                                 <p className={`text-body-large sm:text-body-large  `}>
                                     Black
@@ -155,7 +155,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             </div>}
                             {inventoryInfoSelected.indexOf("body_type") !== -1 && <div className={"flex items-center"}>
                                 <p className={`text-body-large sm:text-body-large mr-1 opacity-[80%]`}>
-                                    Body Type
+                                    Body Type :
                                 </p>
                                 <p className={`text-body-large sm:text-body-large  `}>
                                     Coupe
@@ -163,7 +163,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             </div>}
                             {inventoryInfoSelected.indexOf("trim") !== -1 && <div className={"flex items-center"}>
                                 <p className={`text-body-large sm:text-body-large mr-1 opacity-[80%]`}>
-                                    Trim
+                                    Trim :
                                 </p>
                                 <p className={`text-body-large sm:text-body-large  `}>
                                     Gasoline
@@ -171,7 +171,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             </div>}
                             {inventoryInfoSelected.indexOf("fuel_type") !== -1 && <div className={"flex items-center"}>
                                 <p className={`text-body-large sm:text-body-large mr-1 opacity-[80%]`}>
-                                    Fuel Type
+                                    Fuel Type :
                                 </p>
                                 <p className={`text-body-large sm:text-body-large `}>
                                     R/T Coupe 2D
@@ -260,7 +260,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
 
                             {inventoryInfoSelected.indexOf("exterior") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Exterior
+                                    <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Exterior :
                                     </p>
                                     <p className={`text-label-large font-normal sm:text-label-large`}>
                                         Black
@@ -269,7 +269,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("body_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Body
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={`text-label-large font-normal sm:text-label-large`}>
                                         Coupe
@@ -277,7 +277,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                 </div>}
                             {inventoryInfoSelected.indexOf("trim") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Trim
+                                    <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Trim :
                                     </p>
                                     <p className={`text-label-large font-normal sm:text-label-large`}>
                                         Gasoline
@@ -286,7 +286,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("fuel_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={`text-label-large font-normal sm:text-label-large mr-1 opacity-[80%]`}> Fuel
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={`text-label-large font-normal sm:text-label-large`}>
                                         R/T Coupe 2D
@@ -374,7 +374,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
 
                                     {inventoryInfoSelected.indexOf("exterior") !== -1 &&
                                         <div className={"inline-flex items-center"}>
-                                            <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Exterior
+                                            <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Exterior :
                                             </p>
                                             <p className={"text-label-large font-normal sm:text-label-medium"}>
                                                 Black
@@ -383,7 +383,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                     {inventoryInfoSelected.indexOf("body_type") !== -1 &&
                                         <div className={"inline-flex items-center"}>
                                             <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Body
-                                                Type
+                                                Type :
                                             </p>
                                             <p className={"text-label-large font-normal sm:text-label-medium"}>
                                                 Coupe
@@ -391,7 +391,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                         </div>}
                                     {inventoryInfoSelected.indexOf("trim") !== -1 &&
                                         <div className={"inline-flex items-center"}>
-                                            <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Trim
+                                            <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Trim :
                                             </p>
                                             <p className={"text-label-large font-normal sm:text-label-medium"}>
                                                 Gasoline
@@ -400,7 +400,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                     {inventoryInfoSelected.indexOf("fuel_type") !== -1 &&
                                         <div className={"inline-flex items-center"}>
                                             <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Fuel
-                                                Type
+                                                Type :
                                             </p>
                                             <p className={"text-label-large font-normal sm:text-label-medium"}>
                                                 R/T Coupe 2D
@@ -491,7 +491,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
 
                             {inventoryInfoSelected.indexOf("exterior") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Exterior
+                                    <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Exterior :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-body-large"}>
                                         Black
@@ -500,7 +500,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("body_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Body
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-body-large"}>
                                         Coupe
@@ -508,7 +508,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                 </div>}
                             {inventoryInfoSelected.indexOf("trim") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Trim
+                                    <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Trim :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-body-large"}>
                                         Gasoline
@@ -517,7 +517,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("fuel_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={"text-label-large font-normal sm:text-body-large mr-1 opacity-[80%]"}> Fuel
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-body-large"}>
                                         R/T Coupe 2D
@@ -601,7 +601,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
 
                             {inventoryInfoSelected.indexOf("exterior") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Exterior
+                                    <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Exterior :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-label-medium "}>
                                         Black
@@ -610,7 +610,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("body_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Body
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-label-medium "}>
                                         Coupe
@@ -618,7 +618,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                                 </div>}
                             {inventoryInfoSelected.indexOf("trim") !== -1 &&
                                 <div className={"inline-flex items-center"}>
-                                    <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Trim
+                                    <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Trim :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-label-medium "}>
                                         Gasoline
@@ -627,7 +627,7 @@ export default function InventoryCard({type, inventoryCard, inventoryInfoSelecte
                             {inventoryInfoSelected.indexOf("fuel_type") !== -1 &&
                                 <div className={"inline-flex items-center"}>
                                     <p className={"text-label-large font-normal sm:text-label-medium mr-1 opacity-[80%]"}> Fuel
-                                        Type
+                                        Type :
                                     </p>
                                     <p className={"text-label-large font-normal sm:text-label-medium "}>
                                         R/T Coupe 2D

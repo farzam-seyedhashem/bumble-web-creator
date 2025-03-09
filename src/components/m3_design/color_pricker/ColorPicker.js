@@ -26,8 +26,7 @@ export default function ColorPicker({children, value, onChange, isLeft, jsonExp}
         const responseValue = await res.json()
         const presetColorsArray = []
         Object.keys(responseValue.color).map((k,index)=>
-            // console.log(responseValue.color[k])
-           index < 24 && (index < 12 || index > 15) && presetColorsArray.push({color: rgbaObjToRgba(responseValue.color[k]),title:k})
+            (index!== 24 && index!==25) && (index < 12 || index > 15) && presetColorsArray.push({color: rgbaObjToRgba(responseValue.color[k]),title:k})
         )
         setPresetColors(presetColorsArray)
     }, []);

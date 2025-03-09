@@ -1,13 +1,13 @@
 'use server';
 import Image from "next/image";
 
-export default function ImageComponent({item}) {
+export default async function ImageComponent({item}) {
    
     return (
         <>
-            {item?.value && <div className={"relative group"}>
+            {item?.value && <div className={`relative group h-fit ${item.uniqueId} overflow-hidden`}>
 
-                <Image className={"z-[1]"} src={item.value} alt={""}/> :
+                <Image objectFit={item.globalStyles.objectFit} layout={"fill"} className={`z-10`} src={item.value} alt={""}/> :
 
 
             </div>}

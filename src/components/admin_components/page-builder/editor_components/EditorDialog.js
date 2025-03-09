@@ -22,7 +22,7 @@ export default function EditorDialog({children,setIsOpen,isOpen}) {
 
                         <div
                             className={" w-[360px] h-full overflow-hidden rounded-[16px] bg-surface-light dark:bg-surface-dark"}>
-                            <div className={"px-4 space-x-2 flex items-center justify-start border-b py-2 mb-4"}>
+                            <div className={"px-4 space-x-2 flex items-center justify-start border-b border-outline-light dark:border-outline-dark py-2 mb-0"}>
                                 <IconButton onClick={() => setIsOpen(false)}>
                                     chevron_left
                                 </IconButton>
@@ -30,7 +30,7 @@ export default function EditorDialog({children,setIsOpen,isOpen}) {
                                     Edit Element
                                 </h2>
                             </div>
-                            <div className={"px-4 h-[calc(100%_-_80px)] overflow-scroll"}>
+                            <div className={"px-0 h-[calc(100%_-_80px)] overflow-scroll"}>
                                 {children}
                             </div>
                         </div>

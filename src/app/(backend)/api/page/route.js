@@ -1,7 +1,6 @@
 import {index,store} from '@controller/PageController'
 import {revalidateTag} from "next/cache";
 export async function GET(req) {
-   console.log(await index(req))
     return Response.json(await index(req))
 
 }

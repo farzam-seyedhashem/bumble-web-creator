@@ -9,7 +9,6 @@ import {useState} from "react";
 import  Image from 'next/image'
 import favicon from '@/app/favicon.ico'
 export default function WebsiteInfo({data}) {
-    console.log(data)
     const [pageInfo, setPageInfo] = useState(data)
     const handleChangeWebsiteInfo = (key,value) => {
         setPageInfo({...pageInfo, [key]:value})
@@ -20,7 +19,7 @@ export default function WebsiteInfo({data}) {
                 method: 'PUT',
                 body: JSON.stringify(pageInfo)
             }).then(response =>
-                    console.log(response)
+                    console.log("")
                 // setIsOpen(true)
             ).then(data => alert(data));
         } catch (error) {

@@ -1,0 +1,51 @@
+'use strict';
+
+import {revalidateTag} from "next/cache";
+import {NextRequest, NextResponse} from "next/server";
+import {notFound} from "next/navigation";
+import WebComponentGenerator from "@website/WebComponentGenerator";
+import React from "react";
+import {StyleToClass} from "@frontend/_helper/StyleToClass";
+
+async function getData(slug) {
+    'use server'
+    revalidateTag("page")
+    const res = await fetch(`http://localhost:3000/api/page/${slug}`, {next: {tags: ['pages']}})
+    if (!res.ok) {
+        if (res.status === 404) {
+            notFound()
+        }
+        throw new Error('Failed to fetch data')
+    }
+    // return res.json()
+    return res.json()
+}
+
+export default async function Page({params}) {
+    const slug = params.slug
+    const data = await getData(slug)
+    // const Style = await import(`@/app/(styles)/${slug}.module.css`)
+
+    return (
+        <div>
+            <style>
+                {`
+                   ${JSON.parse(data.content).map((item, index) => {
+                    if (item.idType === "title" || item.idType === "image" || item.idType === "paragraph" || item.idType === "button") {
+                        const mobileStyles = item.mobileStyles
+                        const desktopStyles = item.desktopStyles
+                        const globalStyles = item.globalStyles
+                        const mc = StyleToClass(desktopStyles,true,item.uniqueId)
+                        const dc = StyleToClass(mobileStyles,false,item.uniqueId)
+                        const gc = StyleToClass(globalStyles,false,item.uniqueId)
+                       return gc+dc+mc
+                    }
+                }).join("")}
+                `}
+            </style>
+            {JSON.parse(data.content).map((item, index) =>
+                <WebComponentGenerator key={index} item={item}/>
+            )}
+        </div>
+    )
+}

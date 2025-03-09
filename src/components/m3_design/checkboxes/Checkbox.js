@@ -25,7 +25,6 @@ export default function Checkbox({isCheck, isDisabled, onChange, isIndeterminate
                         setCheck(!check)
                     }
                 }
-                console.log(check)
 
                 onChange && onChange(check)
             }} className={"cursor-pointer flex items-center"}>

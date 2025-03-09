@@ -25,6 +25,10 @@ let PageSchema = new Schema({
         type: String,
         default: null,
     },
+    requiredPage:{
+        type:Boolean,
+        default: false,
+    },
 
     // metaTitle:{
     //     type: String,

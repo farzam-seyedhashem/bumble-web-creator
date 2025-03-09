@@ -3,7 +3,7 @@ import {Roboto_Flex} from 'next/font/google'
 import {ThemeProvider} from "@/app/theme-provider";
 import 'grapesjs/dist/css/grapes.min.css';
 import 'swiper/css';
-
+import 'aos/dist/aos.css';
 const robotoFlex = Roboto_Flex({subsets: ['greek'], variable: '--font-roboto'})
 
 export const metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
 
-        <body className={`${robotoFlex.variable} font-sans`}>
+        <body className={` ${robotoFlex.variable} font-sans`}>
         <ThemeProvider>
             {children}
         </ThemeProvider>

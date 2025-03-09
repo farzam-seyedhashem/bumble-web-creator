@@ -10,7 +10,8 @@
       "@admin/*": ["./src/components/admin_components/*"],
       "@page_builder/*": ["./src/components/admin_components/page-builder/*"],
       "@website/*": ["./src/components/website/*"],
-      "@builder/*": ["./src/components/website_builder/*"]
+      "@builder/*": ["./src/components/website_builder/*"],
+      "@lib/*": ["./src/lib/*"]
     }
   }
 }

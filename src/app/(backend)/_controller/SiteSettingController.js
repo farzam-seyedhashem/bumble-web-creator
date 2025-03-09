@@ -42,7 +42,6 @@ async function index(req) {
     // });
     //     return Page.find()
     // } catch (e) {
-    //     console.log(e)
     // }
 // Page.find(regexQuery, function (err, docs) {
 //
@@ -55,7 +54,6 @@ async function index(req) {
 
 // Store a newly created resource in storage.
 async function store(body) {
-    console.log("body", body)
     let newNews = new Page(body);
     await newNews.save();
     revalidateTag("pages")
@@ -67,7 +65,6 @@ async function show(req, res) {
     const docs = await Page.find({slug: req.query.slug}).populate('tags').populate('thumbnail').exec(function (err, docs) {
         res.send(docs[0])
     });
-    // console.log(docs)
     //  return docs[0]
 }
 
@@ -77,8 +74,6 @@ async function getById(id) {
 }
 
 async function getBySlug(slug) {
-    // console.log(slug)
-   // console.log("mmmmm",await Page.findOne({slug: slug}))
     return await Page.findOne({slug: slug})
 
 }

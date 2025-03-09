@@ -38,7 +38,6 @@ export function StyleToTailwind(style,isLargeDevice){
     }
     const deviceType = isLargeDevice?"md:":""
     let classes = ""
-    console.log(Object.keys(style))
     Object.keys(style).map(key=>
         classes += deviceType + styleCss.find(sc=>sc.cssStyle === key).twClass + `-[${style[key]}] `
     )

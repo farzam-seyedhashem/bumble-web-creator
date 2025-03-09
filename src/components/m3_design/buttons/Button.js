@@ -2,6 +2,7 @@ import Icon from "@m3/assets/icons/Icon";
 
 export default function Button({type, component, children, icon, className, ...other}) {
     let Component = component || "button"
+
     let classes = ""
     switch (type) {
         case "elevated":
@@ -22,8 +23,8 @@ export default function Button({type, component, children, icon, className, ...o
     }
     return (
         <Component
-            className={`button ${icon ? "button-with-icon" : "button-without-icon"} ${classes} ${className}`} {...other}>
-            <div className={"button-state-layer"}>
+            className={`button ${icon ? "button-with-icon" : "button-without-icon"} ${classes} ${typeof className === "object"?className.root:className}`} {...other}>
+            <div className={`button-state-layer ${typeof className === "object"?className.stateLayer:""}`}>
                 {icon && <Icon weight={500} size={18} className={"icon font-medium text-[18px]"}>
                     {icon}
                 </Icon>}

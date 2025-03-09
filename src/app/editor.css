@@ -13,6 +13,7 @@
     @apply !mr-2 !mb-2
 }
 
+
 .ql-picker {
     @apply !w-fit !text-label-large !font-medium !h-[32px] dark:hover:bg-on-surface-dark/[8%] hover:bg-on-surface-light/[8%] rounded-[8px]
 }
@@ -23,6 +24,17 @@
 
 .ql-picker-options {
     @apply !rounded-[4px] !px-0 !py-2 !bg-surface-container-light !shadow-none !border-0
+}
+.ql-expanded .ql-picker-options{
+    /*left:0px !important;*/
+    display: grid !important;
+    grid-template-columns: repeat(4, 24px) !important;
+    grid-template-rows: repeat(7, 24px) !important;
+    grid-column-gap: 8px !important;
+    grid-row-gap: 8px !important;
+}
+.ql-expanded .ql-picker-options .ql-picker-item{
+    @apply !w-full !h-full !rounded-full !min-w-0
 }
 
 .ql-picker-item {
@@ -49,4 +61,7 @@
 }
 .ql-editor ::selection {
     @apply  rounded-full px-2 flex text-on-secondary-container-light dark:text-on-secondary-container-dark bg-secondary-container-light dark:bg-secondary-container-dark
+}
+.ql-editor img{
+    @apply rounded-[16px] overflow-hidden
 }

@@ -1,0 +1,88 @@
+'use strict';
+import React from "react";
+// import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
+import PageList from "@admin/admin-panel/pages/PageList";
+// import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
+import Link from "next/link";
+import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
+import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
+import {getBySlug} from "@controller/PageController";
+import PostEditor from "@admin/admin-panel/pages/PostEditor";
+import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
+import TemplateList from "@admin/admin-panel/pages/TemplateList";
+import InventoryCardEditor from "@admin/admin-panel/pages/InventoryCardEditor";
+
+async function getSiteSettingData(slug) {
+	'use server'
+	const res = await fetch('http://localhost:3000/api/site-setting', {next: {tags: ['site-setting']}})
+	if (!res.ok) {
+		// This will activate the closest `error.js` Error Boundary
+		throw new Error('Failed to fetch data')
+	}
+	return res.json()
+}
+
+async function getInventoryPage(slug) {
+	'use server'
+	const res = await fetch('http://localhost:3000/api/inventory-page', {next: {tags: ['inventory-page']}})
+	if (!res.ok) {
+		// This will activate the closest `error.js` Error Boundary
+		throw new Error('Failed to fetch data')
+	}
+	return res.json()
+}
+
+export default async function Page({params}) {
+	const {slug} = params
+	// const selectedTab = slug
+	// const data = await getData(slug);
+	const siteSetting = await getSiteSettingData();
+	// const templates = await getTemplates();
+	// const menuSetting = await getMenu();
+	const inventoryPage = await getInventoryPage();
+	// const footer = await getFooter();
+	const tabs = [
+		{
+			icon: "menu",
+			title: "Menu",
+			id: "menu",
+			link: "/admin/header-footer/menu",
+			description: "Edit or Add Pages"
+		},
+		{
+			icon: "footer",
+			title: "Footer",
+			id: "footer",
+			link: "/admin/header-footer/footer",
+			description: "Edit or Add Pages"
+		},
+		// {
+		//     icon: "Inventory",
+		//     title: "Inventory",
+		//     id: "inventory",
+		//     link: "/admin/pages/inventory",
+		//     description: "Edit Inventory Card and Pages Styles"
+		// },
+		// {
+		//     icon: "post",
+		//     title: "Post",
+		//     id: "post",
+		//     link: "/admin/pages/post",
+		//     description: "Edit Blog Card and Pages Styles"
+		// },
+
+	]
+
+	return (
+		<>
+
+			<div className={"min-h-screen border-l border-outline-variant-light dark:border-outline-variant-dark"}>
+
+				 <InventoryCardEditor inventorySetting={inventoryPage} color={siteSetting?.color}/>
+
+				{/*<InventoryEditor inventorySetting={inventoryPage} siteSetting={siteSetting}/>*/}
+			</div>
+		</>
+
+	)
+}

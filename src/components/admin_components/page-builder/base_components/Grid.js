@@ -11,12 +11,7 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 
 function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
-
-    useEffect(() => {
-        // setAddedItems(item.addedItems)
-        // console.log("colsize", columnSize)
-
-    }, []);
+    let [className, setClassName] = useState({})
     const handleAddedItemsToItem = (component, number) => {
         if (component.idType === "grid") {
             return alert("You can not add container or grid in grid")
@@ -36,11 +31,16 @@ function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, 
         }
         setAddedItems(items)
         editItem(idNumber, "addedItems", items)
-        // editItem(idNumber,"addedItems",items)
     }
-    const editItemC = (number, key, value) => {
+    const editItemC = (number, key, value,unique) => {
+
+        if (key === "className") {
+            let newClassName =  className
+            newClassName[unique] = value
+            setClassName(newClassName)
+            editItem(number,"className",  Object.values(newClassName).join(""),unique)
+        }
         let items = [...addedItems]
-        // items[number][key] = value;
         items[number] = {...items[number], [key]: value}
         setAddedItems(items)
         editItem(idNumber, "addedItems", items)
@@ -50,29 +50,19 @@ function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, 
         items.splice(number,1)
         setAddedItems(items)
         editItem(idNumber,"addedItems", items)
-        console.log(items.length)
         if (items.length === 0) {
             removeColumnFunc()
         }
     }
     function drag(ev,id) {
-
-        // console.log(addedItems[idNumber])
         if(typeof id !== undefined && typeof id === "number"){
             let item = addedItems[id]
-            console.log(item,id)
             ev.dataTransfer.setData("text", item.uid);
             ev.dataTransfer.setData("item", JSON.stringify(item));
-            // removeItemFunc()
-
-            // if (cb){
-            //     cb()
-            // }
         }else {
 
             ev.dataTransfer.setData("text", ev.target.id);
         }
-        // ev.dataTransfer.setData("item", null);
     }
     return (
         <div key={item.uniqueId + "-gridm"}
@@ -92,7 +82,6 @@ function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, 
 }
 
 class Grid extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -100,25 +89,29 @@ class Grid extends React.Component {
             columnSizeMobile: [...this.props.item.columnSizeMobile],
             addedItems: [...this.props.item.addedItems],
             renderStyles: this.props.item.styles,
+            className:{},
             gapDesktop:  this.props.item.gapDesktop,
             gapMobile:  this.props.item.gapMobile,
             isSelected: false
         }
-        this.editItemC = this.editItemC.bind(this);
     }
+    editItemC = (number, key, value,unique) => {
 
-    // {item, idNumber, editItem}
-    // const [addedItems, setAddedItems] = useState()
-    editItemC = (number, key, value) => {
-        const {isDesktop} = this.props;
+        if (key === "className") {
+
+            let newClassName =  this.state.className
+            newClassName[unique] = value
+            this.setState({className: newClassName})
+            // console.log(key,newClassName)
+            this.props.editItem("className",  Object.values(newClassName).join(""),unique)
+        }
         let items = [...this.state.addedItems]
         let columnSizesDesktop = [...this.state.columnSizeDesktop]
         let columnSizesMobile =  [...this.state.columnSizeMobile]
         items[number] = {...items[number], [key]: value}
         columnSizesDesktop.push(6);
         columnSizesMobile.push(12);
-        // setAddedItems(items)
-        if (items[items.length - 1].addedItems.length !== 0) {
+        if (items[items.length - 1]?.addedItems?.length !== 0) {
             items = [...items, {
                 "addedItems": [],
                 "widthNumber": 1,
@@ -153,10 +146,10 @@ class Grid extends React.Component {
 
 
     render() {
-        let {item, idNumber, editItem,removeItemFunc,dragFunc} = this.props
+        let {editDialogOpenComponentId,setEditDialogOpenComponentId,item, idNumber, editItem,removeItemFunc,dragFunc} = this.props
         let {isSelected, renderStyles} = this.state;
         const {isDesktop} = this.props;
-        const baseClass = `grid grid-cols-12 justify-end w-full`
+        const baseClass = `p-4 hover:outline hover:outline-primary-light/[50%] group/grid grid grid-cols-12 justify-end w-full`
         const setIsSelected = (v) => {
             this.setState({isSelected: v});
         }
@@ -185,10 +178,7 @@ class Grid extends React.Component {
         const onChange = (name, value) => {
             let styles = {...renderStyles, [name]: value}
             setRenderStyles(styles)
-            // classGenerator(styles)
-            console.log(styles)
             editItem("styles", styles)
-            // editItem("className", className)
         }
         const removeColumnFunc = (number)=>{
             let items = [...this.state.addedItems]
@@ -212,13 +202,13 @@ class Grid extends React.Component {
                             item={m}/>
                 )}
                 <div
-                    className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+                    className={"absolute  z-[999] hidden group-hover/grid:block  top-[0px] left-0 transform "}>
                     <div
-                        className={"px-3  space-x-3 flex rounded-t-[8px] dark:bg-secondary-container-dark bg-secondary-container-light"}>
-                        <button onClick={() => setIsSelected(true)}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                        className={"px-3  space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
+                        <button  onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
                             <Icon size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
+                                  className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
                                 edit
                             </Icon>
                         </button>
@@ -226,22 +216,22 @@ class Grid extends React.Component {
                             event.preventDefault();
                               removeItemFunc()
                         }} onDragStart={(e) => dragFunc(e)} draggable={true}
-                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark "}>
+                                className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
                             <Icon size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
+                                  className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
                                 drag_indicator
                             </Icon>
                         </button>
                         <button
-                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-secondary-container-light dark:!bg-secondary-container-dark"}>
+                            className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
                             <Icon onClick={removeItemFunc} size={16}
-                                  className={"!text-on-secondary-container-light dark:!text-on-secondary-container-dark text-[20px]"}>
+                                  className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
                                 delete
                             </Icon>
                         </button>
                     </div>
                 </div>
-                <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
+                <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
                     <div>
                         <label
                             className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
@@ -259,24 +249,6 @@ class Grid extends React.Component {
                         </div>
                     </div>
                     <div className={"grid grid-cols-12 gap-4 py-2"}>
-                        {/*<div className={"col-span-6 justify-between items-center "}>*/}
-                        {/*    <label*/}
-                        {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                        {/*        Justify Content*/}
-                        {/*    </label>*/}
-                        {/*    <div className={"w-full mt-2 justify-end"}>*/}
-                        {/*        <select onChange={(e) => onChange("justifyContent", e.target.value)}*/}
-                        {/*                type={"text"}*/}
-                        {/*                value={renderStyles.justifyContent}*/}
-                        {/*                className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>*/}
-                        {/*            <option label={"start"} value={"start"}/>*/}
-                        {/*            <option label={"center"} value={"center"}/>*/}
-                        {/*            <option label={"end"} value={"end"}/>*/}
-                        {/*            <option label={"space between"} value={"space-between"}/>*/}
-                        {/*            <option label={"space around"} value={"space-around"}/>*/}
-                        {/*        </select>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
                         <div className={"col-span-6 justify-between items-center "}>
                             <label
                                 className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
@@ -311,191 +283,10 @@ class Grid extends React.Component {
                                         {m}
                                     </div>)}
                                 </div>
-                                {/*<input value={} onChange={(e)=}*/}
-                                {/*    className={"mt-2 text-center text-body-large px-4 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>*/}
                             </div>
                         </div>
                     )}
-
-                    {/*<div className={"block items-center justify-between py-2"}>*/}
-                    {/*    <label*/}
-                    {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                    {/*        Padding*/}
-                    {/*    </label>*/}
-                    {/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"paddingTop"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.paddingTop}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Top*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"paddingRight"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.paddingRight}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Right*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"paddingBottom"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.paddingBottom}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Bottom*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"paddingLeft"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.paddingLeft}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Left*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className={"block items-center justify-between py-2"}>*/}
-                    {/*    <label*/}
-                    {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                    {/*        Margin*/}
-                    {/*    </label>*/}
-                    {/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"marginTop"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.marginTop}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Top*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"marginRight"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.marginRight}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Right*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"marginBottom"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.marginBottom}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Bottom*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"marginLeft"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.marginLeft}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Left*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className={"block items-center justify-between py-2"}>*/}
-                    {/*    <label*/}
-                    {/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                    {/*        Border*/}
-                    {/*    </label>*/}
-                    {/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"borderTop"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.borderTop}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Top*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"borderRight"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.borderRight}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Right*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"borderBottom"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.borderBottom}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Bottom*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"w-full"}>*/}
-                    {/*            <div>*/}
-                    {/*                <TextFieldEditor id={"borderLeft"} onChange={onChange}*/}
-                    {/*                                 defValue={renderStyles.borderLeft}/>*/}
-                    {/*            </div>*/}
-                    {/*            <div*/}
-                    {/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                    {/*                Left*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className={"col-span-2"}>*/}
-                    {/*            /!*<div className={"w-full justify-between items-center "}>*!/*/}
-                    {/*            /!*    <label*!/*/}
-                    {/*            /!*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*!/*/}
-                    {/*            /!*        Border Style*!/*/}
-                    {/*            /!*    </label>*!/*/}
-                    {/*            /!*    <div className={"w-full mt-2 justify-end"}>*!/*/}
-                    {/*            /!*        <select*!/*/}
-                    {/*            /!*            onChange={(e) => onChange("borderStyle", `${e.target.value} ${e.target.value} ${e.target.value} ${e.target.value}`)}*!/*/}
-                    {/*            /!*            value={renderStyles.borderStyle.split(" ")[0]}*!/*/}
-                    {/*            /!*            className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark border border-outline-light dark:border-outline-dark "}>*!/*/}
-                    {/*            /!*            <option label={"Solid"} value={"solid"}/>*!/*/}
-                    {/*            /!*            <option label={"Doted"} value={"dotted"}/>*!/*/}
-                    {/*            /!*            <option label={"Dashed"} value={"dashed"}/>*!/*/}
-                    {/*            /!*        </select>*!/*/}
-                    {/*            /!*    </div>*!/*/}
-                    {/*            /!*</div>*!/*/}
-                    {/*            <div className={"flex justify-between items-center pt-4 pb-2"}>*/}
-                    {/*                <label*/}
-                    {/*                    className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-                    {/*                    Border color*/}
-                    {/*                </label>*/}
-                    {/*                <ColorPicker*/}
-                    {/*                    onChange={(value) => onChange("borderColor", value)}*/}
-                    {/*                    value={renderStyles.borderColor}/>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-
                 </EditorDialog>
-                {/*<div className={" flex items-center h-[64px] justify-center w-full bg-surface-variant-light dark:bg-surface-variant-dark"}>*/}
-                {/*    <Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                {/*        add*/}
-                {/*    </Icon>*/}
-                {/*</div>*/}
             </div>
         )
     }

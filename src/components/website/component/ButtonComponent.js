@@ -5,7 +5,7 @@ export default async function ButtonComponent({key, item, Style}) {
 
     return (
         <>
-            <button id={key} className={Style[item.uniqueId]}>
+            <button id={key} className={`${item.uniqueId}`}>
                 {item.value || item.idType}
             </button>
         </>

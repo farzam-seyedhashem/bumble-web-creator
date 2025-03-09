@@ -1,15 +1,14 @@
 import {useEffect, useState} from "react";
 
 export default function TextFieldEditor({defValue,onChange,id}) {
-    let [type,setType] = useState(defValue.indexOf("px")>-1 ? "px" : defValue.indexOf("%")>-1 ? "%" : "")
+    let [type,setType] = useState(defValue.indexOf("px") > -1 ? "px" : defValue.indexOf("%") > -1 ? "%" : "")
 
     const [value,setValue] = useState(defValue)
     useEffect(() => {
-        setType(defValue.indexOf("px")>-1 ? "px" : defValue.indexOf("%")>-1 ? "%" : "")
+        setType(defValue.indexOf("px") > -1 ? "px" : defValue.indexOf("%")>-1 ? "%" : "")
         setValue(defValue)
     }, [defValue]);
     const onChangeHandler = (id,v)=>{
-        console.log(id,v)
         setValue(v)
         onChange(id,v)
     }

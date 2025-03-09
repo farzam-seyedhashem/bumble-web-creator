@@ -67,7 +67,6 @@ export default function InventoryComponent({isDesktop,item, editItem,removeItemF
                         </Icon>
                     </button>
                     <button onDragEnterCapture={() => {
-                        console.log("weof;mwe''''''")
                         removeItemFunc()
                     }} onDragStart={(e) => dragFunc(e)} draggable={true}
                             className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>

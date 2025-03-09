@@ -4,9 +4,10 @@ import {useState} from "react";
 import Icon from "@m3/assets/icons/Icon";
 
 export default function Switch({withIcon,isDisable,isCheck,setIsCheck}) {
-    const [isOpen, setIsOpen] = useState(isCheck || false)
+    // const [isOpen, setIsOpen] = useState(isCheck || false)
+    let isOpen = isCheck
    const handleChange = (e) => {
-       setIsOpen(e)
+       // setIsOpen(e)
        setIsCheck && setIsCheck(e)
    }
 

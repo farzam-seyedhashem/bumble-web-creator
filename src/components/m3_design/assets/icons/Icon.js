@@ -7,7 +7,7 @@ export default function Icon({type,fill, size, weight, grade,style, children,cla
     useEffect(() => {
         let gradeV = grade ? grade : 0
         let sizeV = (size !== 18 || size !== 20 || size !== 24 || size!==40 || size!==48 ) ? 24 : size
-        let weightV = weight ? weight : 400
+        let weightV = weight ? weight : "400"
 
         const value = `material-symbols-outlined font-vs-[${fill}_${weightV}_${gradeV}_${sizeV}]`
         setResTypeStyle(value)

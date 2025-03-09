@@ -1,3 +1,4 @@
 export const rgbaObjToRgba = (obj) => {
-    return `rgba(${obj.r}, ${obj.g}, ${obj.b}, ${obj.a})`
+    // console.log(obj)
+    return `rgba(${obj?.r}, ${obj?.g}, ${obj?.b}, ${obj?.a})`
 }

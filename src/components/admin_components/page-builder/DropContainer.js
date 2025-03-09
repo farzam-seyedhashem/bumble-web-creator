@@ -75,7 +75,6 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
         let dragId = ev.dataTransfer.getData("text");
 
         let item = ev.dataTransfer.getData("item");
-        console.log(item);
         if (!item) {
             const componets = [...Data.components]
             let component = componets.find(c => c.uid === dragId)
@@ -95,7 +94,6 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
             itemu.uniqueId = UniqueCharOTP(12)
             handleAddedItems(itemu, idNumber)
         }
-        // console.log(data)
         // setItems()
         // const item = Sections.sections[props.selectedTab].childes.find(item => item.id === data)
         // handleSelected(item, props.itemNumber)
@@ -109,7 +107,7 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
     }
     const onDragClass = "h-[64px] bg-secondary-container-light  text-on-secondary-container-light "
     const firstItemClasses = "bg-surface-container-high-light   text-on-surface-variant-light  h-[64px]"
-    const normalClasses = "border-y bg-transparent h-[16px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
+    const normalClasses = " bg-transparent h-[16px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
     return (
 
         <div key={Date.now()}

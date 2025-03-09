@@ -16,7 +16,7 @@ export default function SEOSetting({data}) {
                 method: 'PUT',
                 body: JSON.stringify(seoSetting)
             }).then(response =>
-                    console.log(response)
+                    console.log("")
                 // setIsOpen(true)
             ).then(data => alert(data));
         } catch (error) {

@@ -7,6 +7,7 @@ import ComponentDrawer from "@admin/page-builder/ComponentDrawer";
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
 import Link from "next/link";
+import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
 
 export default function PageBuilder({siteSetting,data, slug}) {
     const devices = [
@@ -17,11 +18,9 @@ export default function PageBuilder({siteSetting,data, slug}) {
     const [isComponentDrawerOpen, setIsComponentDrawerOpen] = useState(false)
     const [addedItems, setAddedItems] = useState(JSON.parse(data.content) || [])
     const [className, setClassName] = useState({})
-    console.log(data)
+    const [editDialogOpenComponentId, setEditDialogOpenComponentId] = useState("wlkd")
     const handleAddedItems = (component, number) => {
         let items = [...addedItems]
-        console.log(addedItems)
-        // console.log("main component",component)
         if (number === 0) {
             items = [
                 component,
@@ -35,7 +34,6 @@ export default function PageBuilder({siteSetting,data, slug}) {
                 ...items.slice(number)
             ])
         }
-        console.log(items)
     }
     const editItem = (number, key, value, uniqueId) => {
         if (key === "className") {
@@ -43,7 +41,6 @@ export default function PageBuilder({siteSetting,data, slug}) {
             newClassName[uniqueId] = value
             setClassName(newClassName)
         }
-        console.log(className, key, number, value)
         let items = addedItems
         items[number] = {...items[number], [key]: value}
         setAddedItems(items)
@@ -53,40 +50,29 @@ export default function PageBuilder({siteSetting,data, slug}) {
         items.splice(number, 1)
         setAddedItems(items)
     }
-
     function drag(ev, id) {
 
-        // console.log(addedItems[idNumber])
         if (typeof id !== undefined && typeof id === "number") {
             let item = addedItems[id]
-            console.log(item, id)
             ev.dataTransfer.setData("text", item.uid);
             ev.dataTransfer.setData("item", JSON.stringify(item));
-            // removeItemFunc()
-
-            // if (cb){
-            //     cb()
-            // }
         } else {
 
             ev.dataTransfer.setData("text", ev.target.id);
         }
-        // ev.dataTransfer.setData("item", null);
     }
 
     const updatePage = () => {
-        // fetch("http://localhost:3000/api/update-class",{method:"POST",body: {classes: newClasses}}).then(res=>{console.log(res)})
-        console.log(className)
+
         const sendData = {
             content: JSON.stringify(addedItems),
-            classes: Object.values(className).toString().replaceAll(",", ""),
         }
         try {
-            fetch(`/api/page/${slug}`, {
+            fetch(`/api/template/${slug}`, {
                 method: 'PUT',
                 body: JSON.stringify(sendData)
             }).then(response =>
-                    console.log(response)
+                    console.log("")
                 // setIsOpen(true)
             ).then(data => alert(data));
         } catch (error) {
@@ -100,7 +86,7 @@ export default function PageBuilder({siteSetting,data, slug}) {
                 className={"hidden  md:block md:w-[360px] sticky top-0 h-screen  bg-surface-light dark:bg-surface-dark "}>
                 <div
                     className={"flex items-center px-4 relative justify-center top-0 left-0 w-full h-[64px] bg-surface-light dark:bg-surface-dark"}>
-                    <Link href={"/admin/pages/page"} className={"absolute left-4 top-1/2  transform -translate-y-1/2"}>
+                    <Link href={"/admin/page-builder/page"} className={"absolute left-4 top-1/2  transform -translate-y-1/2"}>
                         <IconButton>
                             arrow_back
                         </IconButton>
@@ -118,9 +104,6 @@ export default function PageBuilder({siteSetting,data, slug}) {
                 <div
                     className={"md:flex hidden items-center lg:col-span-2 xl:col-span-2 text-title-medium text-on-surface-light dark:text-on-surface-dark font-medium"}>
                     {data.title + " Page"}
-                    {/*<Icon>*/}
-                    {/*    arrow_drop_down*/}
-                    {/*</Icon>*/}
                 </div>
 
                 <div className={"col-span-12 md:col-span-7 lg:col-span-6 xl:col-span-5 flex items-center justify-end"}>
@@ -164,27 +147,15 @@ export default function PageBuilder({siteSetting,data, slug}) {
                 </div>
 
             </div>
-            {/*<FAB onClick={() => setIsComponentDrawerOpen(true)} className={"fixed bottom-4 left-4"} color={"primary"}*/}
-            {/*     label={"Add New Component"} isExtended={true}>*/}
-            {/*    add*/}
-            {/*</FAB>*/}
-            {/*<IconPicker/>*/}
             <div
-                className={`px-4 pb-4 pt-8 transition-all duration-300 mx-auto ease-in-out mt-[64px] w-full ${device === 0 ? "md:max-w-[490px] w-[490px] min-w-[490px]" : "md:w-[calc(100%_-_360px)] "} `}>
-                <div className={"z-10 rounded-[16px] min-h-screen bg-white"}>
-                    {/*<div className={"bg-white h-[4px] focus-within:h-[40px]"} id="div1" onDrop={(e) => drop(e)}*/}
-                    {/*     onDragOver={(e) => allowDrop(e)}></div>*/}
-                    {/*<div className={"dark:text-[#fff]"}/>*/}
-                    {/*<ComponentGenerator*/}
-                    {/*    item={{id: "title", value: "text", className: "font-bold text-[40px] text-red-600"}}/>*/}
-
+                className={`px-3 dark:bg-surface-container-highest-dark bg-surface-container-highest-light pb-4 pt-3 transition-all duration-300 mx-auto ease-in-out mt-[64px] w-full ${device === 0 ? "md:max-w-[490px] w-[490px] min-w-[490px]" : "md:w-[calc(100%_-_360px)] "} `}>
+                <div style={{backgroundColor:rgbaObjToRgba(siteSetting.color.background)}} className={"z-10 rounded-[16px] min-h-screen "}>
                     {addedItems.map((item, i) =>
                         <div key={item.uniqueId + i + "-top"} className={"relative  group"}>
                             <DropContainer idNumber={i} handleAddedItems={handleAddedItems}/>
-                            <ComponentGenerator siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFunc} isDesktop={device === 1}
+                            <ComponentGenerator editDialogOpenComponentId={editDialogOpenComponentId} setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFunc} isDesktop={device === 1}
                                                 editItem={editItem} idNumber={i}
                                                 item={item}/>
-                            {/*{(i!==addedItems.length-1)&&<DropContainer id={i} handleAddedItems={handleAddedItems}/>}*/}
                         </div>
                     )}
 
@@ -193,14 +164,6 @@ export default function PageBuilder({siteSetting,data, slug}) {
                                        handleAddedItems={handleAddedItems} key={"start"}
                                        firstItem={addedItems.length === 0}/>
                     </div>
-                    {/*<pre style={{overflowWrap:"anywhere"}} className={"overflow-hidden !whitespace-nowrap  h-[800px]  w-[400px]"}>*/}
-
-                    {/*    {JSON.stringify(addedItems)}*/}
-
-                    {/*</pre>*/}
-                    {/*<div className={"bg-red-600 h-40 w-40"} id="drag1" draggable={true} onDragStart={(e) => drag(e)}>*/}
-                    {/*    flnf*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </div>

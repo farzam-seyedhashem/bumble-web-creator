@@ -4,7 +4,7 @@ import Image from "next/legacy/image";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 
-export default function BlogPostComponent({isDesktop,item, editItem,removeItemFunc,dragFunc}) {
+export default function BlogPostComponent({editDialogOpenComponentId,setEditDialogOpenComponentId,isDesktop,item, editItem,removeItemFunc,dragFunc}) {
 
     // const [gridNumber, setGridNumber] = useState(isDesktop?item.desktopOptions.gridNumber:item.mobileOptions.gridNumber)
     // const [numberOfBlog, setNumberOfBlog] = useState(item.options.numberOfBlog)
@@ -110,7 +110,6 @@ export default function BlogPostComponent({isDesktop,item, editItem,removeItemFu
                         </Icon>
                     </button>
                     <button onDragEnterCapture={() => {
-                        console.log("weof;mwe''''''")
                         removeItemFunc()
                     }} onDragStart={(e) => dragFunc(e)} draggable={true}
                             className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
@@ -128,7 +127,7 @@ export default function BlogPostComponent({isDesktop,item, editItem,removeItemFu
                     </button>
                 </div>
             </div>
-            <EditorDialog isOpen={isSelected} setIsOpen={setIsSelected}>
+            <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
                 <div>
                     <label
                         className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>

@@ -40,7 +40,6 @@ export function StyleToClass(style,isLargeDevice,componentId) {
     )
     // classes += `.${componentId}${JSON.stringify(style).replaceAll(",",";").toString()}`
     classes+= isLargeDevice? "}}" : "}"
-    // console.log(Object.keys(style))
     return classes
 
 }

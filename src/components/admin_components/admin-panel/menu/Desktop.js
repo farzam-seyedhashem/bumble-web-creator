@@ -49,17 +49,35 @@ export default function DesktopMenu() {
             id: 1
         },
         {
-            title: "Analytics",
-            icon: "analytics",
-            link: "/admin/analytics",
+            title: "Page Builder",
+            icon: "layers",
+            link: "/admin/page-builder",
             id: 1
         },
         {
-            title: "Website Builder",
-            icon: "layers",
-            link: "/admin/pages/page",
+            title: "Website Header",
+            icon: "page_header",
+            link: "/admin/header",
             id: 1
         },
+        {
+            title: "Website Footer",
+            icon: "page_footer",
+            link: "/admin/footer",
+            id: 1
+        },
+        // {
+        //     title: "Inventory Page",
+        //     icon: "directions_car",
+        //     link: "/admin/footer",
+        //     id: 1
+        // },
+        // {
+        //     title: "Posts Page",
+        //     icon: "page_footer",
+        //     link: "/admin/footer",
+        //     id: 1
+        // },
         {
             title: "Posts",
             icon: "post",
@@ -79,11 +97,17 @@ export default function DesktopMenu() {
             id: 2
         },
         {
-            title: "Mails",
-            icon: "mail",
-            link: "/admin/mails",
-            id: 3
+            title: "Stories",
+            icon: "web_stories",
+            link: "/admin/stories",
+            id: 2
         },
+        // {
+        //     title: "Mails",
+        //     icon: "mail",
+        //     link: "/admin/mails",
+        //     id: 3
+        // },
         {
             title: "Forms",
             icon: "assignment",
@@ -96,6 +120,12 @@ export default function DesktopMenu() {
                     description: "Edit global SEO settings"
                 },
             ],
+            id: 3
+        },
+        {
+            title: "Analytics",
+            icon: "analytics",
+            link: "/admin/analytics",
             id: 3
         },
         {

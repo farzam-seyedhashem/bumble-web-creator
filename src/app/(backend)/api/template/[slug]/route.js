@@ -1,0 +1,22 @@
+import {update, getBySlug, destroy} from '@controller/TemplateController'
+import {revalidateTag} from "next/cache";
+export async function GET(req,{params}) {
+    const page = await getBySlug(params.slug)
+    if (page === null || typeof page === 'undefined') {
+        // console.error("-------","page not found")
+        return  Response.json({ error: 'Not Found!' }, { status: 404 })
+    }
+// console.log("pageppp",page)
+    return Response.json(page)
+}
+export async function PUT(request,{params}) {
+    const data = await request.json()
+    // revalidateTag("pages")
+    return Response.json(await update(data,params.slug))
+}
+export async function DELETE() {
+
+    const data = {message:"hello"}
+
+    return Response.json({ data })
+}

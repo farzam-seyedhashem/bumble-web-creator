@@ -7,10 +7,10 @@ wghtV.map((w,indexw)=>
     opsV.map((o,indexO)=>
         gradeV.map((g,indexG)=>
             fillV.map((f,indexF)=> {
-                // console.log(g)
                 res.push(`font-vs-[${f}_${w}_${g}_${o}]`)
             })
         )
     )
 )
+
 module.exports = res

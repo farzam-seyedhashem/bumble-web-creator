@@ -391,13 +391,11 @@ module.exports = {
             //         )
             //     )
             // )
-            // console.log(res)
             // addUtilities(res)
             matchUtilities(
                 {
                     'font-vs': (value) => {
                         const arr = value.split(" ")
-                        console.log(arr)
                         return {
                             fontVariationSettings: "'FILL'" + arr[0] + ",'wght'" + arr[1] + ",'GRAD'" + arr[2] + ",'opsz'" + arr[3],
                         }

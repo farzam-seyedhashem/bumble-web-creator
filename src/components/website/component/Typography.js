@@ -1,13 +1,18 @@
-'use server'
-export default async function Typography({item, key,Style}) {
-    const Component = item.type
-    return (
-        <>
+'use client'
+import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
 
-            <Component id={key} className={Style[item.uniqueId]}>
+export default function Typography({item, key, Style}) {
+    const Component = item.type
+    const desktopStyles = item.desktopStyles;
+    // console.log(item)
+    const globalStyles = item.globalStyles;
+    const mobileStyles = item.mobileStyles;
+    return (
+        <div>
+            <Component id={item.uniqueId} className={`${item.uniqueId}`}>
                 {item.value || item.idType}
             </Component>
 
-        </>
+        </div>
     )
 }

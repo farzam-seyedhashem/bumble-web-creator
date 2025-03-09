@@ -5,11 +5,12 @@ import Switch from "@m3/switch/Switch";
 import isEqual from 'lodash/isEqual';
 import {useEffect, useState} from 'react'
 import {
+    SchemeNeutral,
     argbFromHex,
     argbFromRgba,
     hexFromArgb,
     rgbaFromArgb,
-    themeFromSourceColor,
+    themeFromSourceColor, Hct,
 } from "@material/material-color-utilities";
 import Button from "@m3/buttons/Button";
 
@@ -30,11 +31,8 @@ export default function Appearance({data}) {
     //         const areEqual = obj1Keys.every((key, index) => {
     //             const objValue1 = obj1[key];
     //             const objValue2 = obj2[obj2Keys[index]];
-    //             // console.log(,);
-    //             // console.log(objValue1, objValue2);
     //             return checkObjEquality(objValue1,objValue2)
     //         });
-    //         console.log(areEqual)
     //         if (areEqual) {
     //             objEqual = true;
     //             return objEqual;
@@ -46,14 +44,28 @@ export default function Appearance({data}) {
     useEffect(() => {
         return () => {
             const theme = themeFromSourceColor(argbFromRgba(color));
-            const themeLight = theme.schemes.light.props
-            const themeLightRGBA = Object.fromEntries(Object.entries(themeLight).map(([k, v]) => [k, rgbaFromArgb(v)]))
+            const surfaceContainerLowest = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  100);
+            const surfaceContainerLow = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  96);
+            const surfaceContainer = Hct.from(theme.palettes.neutral.hue,  theme.palettes.neutral.chroma,  94);
+            const surfaceContainerHigh = Hct.from(theme.palettes.neutral.hue,  theme.palettes.neutral.chroma,  92);
+            const surfaceContainerHighest = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  90);
 
+            const themeLight = theme.schemes.light.props
+            themeLight.surfaceContainerLowest = surfaceContainerLowest.argb
+            themeLight.surfaceContainerLow = surfaceContainerLow.argb
+            themeLight.surfaceContainer = surfaceContainer.argb
+            themeLight.surfaceContainerHigh = surfaceContainerHigh.argb
+            themeLight.surfaceContainerHighest = surfaceContainerHighest.argb
+            const themeLightRGBA = Object.fromEntries(Object.entries(themeLight).map(([k, v]) => [k, rgbaFromArgb(v)]))
+            theme.schemes.light.surfaceContainerLowest =  surfaceContainerLowest.argb
+            theme.schemes.light.surfaceContainerLow =  surfaceContainerLow.argb
+            theme.schemes.light.surfaceContainer =  surfaceContainer.argb
+            theme.schemes.light.surfaceContainerHigh =  surfaceContainerHigh.argb
+            theme.schemes.light.surfaceContainerHighest =  surfaceContainerHighest.argb
             if (Object.keys(selectedColor).length === 0) {
                 setSelectedColor(themeLightRGBA)
                 setThemeColors(theme)
             } else {
-                // console.log(checkObjEquality(selectedColor, themeLightRGBA))
                 // checkObjEquality(selectedColor, themeLightRGBA) ? setColorGenerateType(0) : setColorGenerateType(1)
                 setThemeColors(theme)
             }
@@ -68,7 +80,7 @@ export default function Appearance({data}) {
                 method: 'PUT',
                 body: JSON.stringify({color: selectedColor})
             }).then(response =>
-                    console.log(response)
+                    console.log("")
                 // setIsOpen(true)
             ).then(data => alert(data));
         } catch (error) {
@@ -77,15 +89,32 @@ export default function Appearance({data}) {
     }
     const generateColor = (value) => {
         const theme = themeFromSourceColor(argbFromRgba(value));
+
+
+        const surfaceContainerLowest = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  100);
+        const surfaceContainerLow = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  96);
+        const surfaceContainer = Hct.from(theme.palettes.neutral.hue,  theme.palettes.neutral.chroma,  94);
+        const surfaceContainerHigh = Hct.from(theme.palettes.neutral.hue,  theme.palettes.neutral.chroma,  92);
+        const surfaceContainerHighest = Hct.from(theme.palettes.neutral.hue,   theme.palettes.neutral.chroma,  90);
+       // console.log(rgbaFromArgb(surfaceContainerHighest.argb))
         setColor(rgbaObjToRgba(value))
         const themeLight = theme.schemes.light.props
+        themeLight.surfaceContainerLowest = surfaceContainerLowest.argb
+        themeLight.surfaceContainerLow = surfaceContainerLow.argb
+        themeLight.surfaceContainer = surfaceContainer.argb
+        themeLight.surfaceContainerHigh = surfaceContainerHigh.argb
+        themeLight.surfaceContainerHighest = surfaceContainerHighest.argb
+        theme.schemes.light.surfaceContainerLowest =  surfaceContainerLowest.argb
+        theme.schemes.light.surfaceContainerLow =  surfaceContainerLow.argb
+        theme.schemes.light.surfaceContainer =  surfaceContainer.argb
+        theme.schemes.light.surfaceContainerHigh =  surfaceContainerHigh.argb
+        theme.schemes.light.surfaceContainerHighest =  surfaceContainerHighest.argb
         const themeLightRGBA = Object.fromEntries(Object.entries(themeLight).map(([k, v]) => [k, rgbaFromArgb(v)]))
         setSelectedColor(themeLightRGBA)
         setThemeColors(theme)
     }
     const onChangeSelectedTheme = (key, value) => {
         setSelectedColor({...selectedColor, [key]: value})
-        console.log(selectedColor)
     }
     const generateHighContrastPlatteColor = (index) => {
         return Object.keys(selectedColor)[index % 2 === 0 ? index + 1 : index - 1]
@@ -106,7 +135,7 @@ export default function Appearance({data}) {
                 </div>
                 <div className={"px-6"}>
                     <div
-                        className={"flex items-center overflow-hidden rounded-full bg-surface-container-lowest-light"}>
+                        className={"flex items-center overflow-hidden rounded-full bg-surface-container-lowest-light dark:bg-surface-container-lowest-dark"}>
                         <div onClick={() => setColorGenerateType(0)}
                              className={`${colorGenerateType === 0 ? "bg-secondary-container-light text-on-secondary-container-light dark:text-on-secondary-container-dark dark:bg-secondary-container-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} font-medium rounded-full w-6/12 justify-center h-[48px] flex items-center`}>
                             Generate Automatic
@@ -125,7 +154,7 @@ export default function Appearance({data}) {
                         <ColorPicker jsonExp value={rgbaObjToRgba(color)}
                                      onChange={(value) => generateColor(value)} isLeft/>
                         <div className={"ml-4"}>
-                            <h3 className={"font-bold text-title-small"}>
+                            <h3 className={"font-bold text-title-small text-on-surface-variant-light dark:text-on-surface-dark"}>
                                 Choose your color
                             </h3>
                             <p className={"text-body-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -133,7 +162,7 @@ export default function Appearance({data}) {
                             </p>
                         </div>
                     </div>
-                    <h3 className={" font-black text-title-medium"}>
+                    <h3 className={"text-on-surface-light dark:text-on-surface-dark font-black text-title-medium"}>
                         Light Theme Platte
                     </h3>
                     <p className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-body-medium"}>
@@ -142,20 +171,29 @@ export default function Appearance({data}) {
                     {Object.keys(themeColors).length !== 0 &&
                         <div className={"mt-3 rounded-[24px] overflow-hidden"}>
                             <div className={"grid grid-cols-12 gap-y-2"}>
-                                {/*{console.log(themeColors.schemes.light.props)}*/}
                                 {Object.keys(themeColors.schemes.light.props).map((key, index) =>
-                                    index < 24 && (index < 12 || index > 15) &&
+                                    (index!== 24 && index!==25) && (index < 12 || index > 15) &&
                                     <div key={index} className={"col-span-3"}>
                                         <div
                                             style={{backgroundColor: hexFromArgb(themeColors.schemes.light[key])}}
                                             className={`w-full h-[50px] inline-block`}>
-                                            <h3 style={{color: hexFromArgb(themeColors.schemes.light[Object.keys(themeColors.schemes.light.props)[index % 2 === 0 ? index + 1 : index - 1]])}}
+                                            <h3 style={{color: index>26?hexFromArgb(themeColors.schemes.light.onSurface):hexFromArgb(themeColors.schemes.light[Object.keys(themeColors.schemes.light.props)[index % 2 === 0 ? index + 1 : index - 1]])}}
                                                 className={"px-4 text-label-large py-2 font-medium"}>
                                                 {key}
                                             </h3>
                                         </div>
                                     </div>
                                 )}
+                                {/*<div key={index} className={"col-span-3"}>*/}
+                                {/*    <div*/}
+                                {/*        style={{backgroundColor: hexFromArgb(themeColors.schemes.light[key])}}*/}
+                                {/*        className={`w-full h-[50px] inline-block`}>*/}
+                                {/*        <h3 style={{color: hexFromArgb(themeColors.schemes.light[Object.keys(themeColors.schemes.light.props)[index % 2 === 0 ? index + 1 : index - 1]])}}*/}
+                                {/*            className={"px-4 text-label-large py-2 font-medium"}>*/}
+                                {/*            {key}*/}
+                                {/*        </h3>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                             </div>
                         </div>}
                     {/*<h3 className={"mt-4 font-black text-title-medium"}>*/}
@@ -167,7 +205,6 @@ export default function Appearance({data}) {
                     {/*{Object.keys(themeColors).length !== 0 &&*/}
                     {/*    <div className={"mt-3 rounded-[24px] overflow-hidden"}>*/}
                     {/*        <div className={"grid grid-cols-12 gap-y-2"}>*/}
-                    {/*            /!*{console.log(themeColors.schemes.light.props)}*!/*/}
                     {/*            {Object.keys(themeColors.schemes.dark.props).map((key, index) =>*/}
                     {/*                index < 24 && (index < 12 || index > 15) &&*/}
                     {/*                <div key={index} className={"col-span-3"}>*/}
@@ -196,16 +233,15 @@ export default function Appearance({data}) {
                     {Object.keys(selectedColor).length !== 0 &&
                         <div className={"mt-3 rounded-[24px] "}>
                             <div className={"grid grid-cols-12 gap-y-2"}>
-                                {/*{console.log(themeColors.schemes.light.props)}*/}
                                 {Object.keys(selectedColor).map((key, index) =>
-                                    index < 24 && (index < 12 || index > 15) &&
+                                    (index!== 24 && index!==25) && (index < 12 || index > 15) &&
                                     <div key={index} className={"col-span-3"}>
                                         <ColorPicker jsonExp onChange={(v) => onChangeSelectedTheme(key, v)}>
                                             <div
                                                 style={{backgroundColor: rgbaObjToRgba(selectedColor[key])}}
                                                 className={`w-full h-[50px] inline-block`}>
                                                 <h3 style={{
-                                                    color: rgbaObjToRgba(selectedColor[generateHighContrastPlatteColor(index)])
+                                                    color:  index>26?rgbaObjToRgba(selectedColor["onSurface"]):rgbaObjToRgba(selectedColor[generateHighContrastPlatteColor(index)])
                                                 }}
                                                     className={"px-4 text-left text-label-large py-2 font-medium"}>
                                                     {key}

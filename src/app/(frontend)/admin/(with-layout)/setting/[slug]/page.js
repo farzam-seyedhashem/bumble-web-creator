@@ -48,7 +48,6 @@ export default async function Page({params}) {
     const selectedTab = slug
     const data = await getData(slug);
 
-    // console.log(typeof data)
     // const tabs = [
     //     {
     //         icon: "monitoring",

@@ -55,7 +55,6 @@ async function index(req) {
     // });
     //     return Page.find()
     // } catch (e) {
-    //     console.log(e)
     // }
 // Page.find(regexQuery, function (err, docs) {
 //
@@ -68,7 +67,6 @@ async function index(req) {
 
 // Store a newly created resource in storage.
 async function store(body) {
-    console.log("body", body)
     let newNews = new Page(body);
     await newNews.save();
     revalidateTag("pages")
@@ -80,57 +78,26 @@ async function show(req, res) {
     const docs = await Page.find({slug: req.query.slug}).populate('tags').populate('thumbnail').exec(function (err, docs) {
         res.send(docs[0])
     });
-    // console.log(docs)
     //  return docs[0]
 }
 
 // Display the specified resource.
 async function getById(id) {
-    return await Page.findById(id).populate('thumbnail')
+    return await Page.findOne({_id: id})
 }
 
 async function getBySlug(slug) {
-    // console.log(slug)
-   // console.log("mmmmm",await Page.findOne({slug: slug}))
     return await Page.findOne({slug: slug})
 
 }
 
-async function comments(req, res) {
-    let body = req.body;
-    const comment = {
-        name: body.name,
-        email: body.email,
-        websiteURL: body?.websiteURL,
-        content: body.content,
-        createdAt: Date.now(),
-        approved: "0",
-    };
-    await Page.findOneAndUpdate({_id: req.query.slug}, {$push: {comments: comment}}, function (err, response) {
-        res.send("ok")
-    });
-    // Page.findOneAndUpdate({_id: req.query.id}, body, {new: true}, function (err, response) {
-    //     res.send(response)
-    // });
-}
 
 // Update the specified resource in storage.
-async function update(body,slug) {
-    // let body = req.body;
-    // let doc = Page.findOneAndUpdate({_id: req.query.id}, body);
-
+async function update(body,id) {
     const {classes,...other} = body
-    console.log("body", classes)
-    if (body?.content){
-        fs.writeFileSync(`./src/app/(styles)/${slug}.module.css`, classes,{flag:"w+"})
-    }
-    const updateValue = await Page.findOneAndUpdate({slug: slug}, other, {new: true})
+    const updateValue = await Page.findOneAndUpdate({_id: id}, other, {new: true})
     revalidateTag("pages")
     return updateValue
-    // Page.findOneAndUpdate({slug: slug}, body, {new: true}, function (err, response) {
-    //     res.send(response)
-    // });
-
 };
 
 // Remove the specified resource from storage.
@@ -144,7 +111,6 @@ export {
     show,
     store,
     getById,
-    comments,
     update,
     destroy
 

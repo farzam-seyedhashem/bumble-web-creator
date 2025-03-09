@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useMemo, useState} from "react";
 
-export default function TextField({label,className,onChange,defaultValue,id}) {
+export default function TextField({label,className,onChange,defaultValue,id,...other}) {
     let [value, setValue] = useState(defaultValue?defaultValue:"")
     useEffect(() => {
         setValue(defaultValue)
@@ -21,7 +21,7 @@ export default function TextField({label,className,onChange,defaultValue,id}) {
                 <legend className="text-xs  relative h-[11px] invisible float-unset p-0 overflow-hidden ml-3 max-w-full w-fit leading-[16px] float-[unset] transition-[max-width_100ms_cubic-bezier(0.0,_0,_0.2,_1)_50ms]">
                     <span className={`${value!==""?"block":"group-focus-within:block hidden"} opacity-0 px-1 inline-block w-fit`}>{label}</span>
                 </legend>
-                <input value={value} onChange={(e)=>{
+                <input {...other} value={value} onChange={(e)=>{
                     setValue(e.target.value)
                     onChange(e)
                 }} aria-invalid={"true"} id={id?id:label} className={"h-[calc(100%_-_1px)] border-0 bg-transparent text-on-surface-light dark:text-on-surface-dark outline-none px-4 w-full caret-primary-light "}/>

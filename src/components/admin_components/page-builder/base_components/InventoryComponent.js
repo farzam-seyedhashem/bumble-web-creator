@@ -5,7 +5,7 @@ import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import InventoryCard from "@admin/admin-panel/inventory-card/InventoryCard";
 
-export default function InventoryComponent({isDesktop,item, editItem,removeItemFunc,dragFunc}) {
+export default function InventoryComponent({editDialogOpenComponentId,setEditDialogOpenComponentId,isDesktop,item, editItem,removeItemFunc,dragFunc}) {
     // const [gridNumber, setGridNumber] = useState(item.options.gridNumber)
     // const [numberOfBlog, setNumberOfBlog] = useState(item.options.numberOfBlog)
     const [inventoryInfoSelected, setInventoryInfoSelected] = useState(["miles", "interior", "est"])
@@ -67,7 +67,6 @@ export default function InventoryComponent({isDesktop,item, editItem,removeItemF
                         </Icon>
                     </button>
                     <button onDragEnterCapture={() => {
-                        console.log("weof;mwe''''''")
                         removeItemFunc()
                     }} onDragStart={(e) => dragFunc(e)} draggable={true}
                             className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>

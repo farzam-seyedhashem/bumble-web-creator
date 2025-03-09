@@ -15,6 +15,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/typography": "^0.5.10",
+    "aos": "^2.3.4",
     "autoprefixer": "10.4.16",
     "eslint": "8.53.0",
     "eslint-config-next": "14.0.1",
@@ -22,7 +23,7 @@
     "highlight.js": "^11.9.0",
     "immutable": "^5.0.0-beta.5",
     "lodash": "^4.17.21",
-    "material-symbols": "^0.13.2",
+    "material-symbols": "^0.28.1",
     "mongoose": "^8.4.1",
     "next": "^14.2.3",
     "postcss": "8.4.31",
@@ -35,7 +36,8 @@
     "swiper": "^11.1.0",
     "tailwindcss": "3.4.3",
     "unique-string-generator": "^1.1.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zoomooz": "^1.0.0"
   },
   "devDependencies": {
     "tailwind-material-colors": "^3.0.2"
