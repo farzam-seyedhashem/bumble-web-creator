@@ -5,7 +5,7 @@ import IconButton from "@m3/icon_buttons/IconButton";
 import react, {useEffect, useState} from "react";
 import Icon from "@m3/assets/icons/Icon";
 
-export default function withLayout() {
+export default function WithLayout() {
 	const [storyType, setStoryType] = useState("text");
 	const [showStoryUploadButton, setShowStoryUploadButton] = useState(false);
 	const [storyContent, setStoryContent] = useState(null);

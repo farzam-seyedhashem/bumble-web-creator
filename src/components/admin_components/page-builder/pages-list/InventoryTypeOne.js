@@ -83,7 +83,7 @@ export const InventoryTypeOne = ({options, isMobilePreview, className}) => {
                                             backgroundColor: options.filledButtonsBgColor,
                                             color: options.filledButtonsTextColor
                                         }} type={"filled"}>
-                                            Unlock Manager's Special
+                                            {"Unlock Manager's Special"}
                                         </Button>
                                     </div>
                                 </div>

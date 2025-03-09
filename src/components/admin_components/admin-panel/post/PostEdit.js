@@ -13,9 +13,7 @@ import {convertToSlug} from "@frontend/_helper/convertToSlug";
 import Image from 'next/image'
 import FilterChips from "@m3/chips/FilterChips";
 import BasicDialog from "@m3/dialogs/BasicDialog";
-import Divider from "@m3/dividers/Divider";
 import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
-import mongoose from "mongoose";
 export default function PostEdit({siteSetting}) {
     const [data, setData] = useState({})
 

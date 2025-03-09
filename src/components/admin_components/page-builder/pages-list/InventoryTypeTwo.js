@@ -2,10 +2,6 @@ import FAB from "@m3/floating_action_buttons/FAB";
 import Icon from "@m3/assets/icons/Icon";
 import Button from "@m3/buttons/Button";
 import Image from "next/image";
-import Divider from "@m3/dividers/Divider";
-import Switch from "@m3/switch/Switch";
-import FilterChips from "@m3/chips/FilterChips";
-import ColorPicker from "@m3/color_pricker/ColorPicker";
 
 export const InventoryTypeTwo = ({options, isMobilePreview, className}) => {
     return (<>
@@ -388,7 +384,7 @@ export const InventoryTypeTwo = ({options, isMobilePreview, className}) => {
                             </div>
                             <div className={"flex justify-end"}>
                                 <Button type={"filled"}>
-                                    Unlock Manager's Special
+                                    {"Unlock Manager's Special"}
                                 </Button>
                             </div>
                         </div>

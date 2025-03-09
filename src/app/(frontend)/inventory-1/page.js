@@ -70,7 +70,7 @@ export default function InventoryPage() {
                                 </div>
                                 <div className={"absolute bottom-4 right-4 flex justify-end"}>
                                     <Button type={"filled"}>
-                                        Unlock Manager's Special
+                                        {"Unlock Manager's Special"}
                                     </Button>
                                 </div>
                             </div>
