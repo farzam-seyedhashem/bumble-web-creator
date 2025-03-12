@@ -13,7 +13,7 @@ import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Button from "@m3/buttons/Button";
 
-export default function Map({editDialogOpenComponentId,setEditDialogOpenComponentId,color,dragFunc, removeItemFunc, isDesktop, editItem, item, key}) {
+export default function Map({fields,editDialogOpenComponentId,setEditDialogOpenComponentId,color,dragFunc, removeItemFunc, isDesktop, editItem, item, key}) {
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.addr)
     let [styles, setStyles] = useState(item?.styles)
@@ -118,7 +118,7 @@ export default function Map({editDialogOpenComponentId,setEditDialogOpenComponen
 
                     </div>
                 </div>
-                {editMode === "style" && item.fields.map((field, index) => <StyleFieldGenerator
+                {(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
                     onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index} field={field}/>)}
                 {editMode === "value" && <div className={"mt-6"}>
                     <TextField  label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}

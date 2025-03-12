@@ -14,14 +14,11 @@ import Icon from "@m3/assets/icons/Icon";
 
 async function getData(slug) {
     'use server'
-    const res = await fetch('http://localhost:3000/api/page', {next: {tags: ['pages']}})
+    const res = await fetch('http://localhost:3000/api/page', {cache:"no-store"})
     if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')
     }
-
     return res.json()
-
 
 }
 

@@ -14,7 +14,8 @@ import IconComponent from "@page_builder/base_components/IconComponent";
 import BlogPostComponent from "@page_builder/base_components/BlogPostComponent";
 import InventoryComponent from "@page_builder/base_components/InventoryComponent";
 import Map from "@page_builder/base_components/Map";
-
+import ComponentsLib from '@/Components.json'
+import SVGComponent from "@page_builder/base_components/SVGComponent";
 class ComponentGenerator extends React.Component {
 	constructor(props) {
 		super(props);
@@ -33,10 +34,11 @@ class ComponentGenerator extends React.Component {
 			dragFunc,
 			removeItemFunc
 		} = this.props
+		const components = ComponentsLib.components;
 		return (
 			<div className={"group relative"}>
 				{item.idType === "title" &&
-					<Typography editDialogOpenComponentId={editDialogOpenComponentId}
+					<Typography fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
@@ -44,7 +46,15 @@ class ComponentGenerator extends React.Component {
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
 
-				{item.idType === "paragraph" && <Paragraph editDialogOpenComponentId={editDialogOpenComponentId}
+				{item.idType === "paragraph" && <Paragraph fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
+				                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+				                                           color={siteSetting.color}
+				                                           dragFunc={(e) => dragFunc(e, idNumber)}
+				                                           removeItemFunc={() => removeItemFunc(idNumber)}
+				                                           isDesktop={isDesktop} key={item.uniqueId}
+				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+				                                           item={item}/>}
+				{item.idType === "svg" && <SVGComponent fields={components.find(l=>l.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 				                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 				                                           color={siteSetting.color}
 				                                           dragFunc={(e) => dragFunc(e, idNumber)}
@@ -53,7 +63,7 @@ class ComponentGenerator extends React.Component {
 				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 				                                           item={item}/>}
 				{
-					item.idType === "button" && <ButtonComponent editDialogOpenComponentId={editDialogOpenComponentId}
+					item.idType === "button" && <ButtonComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 					                                             setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 					                                             color={siteSetting?.color}
 					                                             dragFunc={(e) => dragFunc(e, idNumber)}
@@ -63,7 +73,7 @@ class ComponentGenerator extends React.Component {
 					                                             key={item.uniqueId} item={item}/>
 				}
 				{
-					item.idType === "image" && <ImageComponent editDialogOpenComponentId={editDialogOpenComponentId}
+					item.idType === "image" && <ImageComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 					                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 					                                           dragFunc={(e) => dragFunc(e, idNumber)}
 					                                           removeItemFunc={() => removeItemFunc(idNumber)}
@@ -72,7 +82,7 @@ class ComponentGenerator extends React.Component {
 					                                           item={item}/>
 				}
 				{item.idType === "container" &&
-					<Container editDialogOpenComponentId={editDialogOpenComponentId}
+					<Container fields={components.find(l=>l.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 					           setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					           dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					           isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
@@ -97,7 +107,7 @@ class ComponentGenerator extends React.Component {
 					                removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
 					                key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}
 					                idNumber={idNumber} item={item}/>}
-				{item.idType === "iconPicker" && <IconComponent editDialogOpenComponentId={editDialogOpenComponentId}
+				{item.idType === "iconPicker" && <IconComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 				                                                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 				                                                color={siteSetting.color}
 				                                                dragFunc={(e) => dragFunc(e, idNumber)}
@@ -120,7 +130,7 @@ class ComponentGenerator extends React.Component {
 					                    key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}
 					                    item={item}/>}
 				{item.idType === "map" &&
-					<Map editDialogOpenComponentId={editDialogOpenComponentId}
+					<Map fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
 					     setEditDialogOpenComponentId={setEditDialogOpenComponentId} color={siteSetting.color}
 					     dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					     isDesktop={isDesktop} key={item.uniqueId}

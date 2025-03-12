@@ -28,13 +28,15 @@ export default async function Page({params}) {
 
     return (
         <div>
+
             <style>
                 {`
+              
                    ${JSON.parse(data.content).map((item, index) => {
-                    if (item.idType === "title" || item.idType === "image" || item.idType === "paragraph" || item.idType === "button") {
-                        const mobileStyles = item.mobileStyles
-                        const desktopStyles = item.desktopStyles
-                        const globalStyles = item.globalStyles
+                    if (item.styles) {
+                        const mobileStyles = item.styles.mobile
+                        const desktopStyles = item.styles.desktop
+                        const globalStyles = item.styles.global
                         const mc = StyleToClass(desktopStyles,true,item.uniqueId)
                         const dc = StyleToClass(mobileStyles,false,item.uniqueId)
                         const gc = StyleToClass(globalStyles,false,item.uniqueId)

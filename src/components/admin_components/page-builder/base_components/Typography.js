@@ -12,7 +12,18 @@ import {StyleToClass} from "@frontend/_helper/StyleToClass";
 import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 
-export default function TextComponents({editDialogOpenComponentId,setEditDialogOpenComponentId,color, dragFunc, removeItemFunc, isDesktop, editItem, item, key}) {
+export default function TextComponents({
+	                                       fields,
+	                                       editDialogOpenComponentId,
+	                                       setEditDialogOpenComponentId,
+	                                       color,
+	                                       dragFunc,
+	                                       removeItemFunc,
+	                                       isDesktop,
+	                                       editItem,
+	                                       item,
+	                                       key
+                                       }) {
 	let [Component, setComponent] = useState(item.type)
 	let [isSelected, setIsSelected] = useState(false)
 	let [value, setValue] = useState(item.value || item.idType)
@@ -36,8 +47,8 @@ export default function TextComponents({editDialogOpenComponentId,setEditDialogO
 	useEffect(() => {
 		// setEditDialogOpenComponentId(item.uniqueId)
 		// console.log(editDialogOpenComponentId)
-		console.log("lweknfklw",editDialogOpenComponentId)
-	},[editDialogOpenComponentId])
+		console.log("lweknfklw", editDialogOpenComponentId)
+	}, [editDialogOpenComponentId])
 
 	return (
 		<>
@@ -77,11 +88,12 @@ export default function TextComponents({editDialogOpenComponentId,setEditDialogO
 				</div>
 
 			</Component>
-			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
+			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
+			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
 				<div
 					className={" flex border-b border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
 					<div onClick={() => setEditMode("value")}
-					     className={`${editMode === "value" ? "text-primary-light dark:text-primary-dark":"text-on-surface-variant-light dark:text-on-surface-variant-dark"} w-6/12 relative flex justify-center items-center h-full`}>
+					     className={`${editMode === "value" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} w-6/12 relative flex justify-center items-center h-full`}>
 						<Icon className={"mr-2"}>
 							Title
 						</Icon>
@@ -90,7 +102,7 @@ export default function TextComponents({editDialogOpenComponentId,setEditDialogO
 							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 					</div>
 					<div onClick={() => setEditMode("style")}
-					     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark":"text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+					     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
 						<Icon className={"mr-2"}>
 							style
 						</Icon>
@@ -100,12 +112,12 @@ export default function TextComponents({editDialogOpenComponentId,setEditDialogO
 
 					</div>
 				</div>
-				{editMode === "style" && item.fields.map((field, index) => <StyleFieldGenerator
+				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index} field={field}/>)}
 				{editMode === "value" && <div className={"mt-4 "}>
 					<div className={"px-4"}>
-					<TextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
-					           defaultValue={value}/>
+						<TextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
+						           defaultValue={value}/>
 					</div>
 					<div className={" mt-3 justify-end"}>
 						<label

@@ -12,18 +12,17 @@ import AutoSelect from "@m3/auto_complete/AutoSelect";
 import ListItem from "@m3/lists/ListItem";
 import SegmentedButton from "@m3/segmented_buttons/SegmentedButton";
 import Select from "@m3/text_fields/Select";
+import {deletePage} from "@backend/server_action/Pages";
+import {deleteTemplate} from "@backend/server_action/Templates";
 
 export default function TemplateList({data,showDefaultPages,showDefaultTemplate}) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newPageData, setNewPageData] = useState({})
-	const pages = data.filter(item => item.slug)
-	const [selectedIndexType, setSelectedIndexType] = useState(0);
+	const [selectedIndexType, setSelectedIndexType] = useState(showDefaultPages?0:1);
 	const items = [
 		{title: "Page"},
 		{title: "Template"},
 	]
-	const [slugs, setSlugs] = useState([]);
-	const link = useRef(null);
 	const defaultPages = [
 		{title:"Inventory list page",slug:"/inventories",adminLink:"/admin/edit-inventory-list-page"},
 		{title:"Posts list page",slug:"/posts/[slug]",adminLink:"/admin/edit-post-list-page"},
@@ -32,7 +31,6 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 	]
 	const defaultComponent = [
 		{title:"Inventory card",slug:"",adminLink:"/admin/edit-inventory-card"},
-
 	]
 	const CreateNewTemplate = () => {
 		try {
@@ -58,30 +56,12 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 			alert('An error occurred!');
 		}
 	}
-	// const pageCompleteHelper = (value) => {
-	//     try {
-	//         fetch("/api/page?", {
-	//             method: 'GET',
-	//         }).then(response =>
-	//             setIsOpen(true)
-	//         ).then(data => alert(data));
-	//     }catch(error) {
-	//         alert('An error occurred!');
-	//     }
-	// }
 	const updateNewPageData = (id, value) => {
 		setNewPageData({...newPageData, [id]: value})
 		console.log(newPageData)
 	}
 	const submitNewOne = () => {
 		selectedIndexType === 0 ? CreateNewPage() : CreateNewTemplate()
-	}
-	const onLinkChange = (value) => {
-		// console.log(pages)
-		let sl = [...slugs]
-		sl.push(value)
-		setSlugs(sl)
-		// setNewPageData({...newPageData, "slug": value})
 	}
 
 
@@ -228,11 +208,13 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 												edit
 											</IconButton>
 										</Link>
-										<Link href={`/admin/template-builder/${page._id}`}>
+										<button onClick={async () => {
+											page.slug ? await deletePage(page._id) : await deleteTemplate(page._id)
+										}}>
 											<IconButton className={"text-error-light dark:text-error-dark"}>
 												delete
 											</IconButton>
-										</Link>
+										</button>
 									</div>
 								</td>
 							</tr>)}

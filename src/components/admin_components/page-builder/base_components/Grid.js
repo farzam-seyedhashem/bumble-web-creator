@@ -9,7 +9,7 @@ import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 
-function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
+function Column({editDialogOpenComponentId,setEditDialogOpenComponentId,siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, idNumber, editItem,removeColumnFunc}) {
     const [addedItems, setAddedItems] = useState(item.addedItems)
     let [className, setClassName] = useState({})
     const handleAddedItemsToItem = (component, number) => {
@@ -70,7 +70,7 @@ function Column({siteSetting,isDesktop,columnSizeDesktop,columnSizeMobile,item, 
             {addedItems.map((l, i) =>
                 <div key={item.uniqueId + i + "-g"} className={"relative group"}>
                     <DropContainer idNumber={i} handleAddedItems={handleAddedItemsToItem}/>
-                    <ComponentGenerator siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop} idNumber={i} editItem={editItemC} item={l}/>
+                    <ComponentGenerator editDialogOpenComponentId={editDialogOpenComponentId} setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting} dragFunc={drag} removeItemFunc={removeItemFuncM} isDesktop={isDesktop} idNumber={i} editItem={editItemC} item={l}/>
                 </div>
             )}
             <div className={"relative"}>
@@ -197,7 +197,7 @@ class Grid extends React.Component {
         return (
             <div style={{justifyContent: "end", gridGap: this.state.gap + "px", ...renderStyles}} className={baseClass}>
                 {this.state.addedItems.map((m, i) =>
-                    <Column siteSetting={this.props.siteSetting} removeColumnFunc={()=>removeColumnFunc(i)} isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]} columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
+                    <Column editDialogOpenComponentId={editDialogOpenComponentId} setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={this.props.siteSetting} removeColumnFunc={()=>removeColumnFunc(i)} isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]} columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}
                             idNumber={i} editItem={this.editItemC}
                             item={m}/>
                 )}

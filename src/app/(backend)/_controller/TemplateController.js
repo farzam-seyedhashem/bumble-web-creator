@@ -113,6 +113,7 @@ async function update(body,slug) {
 
 // Remove the specified resource from storage.
 async function destroy(id) {
+
     return await Template.findOneAndDelete({_id: id});
 }
 

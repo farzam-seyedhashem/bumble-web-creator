@@ -14,7 +14,7 @@ import {StyleToClass} from "@frontend/_helper/StyleToClass";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Image from 'next/image'
 
-export default function Container({editDialogOpenComponentId,setEditDialogOpenComponentId,siteSetting, item, isDesktop, editItem, removeItemFunc, dragFunc}) {
+export default function Container({fields,editDialogOpenComponentId,setEditDialogOpenComponentId,siteSetting, item, isDesktop, editItem, removeItemFunc, dragFunc}) {
 	const [addedItems, setAddedItems] = useState(item.addedItems)
 	const [isSelected, setIsSelected] = useState(false)
 	let [className, setClassName] = useState({})
@@ -147,7 +147,7 @@ const [editMode, setEditMode] = useState("value");
 						<div key={item.uniqueId + i + "-container"} className={"relative group"}>
 							<DropContainer idNumber={i} selected={addedItems}
 							               handleAddedItems={handleAddedItems}/>
-							<ComponentGenerator siteSetting={siteSetting} dragFunc={drag}
+							<ComponentGenerator editDialogOpenComponentId={editDialogOpenComponentId} setEditDialogOpenComponentId={setEditDialogOpenComponentId}  siteSetting={siteSetting} dragFunc={drag}
 							                    removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
 							                    editItem={editItemC} idNumber={i} item={l}/>
 						</div>
@@ -182,7 +182,8 @@ const [editMode, setEditMode] = useState("value");
 
 					</div>
 				</div>
-				{editMode === "style" && item.fields.map((field, index) => <StyleFieldGenerator
+
+				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index} field={field}/>)}
 				{editMode === "value" && <div>
 					<h3 className={"px-4 pt-3 pb-2 mt-6  border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>

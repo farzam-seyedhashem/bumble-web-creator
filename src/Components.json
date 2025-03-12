@@ -12,8 +12,13 @@
           "type": "title",
           "value": "Text"
         },
+
         {
           "type": "font",
+          "onDeviceChange": true
+        },
+        {
+          "type": "maxWidth",
           "onDeviceChange": true
         },
         {
@@ -257,6 +262,81 @@
       "className": "w-full h-[400px]"
     },
     {
+      "uid": "14",
+      "idType": "svg",
+      "value": null,
+      "icon": "frame_source",
+      "label": "svg",
+      "fields": [
+        {
+          "type": "title",
+          "value": "Component size"
+        },
+        {
+          "type": "width",
+          "onDeviceChange": true
+        },
+        {
+          "type": "height",
+          "onDeviceChange": true
+        },
+        {
+          "type": "title",
+          "value": "Color"
+        },
+        {
+          "type": "color",
+          "onDeviceChange": false
+        },
+        {
+          "type": "title",
+          "value": "Component display"
+        },
+        {
+          "type": "display",
+          "onDeviceChange": true
+        },
+        {
+          "type": "boxModel",
+          "onDeviceChange": true
+        }
+
+
+      ],
+      "styles": {
+        "mobile": {
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "objectFit": "cover",
+          "width": "100%",
+          "height": "400px"
+        },
+        "desktop": {
+          "paddingTop": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "marginLeft": "0px",
+          "marginRight": "0px",
+          "objectFit": "cover",
+          "width": "100%",
+          "height": "400px"
+        },
+        "global": {
+          "borderRadius": "0px"
+        }
+      },
+      "className": "w-full h-[400px]"
+    },
+    {
       "uid": "4",
       "idType": "button",
       "value": null,
@@ -323,6 +403,7 @@
           "onDeviceChange": false
         }
       ],
+      "justify": "flex-start",
       "styles": {
         "mobile": {
           "paddingTop": "0px",
@@ -381,6 +462,10 @@
         },
         {
           "type": "height",
+          "onDeviceChange": true
+        },
+        {
+          "type": "maxWidth",
           "onDeviceChange": true
         },
         {

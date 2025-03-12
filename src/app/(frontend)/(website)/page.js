@@ -3,6 +3,7 @@ import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
 import {revalidateTag} from "next/cache";
 import {notFound} from "next/navigation";
+import Head from "next/head";
 async function getData() {
 	'use server'
 	revalidateTag("page")
@@ -21,13 +22,15 @@ export default async function Page() {
 
 	return (
 		<div>
-			<style>
+
+				<style>
 				{`
-                   ${data.content!==null && JSON.parse(data.content).map((item, index) => {
-					if (item.idType === "title" || item.idType === "image" || item.idType === "paragraph" || item.idType === "button") {
-						const mobileStyles = item.mobileStyles
-						const desktopStyles = item.desktopStyles
-						const globalStyles = item.globalStyles
+              
+                   ${JSON.parse(data.content).map((item, index) => {
+					if (item.styles) {
+						const mobileStyles = item.styles.mobile
+						const desktopStyles = item.styles.desktop
+						const globalStyles = item.styles.global
 						const mc = StyleToClass(desktopStyles, true, item.uniqueId)
 						const dc = StyleToClass(mobileStyles, false, item.uniqueId)
 						const gc = StyleToClass(globalStyles, false, item.uniqueId)
@@ -35,8 +38,9 @@ export default async function Page() {
 					}
 				}).join("")}
                 `}
-			</style>
-			{data.content!==null && JSON.parse(data.content).map((item, index) =>
+				</style>
+
+			{data.content !== null && JSON.parse(data.content).map((item, index) =>
 				<WebComponentGenerator key={index} item={item}/>
 			)}
 		</div>

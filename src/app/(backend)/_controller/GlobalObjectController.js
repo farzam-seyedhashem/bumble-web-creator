@@ -1,6 +1,6 @@
 import {db} from '../_helper/db'
 import {revalidateTag} from "next/cache";
-import fs from 'fs'
+// import fs from 'fs'
 const PostModel = db.GlobalObject
 // import SafeClass from '@/SafeClasses.json'
 async function index(req) {
@@ -118,7 +118,7 @@ async function update(body,slug) {
 
     const {classes,...other} = body
     if (body?.content){
-        fs.writeFileSync(`./src/app/(styles)/${slug}.module.css`, classes,{flag:"w+"})
+        // fs.writeFileSync(`./src/app/(styles)/${slug}.module.css`, classes,{flag:"w+"})
     }
     const updateValue = await PostModel.findOneAndUpdate({slug: slug}, other, {new: true})
     revalidateTag("pages")

@@ -9,8 +9,8 @@ import {PostTagModal} from "@model/PostTagModel";
 import {TemplateModel} from "@model/TemplateModel";
 import {MenuModel} from "@model/MenuModel";
 import {GlobalObjectModel} from "@model/GlobalObjectModel";
-const uri = "mongodb+srv://root:Ffjsfj131415@pertutor.7c6hb.mongodb.net/dealergenius?retryWrites=true&w=majority&appName=pertutor";
-const localuri = "mongodb://127.0.0.1/bumblecreatorexample"
+// const uri = "mongodb+srv://root:Ffjsfj131415@pertutor.7c6hb.mongodb.net/dealergenius?retryWrites=true&w=majority&appName=pertutor";
+const uri = "mongodb://127.0.0.1/bumblecreatorexample"
 mongoose.connect(uri);
 mongoose.Promise = global.Promise;
 

@@ -170,7 +170,17 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				</label>
 				<div className={"mt-0 w-[120px]"}>
 					<TextFieldEditor id={"width"} onChange={onChangeValue}
-					                 defValue={style?.width}/>
+					                 defValue={style?.width || ""}/>
+				</div>
+			</div>}
+			{field.type === "maxWidth" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
+				<label
+					className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
+					Max Width
+				</label>
+				<div className={"mt-0 w-[120px]"}>
+					<TextFieldEditor id={"maxWidth"} onChange={onChangeValue}
+					                 defValue={style?.maxWidth || ""}/>
 				</div>
 			</div>}
 			{field.type === "height" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
@@ -180,7 +190,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				</label>
 				<div className={"mt-0 w-[120px]"}>
 					<TextFieldEditor id={"height"} onChange={onChangeValue}
-					                 defValue={style?.height}/>
+					                 defValue={style?.height || ""}/>
 				</div>
 			</div>}
 
@@ -213,7 +223,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 							</label>
 							<div className={"w-[120px]"}>
 								<TextFieldEditor id={"fontSize"} onChange={onChangeValue}
-								                 defValue={style?.fontSize}/>
+								                 defValue={style?.fontSize || ""}/>
 							</div>
 						</div>
 
@@ -267,6 +277,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				<ColorPicker onChange={(value) => onChangeValue("color", value)}
 				             value={style[field.type]}/>
 			</div>}
+			{field.type === "fill" && <div
+				className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
+				<label
+					className={"text-body-large  text-on-surface-light dark:text-on-surface-dark"}>
+					Fill
+				</label>
+				<ColorPicker onChange={(value) => onChangeValue("fill", value)}
+				             value={style[field.type]}/>
+			</div>}
+
 			{field.type === "backgroundColor" && <div
 				className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
 				<label

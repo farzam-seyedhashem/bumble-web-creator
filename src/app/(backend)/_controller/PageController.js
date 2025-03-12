@@ -1,6 +1,6 @@
 import {db} from '../_helper/db'
 import {revalidateTag} from "next/cache";
-import fs from 'fs'
+// import fs from 'fs'
 const Page = db.Page
 // import SafeClass from '@/SafeClasses.json'
 async function index(req) {
@@ -102,7 +102,9 @@ async function update(body,id) {
 
 // Remove the specified resource from storage.
 async function destroy(id) {
-    return await Page.findOneAndDelete({_id: id});
+    revalidateTag("pages")
+    return await Page.deleteOne({_id: id});
+
 }
 
 export {

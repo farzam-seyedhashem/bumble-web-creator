@@ -25,6 +25,6 @@ export default async function page({params}) {
     const data = await getData(params.slug)
     const siteSetting = await getSiteSettingData(params.slug)
     return (
-        <PageBuilder siteSetting={siteSetting} slug={params.slug} data={data}/>
+        <PageBuilder type={"template"} siteSetting={siteSetting} slug={params.slug} data={data}/>
     )
 }

@@ -1,67 +1,61 @@
 'use client';
-import {useEffect, useState, Fragment, useMemo} from "react";
+import {useEffect, useState, Fragment, useRef} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
-import ColorPicker from "@m3/color_pricker/ColorPicker";
+import Icon from "@m3/assets/icons/Icon";
 import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
-import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
-import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
+import {UploadFile} from "@frontend/client_action/File";
+import {StoreFile} from "@backend/server_action/Files";
+import TextArea from "@m3/TextArea";
+// import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
-export default function ButtonComponent({
-	                                        fields,
-	                                        editDialogOpenComponentId,
-	                                        setEditDialogOpenComponentId,
-	                                        color,
-	                                        isDesktop,
-	                                        item,
-	                                        editItem,
-	                                        removeItemFunc,
-	                                        dragFunc
-                                        }) {
+export default function SVGComponent({
+	                                     fields,
+	                                     editDialogOpenComponentId,
+	                                     setEditDialogOpenComponentId,
+	                                     isDesktop,
+	                                     item,
+	                                     editItem,
+	                                     removeItemFunc,
+	                                     dragFunc
+                                     }) {
 	let [isSelected, setIsSelected] = useState(false)
-	let [value, setValue] = useState(item.value || item.idType)
-	let [link, setLink] = useState(item.link || "")
-	let [justify,setJustify] = useState(item.justify || "start")
+	let [value, setValue] = useState(item.value)
 	let [styles, setStyles] = useState(item?.styles)
 	const [editMode, setEditMode] = useState("value")
+	const fileInputRef = useRef(null);
 	let onChangeStyles = (name, value, type) => {
 		let nStyles = {...styles}
+
 		nStyles[type] = {...nStyles[type], [name]: value}
+		// setGlobalRenderStyles(styles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
 	}
-	useEffect(() => {
-		if (!styles.global.color) {
-			onChangeStyles('color', rgbaObjToRgba(color.onPrimary), 'global')
-		}
-		if (!styles.global.backgroundColor) {
-			onChangeStyles('backgroundColor', rgbaObjToRgba(color.primary), 'global')
-		}
-	}, [styles])
-	const changeHandler = (key,value) => {
-		editItem(key, value)
+	let handleChangeValue = (value) => {
+		// const file = JSON.parse(value)
+		setValue(value)
+		editItem("value", value, item.uniqueId)
 	}
 	return (
 		<>
-			<div className={"flex relative group/button"}>
-				<div style={{width:"100%",display:"flex",justifyContent:`${justify}`}}>
-					<button style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
-						{value}
-					</button>
+			<div className={"relative group"}>
+
+				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+				     dangerouslySetInnerHTML={{__html: value}}>
 				</div>
 				<div
-					className={"absolute z-[888] hidden group-hover/button:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+					className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
 					<div
 						className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
 						<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
 						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
 							<Icon size={16}
-							      className={"dark:!text-on-tertiary-container-dark !text-on-tertiary-container-light text-[20px]"}>
+							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
 								edit
 							</Icon>
 						</button>
@@ -110,137 +104,45 @@ export default function ButtonComponent({
 
 					</div>
 				</div>
-				{editMode === "value" && <div className={"px-4 mt-6"}>
-					<TextField id={"ef"} key={1} label={"Text"}
-					           onChange={(e) => {
-						           changeHandler("value",e.target.value)
-						           setValue(e.target.value)
-					           }} defaultValue={value}/>
-					<TextField id={"mm"} key={2} className={"mt-4"} label={"Link"}
-					           onChange={(e) => {
-						           changeHandler("link",e.target.value)
-						           setLink(e.target.value)
-					           }}
-					           defaultValue={link}/>
-					<div className={"px-4 h-[64px] flex justify-between items-center "}>
-						<label
-							className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-							Justify
-						</label>
-						<div className={"mt-1 flex justify-end space-x-1"}>
-							<button onClick={(e) => {
-								changeHandler("justify","flex-start")
-								setJustify("flex-start")
-							}}
-							        className={`${justify === "flex-start" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-								<Icon className={"text-[24px]"}>
-									align_justify_flex_start
-								</Icon>
-							</button>
-							<button onClick={(e) => {
-								changeHandler("justify","center")
-								setJustify("center")
-							}}
-							        className={`${justify === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-								<Icon className={"text-[24px]"}>
-									align_justify_center
-								</Icon>
-							</button>
-							<button onClick={(e) => {
-								changeHandler("justify","flex-end")
-								setJustify("flex-end")
-							}}
-							        className={`${justify === "flex-end" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-								<Icon className={"text-[24px]"}>
-									align_justify_flex_end
-								</Icon>
-							</button>
-						</div>
-					</div>
-				</div>}
 				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 					onChange={onChangeStyles} isDesktop={isDesktop}
 					styles={styles} key={index} field={field}/>)}
 
+				{editMode === "value" &&
+					<TextArea label={"SVG Code"} defaultValue={value} onChange={(e) => handleChangeValue(e.target.value)}/>}
 
-				{/*<div className={"flex justify-between items-center pt-4 pb-2"}>*/}
+				{/*<div className={"col-span-4 justify-between items-center"}>*/}
 				{/*    <label*/}
-				{/*        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*    Text Color*/}
+				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
+				{/*        Rounded*/}
 				{/*    </label>*/}
-				{/*    <ColorPicker value={globalRenderStyles.color}*/}
-				{/*                 onChange={(color) => onChangeGlobal("color", color)}/>*/}
+				{/*    <div className={"mt-2"}>*/}
+				{/*        <TextFieldEditor id={"borderRadius"} onChange={onChangeGlobal}*/}
+				{/*                         defValue={globalRenderStyles.borderRadius}/>*/}
+				{/*    </div>*/}
 				{/*</div>*/}
-				{/*<div className={"flex justify-between items-center pt-4 pb-2"}>*/}
+				{/*<div className={"col-span-4 justify-between items-center"}>*/}
 				{/*    <label*/}
-				{/*        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*        Background Color*/}
+				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
+				{/*        Width*/}
 				{/*    </label>*/}
-				{/*    <ColorPicker value={globalRenderStyles.backgroundColor}*/}
-				{/*                 onChange={(color) => onChangeGlobal("backgroundColor", color)}/>*/}
-
-				{/*</div>*/}
-				{/*<div className={"grid grid-cols-12 gap-4 py-2"}>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Width*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"width"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.width}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Height*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"height"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.height}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Rounded*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"borderRadius"} onChange={onChange}*/}
-				{/*                             defValue={globalRenderStyles.borderRadius}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-8 justify-between items-center "}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Font Weight*/}
-				{/*        </label>*/}
-				{/*        <div className={"w-full mt-2 justify-end"}>*/}
-				{/*            <select onChange={(e) => onChange("fontWeight", e.target.value)}*/}
-				{/*                    type={"text"}*/}
-				{/*                    value={deviceStyle.fontWeight}*/}
-				{/*                    className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>*/}
-				{/*                <option label={"light"} value={"300"}/>*/}
-				{/*                <option label={"normal"} value={"400"}/>*/}
-				{/*                <option label={"medium"} value={"500"}/>*/}
-				{/*                <option label={"bold"} value={"700"}/>*/}
-				{/*                <option label={"black"} value={"900"}/>*/}
-				{/*            </select>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Font Size*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"fontSize"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.fontSize}/>*/}
-				{/*        </div>*/}
+				{/*    <div className={"mt-2"}>*/}
+				{/*        <TextFieldEditor id={"width"} onChange={onChange}*/}
+				{/*                         defValue={deviceStyle.width}/>*/}
 				{/*    </div>*/}
 				{/*</div>*/}
+				{/*<div className={"col-span-4 justify-between items-center"}>*/}
+				{/*    <label*/}
+				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
+				{/*        Height*/}
+				{/*    </label>*/}
+				{/*    <div className={"mt-2"}>*/}
+				{/*        <TextFieldEditor id={"height"} onChange={onChange}*/}
+				{/*                         defValue={deviceStyle.height}/>*/}
+				{/*    </div>*/}
+				{/*</div>*/}
+
+
 				{/*<div className={"block items-center justify-between py-2"}>*/}
 				{/*    <label*/}
 				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}

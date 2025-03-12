@@ -1,16 +1,31 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 let FileSchema = new Schema({
-    alt:{
+    name: {
         type: String,
     },
-    url: {
+    encoding: {
         type: String,
-        required: true,
     },
-    type:{
+    mimetype:{
         type: String,
-    }
+    },
+    md5:{
+        type: String,
+    },
+    size: {
+        type: String,
+    },
+    tempFilePath: {
+        type: String,
+    },
+    truncated: {
+        type: String,
+    },
+    alt: {
+        type: String,
+    },
+
     // alt: [{
     //     value: {
     //         type: String,

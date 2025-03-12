@@ -1,5 +1,5 @@
 'use client';
-import {useEffect, useState, Fragment} from "react";
+import {useEffect, useState, Fragment, useRef} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Icon from "@m3/assets/icons/Icon";
@@ -7,12 +7,16 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
+import {UploadFile} from "@frontend/client_action/File";
+import {StoreFile} from "@backend/server_action/Files";
+// import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
-export default function ImageComponent({editDialogOpenComponentId,setEditDialogOpenComponentId,isDesktop,item,editItem,removeItemFunc,dragFunc}) {
+export default function ImageComponent({fields,editDialogOpenComponentId,setEditDialogOpenComponentId,isDesktop,item,editItem,removeItemFunc,dragFunc}) {
     let [isSelected, setIsSelected] = useState(false)
     let [value, setValue] = useState(item.value)
     let [styles,setStyles] = useState(item?.styles)
     const [editMode, setEditMode] = useState("value")
+    const fileInputRef = useRef(null);
     let onChangeStyles = (name,value,type) => {
         let nStyles = {...styles}
 
@@ -23,8 +27,9 @@ export default function ImageComponent({editDialogOpenComponentId,setEditDialogO
         console.log("styles",nStyles)
     }
     let handleChangeValue = (value) => {
-        setValue(value)
-        editItem("value", value)
+        const file = JSON.parse(value)
+        setValue(file.url)
+        editItem("value", file.url)
     }
     return (
         <>
@@ -93,7 +98,7 @@ export default function ImageComponent({editDialogOpenComponentId,setEditDialogO
 
                     </div>
                 </div>
-                {editMode==="style"&&item.fields.map((field, index) => <StyleFieldGenerator onChange={onChangeStyles} isDesktop={isDesktop}
+                {(editMode==="style" && fields) && fields.map((field, index) => <StyleFieldGenerator onChange={onChangeStyles} isDesktop={isDesktop}
                                                                         styles={styles} key={index} field={field}/>)}
 
                 {editMode==="value"&&<div className={"px-4 grid grid-cols-12 gap-4 py-2"}>
@@ -113,8 +118,14 @@ export default function ImageComponent({editDialogOpenComponentId,setEditDialogO
                                         </Icon>
                                     </div>}
                             </label>
-                            <input
-                                onChange={(e) => handleChangeValue(URL.createObjectURL(e.target.files[0]))}
+                            <input ref={fileInputRef} accept={"image/jpeg"}
+                                   name={"files"}
+                                onChange={async (e) => {
+
+                                    const file = fileInputRef.current.files[0]
+                                    const res = await UploadFile(file)
+                                    handleChangeValue(await StoreFile(res))
+                                }}
                                 id={"imageFile"} type={"file"}
                                 className={"hidden w-0"}/>
                         </div>

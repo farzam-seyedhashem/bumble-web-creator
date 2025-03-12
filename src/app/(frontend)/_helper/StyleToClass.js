@@ -27,7 +27,8 @@ const styleCss = [
 ]
 export function StyleToClass(style,isLargeDevice,componentId) {
     if(typeof style === 'undefined'){
-        throw new Error('styleToTailwind: device and style not defined');
+        return ""
+        // throw new Error('styleToTailwind: device and style not defined');
     }
     const deviceType = isLargeDevice?"md:":""
     let classes = ""
