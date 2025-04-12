@@ -1,5 +1,5 @@
 'use client';
-import {useEffect, useState, Fragment, useRef} from "react";
+import React, {useEffect, useState, Fragment, useRef} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Icon from "@m3/assets/icons/Icon";
@@ -41,44 +41,71 @@ export default function SVGComponent({
 		setValue(value)
 		editItem("value", value, item.uniqueId)
 	}
+	const copyToClipboard = () => {
+		localStorage.setItem("clipboard", JSON.stringify(item))
+	}
 	return (
 		<>
-			<div className={"relative group"}>
+			<style>{`
+				.${item.uniqueId}:hover .${item.uniqueId}-panel{
+				display: block;
+			}
+			`}</style>
+			<div style={isDesktop ? {
+				display: styles.desktop?.display || "block",
+				alignItems: styles.desktop?.alignItems || "flex-start",
+				justifyContent: styles.desktop?.justifyContent || "flex-start"
+			} : {
+				display: styles.mobile?.display || "block",
+				alignItems: styles.mobile?.alignItems || "flex-start",
+				justifyContent: styles.mobile?.justifyContent || "flex-start"
+			}}>
 
-				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
-				     dangerouslySetInnerHTML={{__html: value}}>
-				</div>
-				<div
-					className={"absolute  z-[888] hidden group-hover:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
+				<div className={`relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
+
 					<div
-						className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
-						<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon size={16}
-							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
-								edit
-							</Icon>
-						</button>
-						<button onDragOver={(event) => {
-							event.preventDefault();
-							removeItemFunc()
-						}} onDragStart={(e) => dragFunc(e)} draggable={true}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon size={16}
-							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
-								drag_indicator
-							</Icon>
-						</button>
-						<button
-							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon onClick={removeItemFunc} size={16}
-							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
-								delete
-							</Icon>
-						</button>
+						style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+						dangerouslySetInnerHTML={{__html: value}}>
 					</div>
-				</div>
+					<div
+						className={`absolute  z-[888] hidden ${item.uniqueId}-panel  -top-[24px] left-1/2 -translate-x-1/2 transform `}>
+						<div
+							className={"px-3 space-x-3 flex rounded-t-[8px] bg-tertiary-light"}>
+							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  bg-tertiary-light"}>
+								<Icon size={16}
+								      className={"text-on-tertiary-light text-[20px]"}>
+									edit
+								</Icon>
+							</button>
+							<button onClick={() => copyToClipboard()}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   bg-tertiary-light"}>
+								<Icon size={16}
+								      className={"text-on-tertiary-light  text-[20px]"}>
+									content_copy
+								</Icon>
+							</button>
+							<button onDragOver={(event) => {
+								event.preventDefault();
+								removeItemFunc()
+							}} onDragStart={(e) => dragFunc(e)} draggable={true}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  bg-tertiary-light "}>
+								<Icon size={16}
+								      className={"text-on-tertiary-light text-[20px]"}>
+									drag_indicator
+								</Icon>
+							</button>
+							<button
+								className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  bg-tertiary-light "}>
+								<Icon onClick={removeItemFunc} size={16}
+								      className={"text-on-tertiary-light  text-[20px]"}>
+									delete
+								</Icon>
+							</button>
+						</div>
+					</div>
 
+				</div>
 			</div>
 			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
 			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
@@ -109,7 +136,8 @@ export default function SVGComponent({
 					styles={styles} key={index} field={field}/>)}
 
 				{editMode === "value" &&
-					<TextArea label={"SVG Code"} defaultValue={value} onChange={(e) => handleChangeValue(e.target.value)}/>}
+					<TextArea label={"SVG Code"} defaultValue={value}
+					          onChange={(e) => handleChangeValue(e.target.value)}/>}
 
 				{/*<div className={"col-span-4 justify-between items-center"}>*/}
 				{/*    <label*/}

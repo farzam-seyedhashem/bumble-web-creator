@@ -1,7 +1,8 @@
 'use client'
 import Icon from "@m3/assets/icons/Icon";
 import IconButton from "@m3/icon_buttons/IconButton";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
+import Link from "next/link";
 
 export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
     const {color} = siteSetting;
@@ -37,7 +38,7 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                 `}
             </style>
             <div
-                className={"fixed appbarStyle  w-full border-outline-variant-light dark:border-outline-variant-dark items-center px-6 flex h-[64px] "}>
+                className={"fixed appbarStyle z-[999] w-full border-outline-variant-light dark:border-outline-variant-dark items-center px-6 flex h-[64px] "}>
 
                 {!menuSetting.logoCenter && <h1
                     className={"mr-4 font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>
@@ -61,14 +62,14 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                         search
                     </IconButton></div> : ""}
                 <ul className={`${menuSetting.menuRight && "ml-auto"} *:px-4 *:relative *:h-full flex items-center`}>
-                    <li
-                        className={`selectedStyleItem font-bold py-2 text-primary-light dark:text-primary-dark`}>
-                        Home
-                    </li>
-                    <li
-                        className={`unSelectedStyleItem text-on-surface-variant-light dark:text-on-surface-variant-dark`}>
-                        Inventory
-                    </li>
+                    {menuSetting.menuItems.desktopAppbar.map((item, index) =>
+                       <Link href={item.slug==="home"?"/":("/"+item.slug)} key={index}>
+                        <li
+                            className={`selectedStyleItem font-bold py-2 text-primary-light dark:text-primary-dark`}>
+                            {item.title}
+                        </li>
+                       </Link>
+                    )}
                 </ul>
                 {!menuSetting.menuRight ? menuSetting.isSearchbarInput ? <div className={`ml-auto 400px`}>
                     <div className={"relative w-full"}>

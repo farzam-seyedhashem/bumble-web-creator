@@ -7,9 +7,9 @@ import ComponentDrawer from "@admin/page-builder/ComponentDrawer";
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
 import Link from "next/link";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
-export default function PageBuilder({type, siteSetting, data, slug}) {
+export default function PageBuilder({lastPost,type, siteSetting, data, slug}) {
 	const devices = [
 		{label: "Mobile", icon: "smartphone", id: 0},
 		{label: "Desktop", icon: "desktop_windows", id: 1}
@@ -58,7 +58,6 @@ export default function PageBuilder({type, siteSetting, data, slug}) {
 			ev.dataTransfer.setData("text", item.uid);
 			ev.dataTransfer.setData("item", JSON.stringify(item));
 		} else {
-
 			ev.dataTransfer.setData("text", ev.target.id);
 		}
 	}
@@ -163,7 +162,7 @@ export default function PageBuilder({type, siteSetting, data, slug}) {
 					{addedItems.map((item, i) =>
 						<div key={item.uniqueId + i + "-top"} className={"relative  group"}>
 							<DropContainer idNumber={i} handleAddedItems={handleAddedItems}/>
-							<ComponentGenerator editDialogOpenComponentId={editDialogOpenComponentId}
+							<ComponentGenerator lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
 							                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 							                    siteSetting={siteSetting} dragFunc={drag}
 							                    removeItemFunc={removeItemFunc} isDesktop={device === 1}

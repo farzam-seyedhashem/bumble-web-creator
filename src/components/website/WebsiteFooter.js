@@ -1,5 +1,5 @@
 'use client'
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import Icon from "@m3/assets/icons/Icon";
 import SocialIcons from "@m3/assets/icons/SocialIcons";
 

@@ -2,7 +2,7 @@ import {update, getBySlug, destroy} from '@controller/PostController'
 import {revalidateTag} from "next/cache";
 export async function GET(req,{params}) {
     const page = await getBySlug(params.slug)
-
+    revalidateTag("posts")
     if (page ===null || typeof page === 'undefined') {
         // console.error("-------","page not found")
         return  Response.json({ error: 'Not Found!' }, { status: 404 })

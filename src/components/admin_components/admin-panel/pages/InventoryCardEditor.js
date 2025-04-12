@@ -10,7 +10,7 @@ import Divider from "@m3/dividers/Divider";
 import Link from "next/link";
 import Switch from "@m3/switch/Switch";
 import Appearance from "@admin/admin-panel/settings/Appearance";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import AOS from 'aos';
 import {Dialog} from "@headlessui/react";
 import IconButton from "@m3/icon_buttons/IconButton";

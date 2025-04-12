@@ -6,7 +6,7 @@ import FAB from "@m3/floating_action_buttons/FAB";
 import IconButton from "@m3/icon_buttons/IconButton";
 import InventoryCard from "@admin/admin-panel/inventory-card/InventoryCard";
 import {Fragment, useMemo, useState} from "react";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import Checkbox from "@m3/checkboxes/Checkbox";
 import {Dialog, Transition} from "@headlessui/react";
 

@@ -1,5 +1,5 @@
 import mongoose, {Mongoose} from 'mongoose'
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 const Schema = mongoose.Schema;
 let MenuSchema = new Schema({
     showLogo: {
@@ -50,34 +50,9 @@ let MenuSchema = new Schema({
         searchBarIconColor: String,
         searchBarPrimaryIconColor: String,
     },
-    menus: {
-        name:{
-            type: String,
-        },
-        menuItems: [
-            {
-                topMenuItem: {
-                    type: mongoose.Schema.Types.ObjectId,
-                },
-                title: String,
-                icon: String,
-                link: String,
-                priority: Number,
-            }
-        ],
-        isShowOnDesktop: {
-            type: Boolean,
-            default: false,
-        },
-        isShowOnMobile: {
-            type: Boolean,
-            default: false,
-        },
-        isShowOnBottomNavigation: {
-            type: Boolean,
-            default: false,
-        },
-    }
+    menuItems: {
+        type:Object,
+    },
 
 
 }, {timestamps: true,strict: false}, {

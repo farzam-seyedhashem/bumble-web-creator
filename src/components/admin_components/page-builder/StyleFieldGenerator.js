@@ -23,6 +23,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				<h3 className={"px-4 pt-3 pb-2 mt-6 border-t border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
 					{field.value}
 				</h3>}
+
 			{field.type === "border" && <div className={"  space-x-0 items-center"}>
 				{/*<div className={"w-5/12 justify-between items-center pt-4 pb-2"}>*/}
 				{/*	<FilledTextField onChange={} label={"Border Size"}/>*/}
@@ -43,14 +44,14 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						Rounded
 					</label>
 					<div className={"w-[120px]"}>
-					<Select onChange={(e) => {
-						onChangeValue("borderStyle", e.target.value)
-					}} options={[
-						// {title:"",value:""},
-						{title: "Solid", value: ""},
-						{title: "Dot", value: "dotted"},
-						{title: "Dash", value: "dashed"},
-					]} label={"Border Style"}/>
+						<Select onChange={(e) => {
+							onChangeValue("borderStyle", e.target.value)
+						}} options={[
+							// {title:"",value:""},
+							{title: "Solid", value: ""},
+							{title: "Dot", value: "dotted"},
+							{title: "Dash", value: "dashed"},
+						]} label={"Border Style"}/>
 					</div>
 				</div>
 				<div
@@ -63,6 +64,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					             value={style[field.type]}/>
 				</div>
 			</div>}
+
 			{field.type === "boxModel" &&
 				<div className={"px-4"}>
 
@@ -74,16 +76,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 								className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-small font-medium top-2 absolute left-2"}>Margin</label>
 
 							<input value={style.marginLeft.replace("px", "")}
-							       onChange={(e) => onChangeValue("marginLeft", e.target.value + "px")}
+							       onChange={(e) => onChangeValue("marginLeft", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
 							<input value={style.marginRight.replace("px", "")}
-							       onChange={(e) => onChangeValue("marginRight", e.target.value + "px")}
+							       onChange={(e) => onChangeValue("marginRight", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
 							<input value={style.marginTop.replace("px", "")}
-							       onChange={(e) => onChangeValue("marginTop", e.target.value + "px")}
+							       onChange={(e) => onChangeValue("marginTop", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
 							<input value={style.marginBottom.replace("px", "")}
-							       onChange={(e) => onChangeValue("marginBottom", e.target.value + "px")}
+							       onChange={(e) => onChangeValue("marginBottom", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
 
 							<div
@@ -242,6 +244,95 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					</div>
 				</div>
 			}
+			{field.type === "display" && <div>
+				<div className={"px-4 h-[64px] flex justify-between items-center "}>
+					<label
+						className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+						Display
+					</label>
+					<div className={"mt-1 flex justify-end space-x-1"}>
+						<button onClick={(e) => onChangeValue("display", "flex")}
+						        className={`${style[field.type] === "flex" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+							<Icon className={"text-[24px]"}>
+								arrow_right_alt
+							</Icon>
+						</button>
+						<button onClick={(e) => onChangeValue("display", "block")}
+						        className={`${style[field.type] !== "flex" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+							<Icon className={"text-[24px]"}>
+								arrow_downward_alt
+							</Icon>
+						</button>
+					</div>
+				</div>
+				{style[field.type] === "flex" && <>
+					<div className={"px-4 h-[64px] flex justify-between items-center "}>
+						<label
+							className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+							Alignment
+						</label>
+						<div className={"mt-1 flex justify-end space-x-1"}>
+							<button onClick={(e) => onChangeValue("alignItems", "flex-start")}
+							        className={`${style["alignItems"] === "flex-start" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_flex_start
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("alignItems", "center")}
+							        className={`${style["alignItems"] === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_flex_center
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("alignItems", "flex-end")}
+							        className={`${style["alignItems"] === "flex-end" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_flex_end
+								</Icon>
+							</button>
+						</div>
+					</div>
+					<div className={"px-4 h-[64px] flex justify-between items-center "}>
+						<label
+							className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+							Justify
+						</label>
+						<div className={"mt-1 flex justify-end space-x-1"}>
+							<button onClick={(e) => onChangeValue("justifyContent", "flex-start")}
+							        className={`${style["justifyContent"] === "flex-start" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_justify_flex_start
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("justifyContent", "center")}
+							        className={`${style["justifyContent"] === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_justify_center
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("justifyContent", "space-between")}
+							        className={`${style["justifyContent"] === "space-between" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_justify_space_between
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("justifyContent", "space-around")}
+							        className={`${style["justifyContent"] === "space-around" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_justify_space_around
+								</Icon>
+							</button>
+							<button onClick={(e) => onChangeValue("justifyContent", "flex-end")}
+							        className={`${style["justifyContent"] === "flex-end" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									align_justify_flex_start
+								</Icon>
+							</button>
+						</div>
+					</div>
+				</>}
+			</div>}
+
 			{field.type === "textAlign" && <div className={"px-4 h-[64px] flex justify-between items-center "}>
 				<label
 					className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>

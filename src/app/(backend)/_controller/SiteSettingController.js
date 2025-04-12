@@ -98,8 +98,10 @@ async function comments(req, res) {
 
 // Update the specified resource in storage.
 async function update(body,id) {
-
-    return await Page.findOneAndUpdate({_id: id}, body, {new: true})
+console.log(body,id)
+    const v =await Page.findOneAndUpdate({_id: id}, body, {new: true})
+    console.log("v",v)
+    return v
     // Page.findOneAndUpdate({slug: slug}, body, {new: true}, function (err, response) {
     //     res.send(response)
     // });

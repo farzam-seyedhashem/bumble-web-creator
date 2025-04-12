@@ -1,6 +1,6 @@
 'use client'
 import Icon from "@m3/assets/icons/Icon";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
 export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
     const {color} = siteSetting;

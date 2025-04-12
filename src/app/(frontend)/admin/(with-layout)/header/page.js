@@ -45,7 +45,7 @@ async function getSiteSettingData(slug) {
 
 async function getMenu(slug) {
     'use server'
-    const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']}})
+    const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']},cache:"no-cache"})
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')

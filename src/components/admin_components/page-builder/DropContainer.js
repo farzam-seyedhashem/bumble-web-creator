@@ -1,8 +1,11 @@
 'use client'
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import Data from '../../../Components.json'
-import {v4 as uuidv4} from 'uuid';
-import {UniqueCharOTP} from "unique-string-generator";
+// import {v4 as uuidv4} from 'uuid';
+import {uuid} from "unique-string-generator";
+import VanillaContextMenu from 'vanilla-context-menu';
+import Icon from "@m3/assets/icons/Icon";
+
 // import fs from 'fs';
 
 // const DropZone = styled(MuiBox, {
@@ -36,105 +39,148 @@ import {UniqueCharOTP} from "unique-string-generator";
 // }))
 
 function deepFreeze(object) {
-    // // Retrieve the property names defined on object
-    // const propNames = Object.getOwnPropertyNames(object);
-    //
-    // // Freeze properties before freezing self
-    //
-    // for (const name of propNames) {
-    //     const value = object[name];
-    //
-    //     if (value && typeof value === "object") {
-    //         deepFreeze(value);
-    //     }
-    // }
-    //
-    // return Object.freeze(object);
+	// // Retrieve the property names defined on object
+	// const propNames = Object.getOwnPropertyNames(object);
+	//
+	// // Freeze properties before freezing self
+	//
+	// for (const name of propNames) {
+	//     const value = object[name];
+	//
+	//     if (value && typeof value === "object") {
+	//         deepFreeze(value);
+	//     }
+	// }
+	//
+	// return Object.freeze(object);
 }
 
 export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
-    // const file = await fs.readFile(process.cwd() + '/app/Components.json', 'utf8');
-    // const Data = JSON.parse(file);
-    const [onDrag, setOnDrag] = React.useState(false)
-    const [onDrop, setOnDrop] = React.useState(false)
-    const [data, setData] = useState()
-    const [onDragStart, setOnDragStart] = React.useState(false)
-    // const {components} = Data;
-    useEffect(() => {
-        // setData(Data)
-    }, []);
-    // const {t} = useTranslation('page-editor')
-    const allowDrop = (ev) => {
-        ev.preventDefault();
+	// const file = await fs.readFile(process.cwd() + '/app/Components.json', 'utf8');
+	// const Data = JSON.parse(file);
+	const [onDrag, setOnDrag] = React.useState(false)
+	const [onDrop, setOnDrop] = React.useState(false)
+	const [data, setData] = useState()
+	const [onDragStart, setOnDragStart] = React.useState(false)
+	const ref = useRef(uuid.v4)
+	// const {components} = Data;
+	useEffect(() => {
+		new VanillaContextMenu({
+			scope: ref.current,
+			customClass:"context-menu",
+			menuItems: [
+				// {
+				// 	label: 'Copy',
+				// 	callback: () => {
+				// 		// your code here
+				// 	},
+				// },
+				// 'hr',
+				{
 
-    }
-    // const getData = () => {
-    //     return Data.components
-    // }
-    const drop = (ev) => {
-        let dragId = ev.dataTransfer.getData("text");
+					iconHTML:`<span class="material-symbols-outlined">
+content_paste
+</span>`,
+					label: 'Paste',
+					callback: pasteFunction,
+				},
 
-        let item = ev.dataTransfer.getData("item");
-        if (!item) {
-            const componets = [...Data.components]
-            let component = componets.find(c => c.uid === dragId)
-            component.uniqueId = UniqueCharOTP(12)
-            if (component.idType === "grid") {
-                component.addedItems.map(item =>
-                    item.uniqueId = UniqueCharOTP(12)
-                )
-            }
+			],
+		})
+	}, []);
+	// const {t} = useTranslation('page-editor')
+	const allowDrop = (ev) => {
+		ev.preventDefault();
 
-            if (component) {
-                handleAddedItems(component, idNumber)
+	}
+	const pasteFunction = () => {
 
-            }
-        }else{
-            const itemu =JSON.parse(item)
-            itemu.uniqueId = UniqueCharOTP(12)
-            handleAddedItems(itemu, idNumber)
-        }
-        // setItems()
-        // const item = Sections.sections[props.selectedTab].childes.find(item => item.id === data)
-        // handleSelected(item, props.itemNumber)
+		const item = JSON.parse(localStorage.getItem("clipboard"))
+		item.uniqueId = UniqueCharOTP(24)
+		if (item.idType === "container") {
+			item.addedItems.map(item =>
+				item.uniqueId = UniqueCharOTP(24)
+			)
+		}
+		if (item.idType === "grid") {
+			item.addedItems.map(item =>
+				item.uniqueId = UniqueCharOTP(24)
+			)
+		}
+		handleAddedItems(item, idNumber)
 
-    }
-    // useState(()=>{
-    //     setIsShow(true)
-    // })
-    const removeStyle = () => {
+	}
+	// const getData = () => {
+	//     return Data.components
+	// }
+	const drop = (ev) => {
+		let dragId = ev.dataTransfer.getData("text");
 
-    }
-    const onDragClass = "h-[64px] bg-secondary-container-light  text-on-secondary-container-light "
-    const firstItemClasses = "bg-surface-container-high-light   text-on-surface-variant-light  h-[64px]"
-    const normalClasses = " bg-transparent h-[16px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
-    return (
+		let item = ev.dataTransfer.getData("item");
+		if (!item) {
+			const componets = [...Data.components]
+			let component = componets.find(c => c.uid === dragId)
+			component.uniqueId = uuid.v4()
+			if (component.idType === "grid") {
+				component.addedItems.map(item =>
+					item.uniqueId = uuid.v4()
+				)
+			}
 
-        <div key={Date.now()}
-             className={`className transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem && !onDrop) ? firstItemClasses : normalClasses}`}
-            // id={Math.random().toString()}
-            // key={Math.random()}
-             onDrop={(event) => {
-                 drop(event)
-                 setOnDrag(false)
-                 setOnDrop(true)
-             }}
-             onDragLeave={() => setOnDrag(false)}
-             onDragOver={(event) => {
-                 allowDrop(event)
-                 setOnDrag(true)
-             }}
+			if (component) {
+				handleAddedItems(component, idNumber)
+
+			}
+		} else {
+			const itemu = JSON.parse(item)
+			itemu.uniqueId = uuid.v4()
+			handleAddedItems(itemu, idNumber)
+		}
+		// setItems()
+		// const item = Sections.sections[props.selectedTab].childes.find(item => item.id === data)
+		// handleSelected(item, props.itemNumber)
+
+	}
+	// useState(()=>{
+	//     setIsShow(true)
+	// })
+	const removeStyle = () => {
+
+	}
+	const handleContextMenu = () => {
+		console.log("handleContextMenu")
+	}
+	const onDragClass = "h-[64px] bg-secondary-container-light  text-on-secondary-container-light "
+	const firstItemClasses = "bg-surface-container-high-light   text-on-surface-variant-light  h-[64px]"
+	const normalClasses = " bg-transparent h-[16px]  z-10 top-0 left-0 w-full text-on-surface-variant-light dark:text-on-surface-variant-dark "
+	return (
+
+		<div ref={ref} key={Date.now()}
+		     className={`className transition-all border-outline-variant-light  text-center duration-300 ease-in-out flex items-center justify-center ${onDrag ? onDragClass : (firstItem) ? firstItemClasses : normalClasses}`}
+			// id={Math.random().toString()}
+			// key={Math.random()}
+			 onContextMenu={handleContextMenu}
+			 onDrop={(event) => {
+				 drop(event)
+				 setOnDrag(false)
+				 setOnDrop(true)
+			 }}
+			 onDragLeave={() => setOnDrag(false)}
+			 onDragOver={(event) => {
+				 allowDrop(event)
+				 setOnDrag(true)
+			 }}
 
 
-            // onDrag={onDrag}
-        >
-            {!(firstItem && !onDrop) && onDrag && <div>
-                {"Drop Item Here"}
-            </div>}
-            {firstItem && !onDrop && <div>
-                {"Drag and Drop item here"}
-            </div>}
-        </div>
+			// onDrag={onDrag}
+		>
+			{!(firstItem) && onDrag && <div>
+				{"Drop Item Here"}
+			</div>}
+			{firstItem && <div>
+				{"Drag and Drop item here"}
+			</div>}
+		</div>
 
-    )
+	)
 }

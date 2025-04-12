@@ -73,7 +73,7 @@ async function index() {
 
 // Store a newly created resource in storage.
 async function store(file) {
-
+console.log(file)
 	var fileUpload = new File({
 		name: file.name,
 		encoding: file.encoding,
@@ -82,13 +82,18 @@ async function store(file) {
 		size: file.size,
 		tempFilePath: file.tempFilePath,
 		truncated: file.truncated,
-		alt: ""
+		alt: "",
+		url
 	});
 	const f = await fileUpload.save();
 
 	// f.url = "http://localhost:3001/uploaded/" + f.name
 	// console.log(fileUpload)
-	return {...f,"url":("http://localhost:3001/uploaded/" + f.name)};
+	const url = {url:("http://localhost:3001/uploaded/" + f.name)}
+
+
+	// console.log({...f._doc, "url": url})
+	return {...f._doc, ...url};
 
 
 }

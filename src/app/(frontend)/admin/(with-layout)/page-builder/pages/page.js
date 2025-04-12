@@ -14,7 +14,7 @@ import Icon from "@m3/assets/icons/Icon";
 
 async function getData(slug) {
     'use server'
-    const res = await fetch('http://localhost:3000/api/page', {cache:"no-store"})
+    const res = await fetch('http://localhost:3000/api/page', {cache:"no-cache"})
     if (!res.ok) {
         throw new Error('Failed to fetch data')
     }

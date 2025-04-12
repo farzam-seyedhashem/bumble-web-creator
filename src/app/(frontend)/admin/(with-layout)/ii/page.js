@@ -171,7 +171,7 @@ export default async function Page({params}) {
             {/*    }*/}
             {/*    {selectedTab === "post" &&*/}
 
-            {/*        <PostEditor siteSetting={siteSetting}/>*/}
+
 
             {/*    }*/}
 

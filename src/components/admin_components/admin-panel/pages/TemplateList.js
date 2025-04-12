@@ -24,13 +24,13 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 		{title: "Template"},
 	]
 	const defaultPages = [
-		{title:"Inventory list page",slug:"/inventories",adminLink:"/admin/edit-inventory-list-page"},
-		{title:"Posts list page",slug:"/posts/[slug]",adminLink:"/admin/edit-post-list-page"},
-		{title:"Single post page",slug:"/inventory/[slug]",adminLink:"/admin/edit-post-page"},
-		{title:"Single Inventory page",slug:"/post/[slug]",adminLink:"/admin/edit-inventory-page"},
+		{title:"Inventory List Page",slug:"/inventories",adminLink:"/admin/edit-inventory-list-page"},
+		{title:"Single Inventory Page",slug:"/post/[slug]",adminLink:"/admin/edit-inventory-page"},
+		{title:"Single Post Page",slug:"/inventory/[slug]",adminLink:"/admin/edit-post-page"},
 	]
 	const defaultComponent = [
-		{title:"Inventory card",slug:"",adminLink:"/admin/edit-inventory-card"},
+		{title:"Inventory Card",slug:"",adminLink:"/admin/edit-inventory-card"},
+		{title:"Post Card",slug:"/post/[slug]",adminLink:"/admin/edit-post-card"},
 	]
 	const CreateNewTemplate = () => {
 		try {

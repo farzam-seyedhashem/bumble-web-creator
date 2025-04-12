@@ -5,7 +5,7 @@ import {notFound} from "next/navigation";
 import Icon from "@m3/assets/icons/Icon";
 import IconButton from "@m3/icon_buttons/IconButton";
 import WebsiteDesktopMenu from "@website/menu/WebsiteDesktopMenu";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import WebsiteMobileMenu from "@website/menu/WebsiteMobileMenu";
 import WebsiteFooter from "@website/WebsiteFooter";
 async function getSiteSetting(slug) {

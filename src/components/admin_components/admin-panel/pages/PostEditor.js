@@ -22,8 +22,8 @@ export default function PostEditor() {
                     </div>
                 </div>
             </div>
-            {selected === "inventoryCardEditor" && <PostCardEditor/>}
-            {selected === "postListPageEditor" && <PostListPageEditor/>}
+            {/*{selected === "inventoryCardEditor" && }*/}
+            {/*{selected === "postListPageEditor" && <PostListPageEditor/>}*/}
         </>
     )
 }

@@ -1,5 +1,5 @@
 import Icon from "@m3/assets/icons/Icon";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import TextField from "@m3/text_fields/TextField";
 import TextArea from "@m3/TextArea";
@@ -7,7 +7,7 @@ import IconPicker from "@page_builder/editor_components/IconPicker";
 import Button from "@m3/buttons/Button";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
 export default function FeatureSection({editDialogOpenComponentId,setEditDialogOpenComponentId,color, item, editItem, isDesktop, removeItemFunc, dragFunc}) {
     // const [cardShape, setCardShape] = useState(item)
@@ -73,7 +73,12 @@ export default function FeatureSection({editDialogOpenComponentId,setEditDialogO
     }
     return (
         <>
-            <div className={`relative group/featured-section`}>
+            <style>{`
+				.${item.uniqueId}:hover .${item.uniqueId}-panel{
+				display: block;
+			}
+			`}</style>
+            <div className={`relative `}>
                 <div className={`grid grid-cols-${options.gridNumber} gap-4`}>
                     {/*    "options": {*/}
                     {/*    "iconColor": "#ffffff",*/}
@@ -112,7 +117,8 @@ export default function FeatureSection({editDialogOpenComponentId,setEditDialogO
 
                             <div
                                 className="h-12 w-12 mt-1 mr-1 flex justify-center items-center">
-                                <svg style={{color: options.iconBgColor}} color={"currentColor"} width="40px" height="40px" viewBox="0 0 40 40"
+                                <svg style={{color: options.iconBgColor}} color={"currentColor"} width="40px"
+                                     height="40px" viewBox="0 0 40 40"
                                      fill="none" xmlns="http://www.w3.org/2000/svg" className="clover">
                                     <path
                                         d="M.887 14.467C-2.845 5.875 5.875-2.845 14.467.887l1.42.617a10.323 10.323 0 0 0 8.225 0l1.42-.617c8.593-3.732 17.313 4.988 13.581 13.58l-.617 1.42a10.323 10.323 0 0 0 0 8.225l.617 1.42c3.732 8.593-4.989 17.313-13.58 13.581l-1.42-.617a10.323 10.323 0 0 0-8.225 0l-1.42.617C5.874 42.845-2.846 34.125.886 25.533l.617-1.42a10.323 10.323 0 0 0 0-8.225l-.617-1.42Z"
@@ -210,7 +216,8 @@ export default function FeatureSection({editDialogOpenComponentId,setEditDialogO
                     </div>
                 </div>
             </div>
-            <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
+            <EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
+                          setIsOpen={() => setEditDialogOpenComponentId(null)}>
                 <div className={"flex items-center justify-center"}>
                     <div
                         className={`w-6/12 h-[40px] flex items-center justify-center  ${selectedTab === 0 ? "border-b-2 border-primary-light dark:border-primary-dark" : "border-b border-outline-variant-light dark:border-outline-variant-dark"} `}

@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+	images: {
+		remotePatterns: [
+			{hostname: 'localhost',}
+		]
+	},
+	experimental: {
+		serverActions: {
+			bodySizeLimit: '20mb',
+		},
+	},
+}
 
 module.exports = nextConfig

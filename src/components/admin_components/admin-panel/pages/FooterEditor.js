@@ -5,7 +5,7 @@ import Link from "next/link";
 import Divider from "@m3/dividers/Divider";
 import Icon from "@m3/assets/icons/Icon";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import IconButton from "@m3/icon_buttons/IconButton";
 import NavigationBar from "@m3/navigation_bars/NavigationBar";
 import placeholder from "lodash/fp/placeholder";
@@ -844,23 +844,23 @@ export default function FooterEditor({footerSetting,siteSetting}) {
                     </div>
 
                     <ul className={"py-2"}>
-                        <li className={"flex justify-between items-center px-4 py-2 h-[56px]"}>
-                            <div className={"mr-4"}>
-                                <label
-                                    className={"block text-body-large text-on-surface-light dark:text-on-surface-dark "}>
-                                    Show social media links
-                                </label>
-                                {/*<p className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-body-medium"}>*/}
-                                {/*    Do you have show your Logo in menu. you can add your logo from <Link*/}
-                                {/*    className={"inline text-primary-light dark:text-primary-dark hover:underline hover:text-on-primary-container-light dark:hover:text-on-primary-container-dark"}*/}
-                                {/*    href={"/admin/setting"}>here</Link>*/}
-                                {/*</p>*/}
-                            </div>
-                            <div className={"w-fit"}>
-                                <Switch setIsCheck={(v) => handleOnChangeValues("showSocialIcons", v)}
-                                        isCheck={items.showSocialIcons}/>
-                            </div>
-                        </li>
+                        {/*<li className={"flex justify-between items-center px-4 py-2 h-[56px]"}>*/}
+                        {/*    <div className={"mr-4"}>*/}
+                        {/*        <label*/}
+                        {/*            className={"block text-body-large text-on-surface-light dark:text-on-surface-dark "}>*/}
+                        {/*            Show social media links*/}
+                        {/*        </label>*/}
+                        {/*        /!*<p className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-body-medium"}>*!/*/}
+                        {/*        /!*    Do you have show your Logo in menu. you can add your logo from <Link*!/*/}
+                        {/*        /!*    className={"inline text-primary-light dark:text-primary-dark hover:underline hover:text-on-primary-container-light dark:hover:text-on-primary-container-dark"}*!/*/}
+                        {/*        /!*    href={"/admin/setting"}>here</Link>*!/*/}
+                        {/*        /!*</p>*!/*/}
+                        {/*    </div>*/}
+                        {/*    <div className={"w-fit"}>*/}
+                        {/*        <Switch setIsCheck={(v) => handleOnChangeValues("showSocialIcons", v)}*/}
+                        {/*                isCheck={items.showSocialIcons}/>*/}
+                        {/*    </div>*/}
+                        {/*</li>*/}
                         <li onClick={() => setEditor("links")}
                             className={"flex justify-between items-center px-4 py-2 h-[56px]"}>
                             <div className={"mr-4"}>

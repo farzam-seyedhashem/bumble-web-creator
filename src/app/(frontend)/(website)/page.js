@@ -1,4 +1,4 @@
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
 import {revalidateTag} from "next/cache";

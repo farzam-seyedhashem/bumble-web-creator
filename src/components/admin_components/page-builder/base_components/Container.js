@@ -10,20 +10,31 @@ import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import Switch from "@m3/switch/Switch";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {StyleToClass} from "@/_helper/StyleToClass";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Image from 'next/image'
 
-export default function Container({fields,editDialogOpenComponentId,setEditDialogOpenComponentId,siteSetting, item, isDesktop, editItem, removeItemFunc, dragFunc}) {
+export default function Container({
+	                                  fields,
+	                                  editDialogOpenComponentId,
+	                                  setEditDialogOpenComponentId,
+	                                  siteSetting,
+	                                  item,
+	                                  isDesktop,
+	                                  editItem,
+	                                  removeItemFunc,
+	                                  dragFunc,
+	                                  lastPost
+                                  }) {
 	const [addedItems, setAddedItems] = useState(item.addedItems)
 	const [isSelected, setIsSelected] = useState(false)
 	let [className, setClassName] = useState({})
 	let [styles, setStyles] = useState(item?.styles)
 	const [imageURL, setImageURL] = useState(item?.backgroundImageURL)
 	const [imageStyle, setImageStyle] = useState(item?.backgroundImageStyle)
-	const [imageOverlay,setImageOverlay] = useState(item?.imageOverlay)
-	const [imageOverlayColor,setImageOverlayColor] = useState(item?.imageOverlayColor)
-const [editMode, setEditMode] = useState("value");
+	const [imageOverlay, setImageOverlay] = useState(item?.imageOverlay)
+	const [imageOverlayColor, setImageOverlayColor] = useState(item?.imageOverlayColor)
+	const [editMode, setEditMode] = useState("value");
 	let [isBox, setIsBox] = useState(item?.isBox)
 	let onChangeStyles = (name, value, type) => {
 		let nStyles = {...styles}
@@ -32,6 +43,9 @@ const [editMode, setEditMode] = useState("value");
 		setStyles(nStyles)
 		console.log("styles", nStyles)
 	}
+	useEffect(() => {
+		console.log(item,item.uniqueId)
+	},[])
 
 	let handleChangeBackgroundImageURL = (value) => {
 		setImageURL(value)
@@ -104,62 +118,96 @@ const [editMode, setEditMode] = useState("value");
 		}
 	}
 
+	const copyToClipboard = () => {
+		localStorage.setItem("clipboard", JSON.stringify(item))
+	}
 	return (
 		<>
-			<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
-			     className={`${item?.className}  hover:outline hover:outline-primary-light/[50%] group/container relative ${isBox ? "" : "container mx-auto"}`}>
-				{imageOverlay&&<div style={{backgroundColor: imageOverlayColor}} className={"absolute inset-0 z-10"}/>}
-				{imageURL && <Image objectFit={imageStyle} alt={""} src={imageURL} layout="fill"/>}
-				<div
-					className={"absolute  z-[888] hidden group-hover/container:block  top-0 left-0  transform "}>
-					<div
-						className={"px-4 py-0 space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
-						<button  onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
-							<Icon size={16}
-							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-								edit
-							</Icon>
-						</button>
-						<button onDragEnterCapture={(event) => {
-							removeItemFunc()
-						}} onDragStart={(e) => dragFunc(e)} draggable={true}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
-							<Icon size={16}
-							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-								drag_indicator
-							</Icon>
-						</button>
-						<button
-							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full"}>
-							<Icon onClick={removeItemFunc} size={16}
-							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-								delete
-							</Icon>
-						</button>
-					</div>
-				</div>
-				<div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>
+			<style>{`
+				.${item.uniqueId}:hover .${item.uniqueId}-panel{
+				display: block;
+			}
+			`}</style>
+			<div>
 
-				</div>
-				<div className={"w-full py-3 z-20"}>
-					{addedItems.map((l, i) =>
-						<div key={item.uniqueId + i + "-container"} className={"relative group"}>
-							<DropContainer idNumber={i} selected={addedItems}
-							               handleAddedItems={handleAddedItems}/>
-							<ComponentGenerator editDialogOpenComponentId={editDialogOpenComponentId} setEditDialogOpenComponentId={setEditDialogOpenComponentId}  siteSetting={siteSetting} dragFunc={drag}
-							                    removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
-							                    editItem={editItemC} idNumber={i} item={l}/>
+				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+				     className={`${item?.className}  hover:outline hover:outline-primary-light/[50%] ${item.uniqueId} group/container relative ${isBox ? "" : "container mx-auto"}`}>
+					{/*{item.uniqueId}*/}
+					{imageOverlay &&
+						<div style={{backgroundColor: imageOverlayColor}} className={"absolute inset-0 z-10"}/>}
+					{imageURL && <Image objectFit={imageStyle} alt={""} src={imageURL} layout="fill"/>}
+					<div
+						className={`absolute  z-[888] hidden  ${item.uniqueId}-panel top-0 left-0  transform `}>
+						<div
+							className={"px-4 py-0 space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
+							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
+								<Icon size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									edit
+								</Icon>
+							</button>
+							<button onClick={() => copyToClipboard()}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									content_copy
+								</Icon>
+							</button>
+							<button onDragEnterCapture={(event) => {
+								removeItemFunc()
+							}} onDragStart={(e) => dragFunc(e)} draggable={true}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
+								<Icon size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									drag_indicator
+								</Icon>
+							</button>
+							<button
+								className={"flex items-center h-[24px] w-[24px] justify-center rounded-full"}>
+								<Icon onClick={removeItemFunc} size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									delete
+								</Icon>
+							</button>
 						</div>
-					)}
-					<div className={"relative"}>
-						<DropContainer idNumber={addedItems.length} selected={addedItems}
-						               handleAddedItems={handleAddedItems} key={item.uniqueId + "-container"}
-						               firstItem={addedItems.length === 0}/>
+					</div>
+					{/*<div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>*/}
+
+					{/*</div>*/}
+					<div className={"w-full py-3 z-20"}>
+						<div style={isDesktop ? {
+							display: styles.desktop?.display || "block",
+							alignItems: styles.desktop?.alignItems || "flex-start",
+							justifyContent: styles.desktop?.justifyContent || "flex-start"
+						} : {
+							display: styles.mobile?.display || "block",
+							alignItems: styles.mobile?.alignItems || "flex-start",
+							justifyContent: styles.mobile?.justifyContent || "flex-start"
+						}}>
+							{addedItems.map((l, i) =>
+								<div key={item.uniqueId + i + "-container"} className={"relative group"}>
+									<DropContainer idNumber={i} selected={addedItems}
+									               handleAddedItems={handleAddedItems}/>
+									<ComponentGenerator lastPost={lastPost}
+									                    editDialogOpenComponentId={editDialogOpenComponentId}
+									                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+									                    siteSetting={siteSetting} dragFunc={drag}
+									                    removeItemFunc={removeItemFuncM} isDesktop={isDesktop}
+									                    editItem={editItemC} idNumber={i} item={l}/>
+								</div>
+							)}
+						</div>
+						<div className={"relative"}>
+							<DropContainer idNumber={addedItems.length} selected={addedItems}
+							               handleAddedItems={handleAddedItems} key={item.uniqueId + "-container"}
+							               firstItem={addedItems.length === 0}/>
+						</div>
 					</div>
 				</div>
 			</div>
-			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false} setIsOpen={()=>setEditDialogOpenComponentId(null)}>
+			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
+			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
 				<div
 					className={" flex border-b border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
 					<div onClick={() => setEditMode("value")}
@@ -270,7 +318,7 @@ const [editMode, setEditMode] = useState("value");
 					}}
 					        isCheck={imageOverlay}/>
 				</div>
-				{imageOverlay&&<div
+				{imageOverlay && <div
 					className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
 					<label
 						className={"text-body-large  font-normal text-on-surface-light dark:text-on-surface-dark"}>

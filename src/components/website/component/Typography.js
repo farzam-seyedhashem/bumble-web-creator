@@ -1,5 +1,5 @@
 'use client'
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
 export default function Typography({item, key, Style}) {
     const Component = item.type
@@ -9,6 +9,7 @@ export default function Typography({item, key, Style}) {
     // const mobileStyles = item.mobileStyles;
     return (
         <div>
+
             <Component id={item.uniqueId} className={`${item.uniqueId}`}>
                 {item.value || item.idType}
             </Component>

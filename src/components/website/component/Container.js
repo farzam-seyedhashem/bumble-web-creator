@@ -1,7 +1,7 @@
 'use server'
 import WebComponentGenerator from "@website/WebComponentGenerator";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
-
+import {StyleToClass} from "@/_helper/StyleToClass";
+import Image from 'next/image'
 export default async function Container({item, key, Style}) {
 
     return (
@@ -21,8 +21,15 @@ export default async function Container({item, key, Style}) {
             }).join("")}
                 `}
             </style>
-            <div id={key} className={`${item.uniqueId}`}>
-                <div className={`${item.isBox ? "" : "container mx-auto"}`}>
+
+            <div id={key} className={`relative ${item.uniqueId}`}>
+                {item?.backgroundImageURL&&<Image layout={"fill"} objectFit={item.backgroundImageStyle} src={item.backgroundImageURL} alt={item.alt}/>}
+               {/*<div className={""}></div>*/}
+
+
+                {/*"imageOverlay": false,*/}
+                {/*"imageOverlayColor": "#000",*/}
+                <div className={`${item.isBox ? "w-full " : "container mx-auto"}`}>
                     {/*{addedItems.length!==0 && <div onClick={() => setIsSelected(true)}*/}
                     {/*      className={"hidden group-hover:block absolute top-1/2 -translate-y-1/2 transform right-4 "}>*/}
                     {/*    <button*/}
@@ -32,6 +39,7 @@ export default async function Container({item, key, Style}) {
                     {/*        </Icon>*/}
                     {/*    </button>*/}
                     {/*</div>}*/}
+
                     {item.addedItems.map((l, i) =>
                         <WebComponentGenerator Style={Style} key={i} item={l}/>
                     )}

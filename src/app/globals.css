@@ -4,6 +4,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.context-menu{
+  @apply !bg-surface-container-light
+}
+.context-menu div{
+  @apply !px-4 hover:!bg-on-surface-light/[8%] !text-on-surface-light !bg-surface-container-light
+}
+.context-menu span{
+  @apply text-body-large !ml-0
+}
+.context-menu .material-symbols-outlined{
+  @apply !text-[24px] !mr-2
+}
 /*@import 'swiper/css/pagination';*/
 @keyframes  scroll-up-animation {
   0%{

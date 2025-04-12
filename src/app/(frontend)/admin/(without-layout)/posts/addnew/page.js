@@ -22,7 +22,7 @@ export default async function AddNewPage() {
     const siteSetting = await getSiteSettingData()
     return (
         <div>
-        {/*// <PostEdit siteSetting={siteSetting} tags={tags}/>*/}
+        <PostEdit siteSetting={siteSetting} tags={tags}/>
         </div>
     )
 }

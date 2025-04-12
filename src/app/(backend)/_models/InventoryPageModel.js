@@ -1,5 +1,5 @@
 import mongoose, {Mongoose} from 'mongoose'
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 const Schema = mongoose.Schema;
 let InventoryPageSchema = new Schema({
 

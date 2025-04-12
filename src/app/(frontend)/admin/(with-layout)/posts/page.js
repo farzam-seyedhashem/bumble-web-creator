@@ -3,6 +3,7 @@ import FAB from "@m3/floating_action_buttons/FAB";
 import Link from "next/link";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Image from "next/image";
+import Icon from "@m3/assets/icons/Icon";
 
 async function getData(slug) {
 	'use server'
@@ -61,9 +62,13 @@ export default async function PostPage() {
 					key={index}>
 					<td className={"w-1/12"}>
 						<div className={"flex items-center"}>
-							<Image width={100} height={100} objectFit={"responsive"}
-							       className={"w-[48px] h-[48px] rounded-full"} src={"/files" + item.thumbnail.url}
-							       alt={item.thumbnail.alt}/>
+							{item.thumbnail?<Image width={100} height={100} objectFit={"responsive"}
+							        className={"w-[48px] h-[48px] rounded-full"} src={"http://localhost:3001/uploaded/"+ item.thumbnail.name}
+							        alt={item.thumbnail.alt}/>:<div className={"flex items-center justify-center bg-surface-variant-light dark:bg-surface-variant-dark text-on-surface-variant-light dark:text-on-surface-variant-dark w-[48px] h-[48px] rounded-full"}>
+								<Icon>
+									image
+								</Icon>
+							</div>}
 						</div>
 					</td>
 					<td className={"w-2/12"}>
@@ -83,9 +88,11 @@ export default async function PostPage() {
 					</td>
 					<td className={"w-2/12"}>
 						<div className={"flex items-center"}>
+							<Link href={`/admin/posts/${item.slug}`}>
 							<IconButton>
 								edit
 							</IconButton>
+							</Link>
 							<IconButton className={"text-error-light dark:text-error-dark"}>
 								delete
 							</IconButton>

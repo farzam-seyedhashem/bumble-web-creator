@@ -87,7 +87,7 @@ async function getById(id) {
 }
 
 async function getBySlug(slug) {
-    return await PostModel.findOne({slug: slug})
+    return await PostModel.findOne({slug: slug}).populate('thumbnail').populate('tags')
 
 }
 
@@ -114,11 +114,11 @@ async function update(body,slug) {
     // let body = req.body;
     // let doc = Page.findOneAndUpdate({_id: req.query.id}, body);
 
-    const {classes,...other} = body
-    if (body?.content){
-        fs.writeFileSync(`./src/app/(styles)/${slug}.module.css`, classes,{flag:"w+"})
-    }
-    const updateValue = await PostModel.findOneAndUpdate({slug: slug}, other, {new: true})
+    // const {classes,...other} = body
+    // if (body?.content){
+    //     fs.writeFileSync(`./src/app/(styles)/${slug}.module.css`, classes,{flag:"w+"})
+    // }
+    const updateValue = await PostModel.findOneAndUpdate({slug: slug}, body, {new: true})
     revalidateTag("pages")
     return updateValue
     // Page.findOneAndUpdate({slug: slug}, body, {new: true}, function (err, response) {

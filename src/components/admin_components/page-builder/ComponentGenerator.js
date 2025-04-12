@@ -16,6 +16,20 @@ import InventoryComponent from "@page_builder/base_components/InventoryComponent
 import Map from "@page_builder/base_components/Map";
 import ComponentsLib from '@/Components.json'
 import SVGComponent from "@page_builder/base_components/SVGComponent";
+import WysiwygEditor from "@page_builder/base_components/WysiwygEditor ";
+import TestimonialComponent from "@page_builder/base_components/TestimonialComponent";
+import FAQComponent from "@page_builder/base_components/FAQComponent";
+import VideoComponent from "@page_builder/base_components/VideoComponent";
+import BlogTagsComponent from "@page_builder/base_components/BlogTagsComponent";
+import BlogTitleComponent from "@page_builder/base_components/BlogTitleComponent";
+import PostContentComponent from "@page_builder/base_components/PostContentComponent";
+import PostThumbnailComponent from "@page_builder/base_components/PostThumbnailComponent";
+// import PostInformationComponent from "@page_builder/base_components/PostInformationComponent";
+import PostTagsComponent from "@page_builder/base_components/PostTagsComponent";
+import PostDateUpdatedComponent from "@page_builder/base_components/PostDateUpdatedComponent";
+import ShareButtonComponent from "@page_builder/base_components/ShareButtonComponent";
+import PostDateAddedComponent from "@page_builder/base_components/PostDateAddedComponent";
+
 class ComponentGenerator extends React.Component {
 	constructor(props) {
 		super(props);
@@ -30,6 +44,7 @@ class ComponentGenerator extends React.Component {
 			siteSetting,
 			isDesktop,
 			item,
+			lastPost,
 			idNumber,
 			dragFunc,
 			removeItemFunc
@@ -38,15 +53,35 @@ class ComponentGenerator extends React.Component {
 		return (
 			<div className={"group relative"}>
 				{item.idType === "title" &&
-					<Typography fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
+					<Typography fields={components.find(c => c.uid === item.uid)?.fields}
+					            editDialogOpenComponentId={editDialogOpenComponentId}
 					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
 					            key={item.uniqueId}
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
+				{item.idType === "testimonial" &&
+					<TestimonialComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                      editDialogOpenComponentId={editDialogOpenComponentId}
+					                      setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					                      color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					                      removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					                      key={item.uniqueId}
+					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                      item={item}/>}
+				{item.idType === "faq" &&
+					<FAQComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					              editDialogOpenComponentId={editDialogOpenComponentId}
+					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					              key={item.uniqueId}
+					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					              item={item}/>}
 
-				{item.idType === "paragraph" && <Paragraph fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
+				{item.idType === "paragraph" && <Paragraph fields={components.find(c => c.uid === item.uid)?.fields}
+				                                           editDialogOpenComponentId={editDialogOpenComponentId}
 				                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 				                                           color={siteSetting.color}
 				                                           dragFunc={(e) => dragFunc(e, idNumber)}
@@ -54,87 +89,210 @@ class ComponentGenerator extends React.Component {
 				                                           isDesktop={isDesktop} key={item.uniqueId}
 				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 				                                           item={item}/>}
-				{item.idType === "svg" && <SVGComponent fields={components.find(l=>l.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
-				                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-				                                           color={siteSetting.color}
-				                                           dragFunc={(e) => dragFunc(e, idNumber)}
-				                                           removeItemFunc={() => removeItemFunc(idNumber)}
-				                                           isDesktop={isDesktop} key={item.uniqueId}
-				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-				                                           item={item}/>}
+				{item.idType === "svg" && <SVGComponent fields={components.find(c => c.uid === item.uid)?.fields}
+				                                        editDialogOpenComponentId={editDialogOpenComponentId}
+				                                        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+				                                        color={siteSetting.color}
+				                                        dragFunc={(e) => dragFunc(e, idNumber)}
+				                                        removeItemFunc={() => removeItemFunc(idNumber)}
+				                                        isDesktop={isDesktop} key={item.uniqueId}
+				                                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+				                                        item={item}/>}
 				{
-					item.idType === "button" && <ButtonComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
-					                                             setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                                             color={siteSetting?.color}
-					                                             dragFunc={(e) => dragFunc(e, idNumber)}
-					                                             removeItemFunc={() => removeItemFunc(idNumber)}
-					                                             isDesktop={isDesktop}
-					                                             editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					                                             key={item.uniqueId} item={item}/>
+					item.idType === "button" &&
+					<ButtonComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                 editDialogOpenComponentId={editDialogOpenComponentId}
+					                 setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                 color={siteSetting?.color}
+					                 dragFunc={(e) => dragFunc(e, idNumber)}
+					                 removeItemFunc={() => removeItemFunc(idNumber)}
+					                 isDesktop={isDesktop}
+					                 editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                 key={item.uniqueId} item={item}/>
 				}
 				{
-					item.idType === "image" && <ImageComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
-					                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                                           dragFunc={(e) => dragFunc(e, idNumber)}
-					                                           removeItemFunc={() => removeItemFunc(idNumber)}
-					                                           isDesktop={isDesktop}
-					                                           editItem={(key, value) => editItem(idNumber, key, value)}
-					                                           item={item}/>
+					item.idType === "wysiwygEditor" &&
+					<WysiwygEditor fields={components.find(c => c.uid === item.uid)?.fields}
+					               editDialogOpenComponentId={editDialogOpenComponentId}
+					               setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					               color={siteSetting?.color}
+					               dragFunc={(e) => dragFunc(e, idNumber)}
+					               removeItemFunc={() => removeItemFunc(idNumber)}
+					               isDesktop={isDesktop}
+					               editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					               key={item.uniqueId} item={item}/>
+				}
+				{
+					item.idType === "image" &&
+					<ImageComponent key={item.uniqueId} fields={components.find(c => c.uid === item.uid)?.fields}
+					                editDialogOpenComponentId={editDialogOpenComponentId}
+					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                dragFunc={(e) => dragFunc(e, idNumber)}
+					                removeItemFunc={() => removeItemFunc(idNumber)}
+					                isDesktop={isDesktop}
+					                editItem={(key, value) => editItem(idNumber, key, value)}
+					                item={item}/>
+				}
+				{
+					item.idType === "video" &&
+					<VideoComponent key={item.uniqueId} fields={components.find(c => c.uid === item.uid)?.fields}
+					                editDialogOpenComponentId={editDialogOpenComponentId}
+					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                dragFunc={(e) => dragFunc(e, idNumber)}
+					                removeItemFunc={() => removeItemFunc(idNumber)}
+					                isDesktop={isDesktop}
+					                editItem={(key, value) => editItem(idNumber, key, value)}
+					                item={item}/>
 				}
 				{item.idType === "container" &&
-					<Container fields={components.find(l=>l.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
+					<Container lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					           editDialogOpenComponentId={editDialogOpenComponentId}
 					           setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					           dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					           isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
 					           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{item.idType === "grid" &&
-					<Grid editDialogOpenComponentId={editDialogOpenComponentId}
+					<Grid lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
 					      setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					      dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					      isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
 					      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
-				{item.idType === "slider" && <SliderComponent editDialogOpenComponentId={editDialogOpenComponentId}
-				                                              setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-				                                              dragFunc={(e) => dragFunc(e, idNumber)}
-				                                              removeItemFunc={() => removeItemFunc(idNumber)}
-				                                              isDesktop={isDesktop} key={item.uniqueId}
-				                                              editItem={(key, value) => editItem(idNumber, key, value)}
-				                                              idNumber={idNumber} item={item}/>}
-				{item.idType === "featuredSection" &&
-					<FeatureSection editDialogOpenComponentId={editDialogOpenComponentId}
-					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					                removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}
-					                idNumber={idNumber} item={item}/>}
-				{item.idType === "iconPicker" && <IconComponent fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
-				                                                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-				                                                color={siteSetting.color}
-				                                                dragFunc={(e) => dragFunc(e, idNumber)}
-				                                                removeItemFunc={() => removeItemFunc(idNumber)}
-				                                                isDesktop={isDesktop} key={item.uniqueId}
-				                                                editItem={(key, value) => editItem(idNumber, key, value)}
-				                                                item={item}/>}
-				{item.idType === "blogPosts" && <BlogPostComponent editDialogOpenComponentId={editDialogOpenComponentId}
-				                                                   setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-				                                                   dragFunc={(e) => dragFunc(e, idNumber)}
-				                                                   removeItemFunc={() => removeItemFunc(idNumber)}
-				                                                   isDesktop={isDesktop} key={item.uniqueId}
-				                                                   editItem={(key, value) => editItem(idNumber, key, value)}
-				                                                   item={item}/>}
-				{item.idType === "inventoryCard" &&
-					<InventoryComponent editDialogOpenComponentId={editDialogOpenComponentId}
-					                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                    dragFunc={(e) => dragFunc(e, idNumber)}
-					                    removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                    key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}
-					                    item={item}/>}
+				{item.idType === "slider" &&
+					<SliderComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                 editDialogOpenComponentId={editDialogOpenComponentId}
+					                 setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                 siteSetting={siteSetting}
+					                 dragFunc={(e) => dragFunc(e, idNumber)}
+					                 removeItemFunc={() => removeItemFunc(idNumber)}
+					                 isDesktop={isDesktop} key={item.uniqueId}
+					                 idNumber={idNumber} item={item}
+					                 editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
+				{/*{item.idType === "featuredSection" &&*/}
+				{/*	<FeatureSection editDialogOpenComponentId={editDialogOpenComponentId}*/}
+				{/*	                setEditDialogOpenComponentId={setEditDialogOpenComponentId}*/}
+				{/*	                color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}*/}
+				{/*	                removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}*/}
+				{/*	                key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}*/}
+				{/*	                idNumber={idNumber} item={item}/>}*/}
+				{item.idType === "iconPicker" &&
+					<IconComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					               editDialogOpenComponentId={editDialogOpenComponentId}
+					               setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					               color={siteSetting.color}
+					               dragFunc={(e) => dragFunc(e, idNumber)}
+					               removeItemFunc={() => removeItemFunc(idNumber)}
+					               isDesktop={isDesktop} key={item.uniqueId}
+					               editItem={(key, value) => editItem(idNumber, key, value)}
+					               item={item}/>}
+				{item.idType === "blogPosts" &&
+					<BlogPostComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                   editDialogOpenComponentId={editDialogOpenComponentId}
+					                   setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					                   color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					                   removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					                   key={item.uniqueId}
+					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                   item={item}/>}
+				{/*{item.idType === "inventoryCard" &&*/}
+				{/*	<InventoryComponent editDialogOpenComponentId={editDialogOpenComponentId}*/}
+				{/*	                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}*/}
+				{/*	                    dragFunc={(e) => dragFunc(e, idNumber)}*/}
+				{/*	                    removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}*/}
+				{/*	                    key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}*/}
+				{/*	                    item={item}/>}*/}
+
 				{item.idType === "map" &&
-					<Map fields={components.find(item=>item.uid===item.uid)?.fields} editDialogOpenComponentId={editDialogOpenComponentId}
+					<Map fields={components.find(c => c.uid === item.uid)?.fields}
+					     editDialogOpenComponentId={editDialogOpenComponentId}
 					     setEditDialogOpenComponentId={setEditDialogOpenComponentId} color={siteSetting.color}
 					     dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					     isDesktop={isDesktop} key={item.uniqueId}
 					     editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)} item={item}/>}
+				{item.idType === "blogTags" &&
+					<BlogTagsComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                   editDialogOpenComponentId={editDialogOpenComponentId}
+					                   setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                   color={siteSetting.color}
+					                   dragFunc={(e) => dragFunc(e, idNumber)}
+					                   removeItemFunc={() => removeItemFunc(idNumber)}
+					                   isDesktop={isDesktop} key={item.uniqueId}
+					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                   item={item}/>}
+				{item.idType === "postTitle" &&
+					<BlogTitleComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                    editDialogOpenComponentId={editDialogOpenComponentId}
+					                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                    color={siteSetting.color}
+					                    dragFunc={(e) => dragFunc(e, idNumber)}
+					                    removeItemFunc={() => removeItemFunc(idNumber)}
+					                    isDesktop={isDesktop} key={item.uniqueId}
+					                    editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                    item={item}/>}
+				{item.idType === "postContent" &&
+					<PostContentComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                      editDialogOpenComponentId={editDialogOpenComponentId}
+					                      setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                      color={siteSetting.color}
+					                      dragFunc={(e) => dragFunc(e, idNumber)}
+					                      removeItemFunc={() => removeItemFunc(idNumber)}
+					                      isDesktop={isDesktop} key={item.uniqueId}
+					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                      item={item}/>}
+				{item.idType === "postThumbnail" &&
+					<PostThumbnailComponent lastPost={lastPost}
+					                        fields={components.find(c => c.uid === item.uid)?.fields}
+					                        editDialogOpenComponentId={editDialogOpenComponentId}
+					                        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                        color={siteSetting.color}
+					                        dragFunc={(e) => dragFunc(e, idNumber)}
+					                        removeItemFunc={() => removeItemFunc(idNumber)}
+					                        isDesktop={isDesktop} key={item.uniqueId}
+					                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                        item={item}/>}
+				{item.idType === "postDateAdded" &&
+					<PostDateAddedComponent lastPost={lastPost}
+					                          fields={components.find(c => c.uid === item.uid)?.fields}
+					                          editDialogOpenComponentId={editDialogOpenComponentId}
+					                          setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                          color={siteSetting.color}
+					                          dragFunc={(e) => dragFunc(e, idNumber)}
+					                          removeItemFunc={() => removeItemFunc(idNumber)}
+					                          isDesktop={isDesktop} key={item.uniqueId}
+					                          editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                          item={item}/>}
+				{item.idType === "postDateUpdated" &&
+					<PostDateUpdatedComponent lastPost={lastPost}
+					                          fields={components.find(c => c.uid === item.uid)?.fields}
+					                          editDialogOpenComponentId={editDialogOpenComponentId}
+					                          setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                          color={siteSetting.color}
+					                          dragFunc={(e) => dragFunc(e, idNumber)}
+					                          removeItemFunc={() => removeItemFunc(idNumber)}
+					                          isDesktop={isDesktop} key={item.uniqueId}
+					                          editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                          item={item}/>}
+
+				{item.idType === "postTags" &&
+					<PostTagsComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                   editDialogOpenComponentId={editDialogOpenComponentId}
+					                   setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                   color={siteSetting.color}
+					                   dragFunc={(e) => dragFunc(e, idNumber)}
+					                   removeItemFunc={() => removeItemFunc(idNumber)}
+					                   isDesktop={isDesktop} key={item.uniqueId}
+					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                   item={item}/>}
+				{item.idType === "shareButton" &&
+					<ShareButtonComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					                      editDialogOpenComponentId={editDialogOpenComponentId}
+					                      setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                      color={siteSetting.color}
+					                      dragFunc={(e) => dragFunc(e, idNumber)}
+					                      removeItemFunc={() => removeItemFunc(idNumber)}
+					                      isDesktop={isDesktop} key={item.uniqueId}
+					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                      item={item}/>}
+
 
 				{/*{item.idType === "component" && <ComponentGenerator dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item.addedItems} />}*/}
 				{/*{item.idType === "iconPicker" && <Paragraph />}*/}

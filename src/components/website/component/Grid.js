@@ -1,7 +1,7 @@
 'use server'
 import React from 'react'
 import WebComponentGenerator from "@website//WebComponentGenerator";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {StyleToClass} from "@/_helper/StyleToClass";
 
 function Column({columnSizeDesktop, columnSizeMobile, item, Style}) {
 
@@ -34,9 +34,9 @@ function Column({columnSizeDesktop, columnSizeMobile, item, Style}) {
 }
 
 function Grid({item, Style}) {
-	const baseClass = `grid grid-cols-12 justify-end w-full`
+	const baseClass = `grid grid-cols-12  w-full`
 	return (
-		<div style={{justifyContent: "end",}} className={baseClass}>
+		<div style={{alignItems: item.styles.alignItems,gap:item.gapDesktop+"px"}} className={baseClass}>
 			{item.addedItems.map((m, i) =>
 				<Column Style={Style} columnSizeDesktop={item.columnSizeDesktop[i]}
 				        columnSizeMobile={item.columnSizeMobile[i]} id={item.uniqueId} key={item.uniqueId + i + "-grid"}

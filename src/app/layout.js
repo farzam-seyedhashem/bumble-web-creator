@@ -3,6 +3,17 @@ import {Roboto_Flex} from 'next/font/google'
 import {ThemeProvider} from "@/app/theme-provider";
 import 'grapesjs/dist/css/grapes.min.css';
 import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/effect-creative';
+import 'swiper/css/effect-cube';
+import 'swiper/css/effect-fade';
+import 'swiper/css/effect-fade';
+import 'swiper/css/effect-flip';
+import 'swiper/css/effect-flip';
+import 'swiper/css/mousewheel';
 import 'aos/dist/aos.css';
 const robotoFlex = Roboto_Flex({subsets: ['greek'], variable: '--font-roboto'})
 

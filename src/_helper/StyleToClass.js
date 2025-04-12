@@ -9,6 +9,7 @@ const styleCss = [
     {style:"marginRight",cssStyle:"margin-right"},
     {style:"color",cssStyle:"color"},
     {style:"backgroundColor",cssStyle:"background-color"},
+    {style:"maxWidth",cssStyle:"max-width"},
     {style:"fontWeight",cssStyle:"font-weight"},
     {style:"fontSize",cssStyle:"font-size"},
     {style:"textAlign",cssStyle:"text-align"},

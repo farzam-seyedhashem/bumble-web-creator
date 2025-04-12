@@ -1,42 +1,63 @@
 import Image from "next/image";
 import Button from "@m3/buttons/Button";
+import Icon from "@m3/assets/icons/Icon";
+import {useState} from "react";
+const { convert } = require('html-to-text');
+export default function PostCard({postCard, item}) {
+	let [Component, setComponent] = useState(postCard.postTitleType)
 
-export default function PostCard({post}) {
-    return (
-        <>
-            <div className="rounded-[16px]  w-full">
-                <div className={"relative h-[340px] w-full"}>
-                    <Image alt={""} objectFit={"cover"} layout={"fill"} src={"/bg.webp"}/>
-                </div>
-                <div>
-                    <h3>
-                        Post Title
-                    </h3>
-                </div>
-            </div>
-            {/*<div className="rounded-[16px] overflow-hidden h-4/6 relative w-full">*/}
-            {/*    <Image alt={""} objectFit={"cover"} layout={"fill"} src={"/bg.webp"}/>*/}
-            {/*    <div className={"flex items-end absolute inset-0 z-2 bg-gradient-to-b from-transparent via-scrim-light/[40%] to-scrim-light/[40%]"}>*/}
-            {/*        <div className={"px-4 py-4"}>*/}
-            {/*            <div className={"text-label-medium font-medium text-on-tertiary-container-light dark:text-on-surface-variant-dark"}>*/}
-            {/*                Mar 16,2020*/}
-            {/*            </div>*/}
-            {/*            <div className={"mb-2 text-title-large font-bold text-on-tertiary-container-light dark:text-on-surface-dark"}>*/}
-            {/*                Post Title*/}
-            {/*            </div>*/}
-            {/*            <div className={"text-label-large text-primary-light dark:text-primary-dark"}>*/}
-            {/*                #lorem_ipsum #lorem_ipsum #lorem_ipsum #lorem_ipsum*/}
-            {/*            </div>*/}
-            {/*            <p className={" text-body-large text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-            {/*                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut*/}
-            {/*                labore et dolore magna aliqua Egestas purus viverra accumsan in nisi nisi*/}
-            {/*            </p>*/}
-            {/*            <button className={"mt-4 bg-tertiary-light rounded-full px-6 h-[40px] text-on-tertiary-light text-label-large font-medium"}>*/}
-            {/*                Read More*/}
-            {/*            </button>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-        </>
-    )
+	return (
+		<>
+			<div style={{
+				backgroundColor: postCard.backgroundColor,
+				padding: postCard.padding.join("px ") + "px",
+				borderRadius: postCard.cardBorderRadius + "px",
+				height:"100%"
+			}} className="">
+				{!postCard.imageCenter && <div style={{borderRadius: postCard.imageBorderRadius.join("px ") + "px"}}
+				                               className={"aspect-w-16 aspect-h-8 overflow-hidden relative"}>
+					<Image alt={""} objectFit={"cover"} layout={"fill"}
+					       src={item ? item.thumbnail ? "" : "/bg.webp" : "/bg.webp"}/>
+				</div>}
+				<Component style={{color: postCard.titleTextColor, margin: postCard.titleMargin.join("px ") + "px"}}
+				           className={"text-title-large font-bold mt-4"}>
+					{item ? item.title : "Post Title"}
+				</Component>
+				{postCard.imageCenter && <div style={{
+					borderRadius: postCard.imageBorderRadius.join("px ") + "px",
+					margin: postCard.imageMargin.join("px ") + "px"
+				}} className={"aspect-w-16 aspect-h-8 overflow-hidden relative"}>
+					<Image alt={""} objectFit={"cover"} layout={"fill"}
+					       src={item ? item.thumbnail ? "" : "/bg.webp" : "/bg.webp"}/>
+				</div>}
+				{!postCard.withoutDescription && <p style={{
+					color: postCard.descriptionTextColor,
+					margin: postCard.descriptionMargin.join("px ") + "px"
+				}} className={"text-body-large flex-grow"}>
+					{/*<TruncText charNumber={250}>*/}
+						{item?.content ? convert(item.content,{ wordwrap: 130,}) : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Egestas purus viverra accumsan in nisl nisi"}
+					{/*</TruncText>*/}
+				</p>}
+				{postCard.showMoreButton && postCard.buttonType === "text" ?
+					<a style={{color: postCard.buttonTextColor, margin: postCard.buttonMargin.join("px ") + "px"}}
+					   className={"flex items-center"}>
+						{postCard.showMoreButtonText}
+						<Icon>
+							{postCard.showMoreButtonIcon}
+						</Icon>
+					</a> : <button style={{
+						color: postCard.buttonTextColor,
+						backgroundColor: postCard.buttonBackgroundColor,
+						margin: postCard.buttonMargin.join("px ") + "px"
+					}} className={"text-label-large rounded-full px-6 h-[40px] flex items-center"}>
+						{postCard.showMoreButtonText}
+						<Icon size={20} className={"ml-2 text-[20px]"}>
+							{postCard.showMoreButtonIcon}
+						</Icon>
+					</button>}
+
+
+			</div>
+		</>
+	)
 }

@@ -1,5 +1,5 @@
 'use client';
-import {useEffect, useState, Fragment, useMemo} from "react";
+import React, {useEffect, useState, Fragment, useMemo} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
@@ -7,8 +7,8 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
-import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
+import {StyleToClass} from "@/_helper/StyleToClass";
+import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 
 export default function ButtonComponent({
@@ -25,7 +25,7 @@ export default function ButtonComponent({
 	let [isSelected, setIsSelected] = useState(false)
 	let [value, setValue] = useState(item.value || item.idType)
 	let [link, setLink] = useState(item.link || "")
-	let [justify,setJustify] = useState(item.justify || "start")
+	let [justify, setJustify] = useState(item.justify || "start")
 	let [styles, setStyles] = useState(item?.styles)
 	const [editMode, setEditMode] = useState("value")
 	let onChangeStyles = (name, value, type) => {
@@ -43,48 +43,75 @@ export default function ButtonComponent({
 			onChangeStyles('backgroundColor', rgbaObjToRgba(color.primary), 'global')
 		}
 	}, [styles])
-	const changeHandler = (key,value) => {
+	const changeHandler = (key, value) => {
 		editItem(key, value)
+	}
+	const copyToClipboard = () => {
+		localStorage.setItem("clipboard", JSON.stringify(item))
 	}
 	return (
 		<>
-			<div className={"flex relative group/button"}>
-				<div style={{width:"100%",display:"flex",justifyContent:`${justify}`}}>
-					<button style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+			<style>{`
+				.${item.uniqueId}:hover .${item.uniqueId}-panel{
+				display: block;
+			}
+			`}</style>
+			<div style={isDesktop ? {
+				display: styles.desktop?.display || "block",
+				alignItems: styles.desktop?.alignItems || "flex-start",
+				justifyContent: styles.desktop?.justifyContent || "flex-start"
+			} : {
+				display: styles.mobile?.display || "block",
+				alignItems: styles.mobile?.alignItems || "flex-start",
+				justifyContent: styles.mobile?.justifyContent || "flex-start"
+			}}>
+
+				<div className={`flex relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
+
+					<button
+						style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
 						{value}
 					</button>
-				</div>
-				<div
-					className={"absolute z-[888] hidden group-hover/button:block  -top-[24px] left-1/2 -translate-x-1/2 transform "}>
-					<div
-						className={"px-3 space-x-3 flex rounded-t-[8px] dark:bg-tertiary-container-dark bg-tertiary-container-light"}>
-						<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon size={16}
-							      className={"dark:!text-on-tertiary-container-dark !text-on-tertiary-container-light text-[20px]"}>
-								edit
-							</Icon>
-						</button>
-						<button onDragOver={(event) => {
-							event.preventDefault();
-							removeItemFunc()
-						}} onDragStart={(e) => dragFunc(e)} draggable={true}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon size={16}
-							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
-								drag_indicator
-							</Icon>
-						</button>
-						<button
-							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  !bg-tertiary-container-light dark:!bg-tertiary-container-dark "}>
-							<Icon onClick={removeItemFunc} size={16}
-							      className={"!text-on-tertiary-container-light dark:!text-on-tertiary-container-dark text-[20px]"}>
-								delete
-							</Icon>
-						</button>
-					</div>
-				</div>
 
+					<div
+						className={`absolute z-[888] hidden ${item.uniqueId}-panel  -top-[24px] left-1/2 -translate-x-1/2 transform `}>
+						<div
+							className={"px-3 space-x-3 flex rounded-t-[8px] bg-tertiary-light"}>
+							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  bg-tertiary-light "}>
+								<Icon size={16}
+								      className={" !text-on-tertiary-light text-[20px]"}>
+									edit
+								</Icon>
+							</button>
+							<button onClick={() => copyToClipboard()}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={"!text-on-tertiary-light text-[20px]"}>
+									content_copy
+								</Icon>
+							</button>
+							<button onDragOver={(event) => {
+								event.preventDefault();
+								removeItemFunc()
+							}} onDragStart={(e) => dragFunc(e)} draggable={true}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={"!text-on-tertiary-light text-[20px]"}>
+									drag_indicator
+								</Icon>
+							</button>
+							<button
+								className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
+								<Icon onClick={removeItemFunc} size={16}
+								      className={"!text-on-tertiary-light text-[20px]"}>
+									delete
+								</Icon>
+							</button>
+						</div>
+					</div>
+
+				</div>
 			</div>
 			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
 			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
@@ -113,12 +140,12 @@ export default function ButtonComponent({
 				{editMode === "value" && <div className={"px-4 mt-6"}>
 					<TextField id={"ef"} key={1} label={"Text"}
 					           onChange={(e) => {
-						           changeHandler("value",e.target.value)
+						           changeHandler("value", e.target.value)
 						           setValue(e.target.value)
 					           }} defaultValue={value}/>
 					<TextField id={"mm"} key={2} className={"mt-4"} label={"Link"}
 					           onChange={(e) => {
-						           changeHandler("link",e.target.value)
+						           changeHandler("link", e.target.value)
 						           setLink(e.target.value)
 					           }}
 					           defaultValue={link}/>
@@ -129,7 +156,7 @@ export default function ButtonComponent({
 						</label>
 						<div className={"mt-1 flex justify-end space-x-1"}>
 							<button onClick={(e) => {
-								changeHandler("justify","flex-start")
+								changeHandler("justify", "flex-start")
 								setJustify("flex-start")
 							}}
 							        className={`${justify === "flex-start" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
@@ -138,7 +165,7 @@ export default function ButtonComponent({
 								</Icon>
 							</button>
 							<button onClick={(e) => {
-								changeHandler("justify","center")
+								changeHandler("justify", "center")
 								setJustify("center")
 							}}
 							        className={`${justify === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
@@ -147,7 +174,7 @@ export default function ButtonComponent({
 								</Icon>
 							</button>
 							<button onClick={(e) => {
-								changeHandler("justify","flex-end")
+								changeHandler("justify", "flex-end")
 								setJustify("flex-end")
 							}}
 							        className={`${justify === "flex-end" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>

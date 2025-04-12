@@ -5,7 +5,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {notFound} from "next/navigation";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
+import {StyleToClass} from "@/_helper/StyleToClass";
 
 async function getData(slug) {
     'use server'

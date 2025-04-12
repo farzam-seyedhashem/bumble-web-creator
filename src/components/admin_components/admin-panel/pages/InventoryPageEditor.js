@@ -13,7 +13,7 @@ import {InventoryTypeOne} from "@page_builder/pages-list/InventoryTypeOne";
 import {IFrame} from "@page_builder/Iframe";
 import {InventoryTypeTwo} from "@page_builder/pages-list/InventoryTypeTwo";
 import {index} from "@controller/FileController";
-import {rgbaObjToRgba} from "@frontend/_helper/rgbaObjtoRgba";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import {Dialog} from "@headlessui/react";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 export async function UploadFile(fileInput) {
 	const formdata = new FormData();
-	formdata.append("files", fileInput, "page-speed-line-illustration_120816-20274.jpg");
+	formdata.append("files", fileInput, fileInput.name);
 
 	const response = await fetch(`${"http://localhost:3001/upload"}`, {
 		method: 'POST',

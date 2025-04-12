@@ -7,9 +7,9 @@ import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {Dialog, Transition} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToTailwind} from "@frontend/_helper/StyleToTailwind";
-import {StyleToClass} from "@frontend/_helper/StyleToClass";
-import {rgbaObjToRgba} from '@frontend/_helper/rgbaObjtoRgba'
+import {StyleToTailwind} from "@/_helper/StyleToTailwind";
+import {StyleToClass} from "@/_helper/StyleToClass";
+import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 
 export default function TextComponents({
@@ -49,45 +49,70 @@ export default function TextComponents({
 		// console.log(editDialogOpenComponentId)
 		console.log("lweknfklw", editDialogOpenComponentId)
 	}, [editDialogOpenComponentId])
-
+	const copyToClipboard = () => {
+		localStorage.setItem("clipboard", JSON.stringify(item))
+	}
 	return (
 		<>
-			<Component id={key}
-			           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative group/typography`}
-			           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
-				{value}
-				<div
-					className={"absolute hidden group-hover/typography:block z-[888]   -top-[32px] right-0  transform "}>
+			<style>{`
+				.${item.uniqueId}:hover .${item.uniqueId}-panel{
+				display: block;
+			}
+			`}</style>
+			<div style={isDesktop ? {
+				display: styles.desktop?.display || "block",
+				alignItems: styles.desktop?.alignItems || "flex-start",
+				justifyContent: styles.desktop?.justifyContent || "flex-start"
+			} : {
+				display: styles.mobile?.display || "block",
+				alignItems: styles.mobile?.alignItems || "flex-start",
+				justifyContent: styles.mobile?.justifyContent || "flex-start"
+			}}>
+				<Component id={key}
+				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
+				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+					{value}
 					<div
-						className={"px-4 py-1 space-x-3 rounded-t-[8px] flex dark:bg-primary-dark bg-primary-light"}>
-						<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
-							<Icon size={16}
-							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-								edit
-							</Icon>
-						</button>
-						<button onDragOver={(event) => {
-							event.preventDefault();
-							removeItemFunc()
-						}} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
-						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
-							<Icon size={16}
-							      className={`${item.uniqueId} !text-on-primary-light dark:!text-on-primary-dark text-[20px]`}>
-								drag_indicator
-							</Icon>
-						</button>
-						<button
-							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
-							<Icon onClick={removeItemFunc} size={16}
-							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-								delete
-							</Icon>
-						</button>
-					</div>
-				</div>
+						className={`absolute hidden ${item.uniqueId}-panel z-[888]   -top-[32px] right-0  transform `}>
+						<div
+							className={"px-4 py-1 space-x-3 rounded-t-[8px] flex dark:bg-primary-dark bg-primary-light"}>
 
-			</Component>
+							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									edit
+								</Icon>
+							</button>
+							<button onClick={() => copyToClipboard()}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									content_copy
+								</Icon>
+							</button>
+							<button onDragOver={(event) => {
+								event.preventDefault();
+								removeItemFunc()
+							}} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
+							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+								<Icon size={16}
+								      className={`${item.uniqueId} !text-on-primary-light dark:!text-on-primary-dark text-[20px]`}>
+									drag_indicator
+								</Icon>
+							</button>
+							<button
+								className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
+								<Icon onClick={removeItemFunc} size={16}
+								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+									delete
+								</Icon>
+							</button>
+						</div>
+					</div>
+
+				</Component>
+			</div>
 			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
 			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
 				<div
