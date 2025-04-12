@@ -7,8 +7,6 @@ import Icon from "@m3/assets/icons/Icon";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import IconButton from "@m3/icon_buttons/IconButton";
-import NavigationBar from "@m3/navigation_bars/NavigationBar";
-import placeholder from "lodash/fp/placeholder";
 import Button from "@m3/buttons/Button";
 import BasicDialog from "@m3/dialogs/BasicDialog";
 import FilledTextField from "@m3/text_fields/FilledTextField";

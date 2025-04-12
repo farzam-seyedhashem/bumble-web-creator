@@ -4,8 +4,8 @@ import {revalidateTag} from "next/cache";
 const Page = db.Menu
 // import SafeClass from '@/SafeClasses.json'
 async function index(req) {
-    const params = req.params
-    const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
+    // const params = req.params
+    // const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
     // const resPerPage = parseInt(per_page) || 12;
     // const page = parseInt(pageNumber) || 1;
     // const category = req.query.category || "all";
@@ -27,7 +27,7 @@ async function index(req) {
     // }
 
 
-    return await Page.findOne({}).skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
+    return await Page.findOne({})
 
     // try {
     // Page.find(filterObject).skip((resPerPage * page) - resPerPage)

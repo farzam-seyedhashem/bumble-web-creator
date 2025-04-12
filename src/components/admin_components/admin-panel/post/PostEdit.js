@@ -3,7 +3,7 @@ import IconButton from "@m3/icon_buttons/IconButton";
 import FilledTextField from "@m3/text_fields/FilledTextField";
 import Button from "@m3/buttons/Button";
 import Icon from "@m3/assets/icons/Icon";
-import Quill from "quill";
+// import Quill from "quill";
 import {useEffect, useMemo, useRef} from "react";
 import "quill/dist/quill.snow.css"
 import '@/app/editor.css'
@@ -17,13 +17,13 @@ import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import {UploadFile} from "@frontend/client_action/File";
 import {StoreFile} from "@backend/server_action/Files";
 import Link from "next/link";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import QuillEditor from "@admin/admin-panel/post/QuillEditor";
 
 export default function PostEdit({post, siteSetting}) {
 	const [data, setData] = useState(post || {})
 	console.log(post)
-	const [quill, setQuill] = useState(null)
+	// const [quill, setQuill] = useState(null)
 	const [openTagAddDialog, setOpenTagAddDialog] = useState(false);
 	const handleChangeForm = (key, value) => {
 		setData({...data, [key]: value})

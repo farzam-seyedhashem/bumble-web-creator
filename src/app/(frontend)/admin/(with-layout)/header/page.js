@@ -1,15 +1,6 @@
 'use strict';
-import React from "react";
-// import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import PageList from "@admin/admin-panel/pages/PageList";
-// import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import Link from "next/link";
+
 import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import {getBySlug} from "@controller/PageController";
-import PostEditor from "@admin/admin-panel/pages/PostEditor";
-import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
-import TemplateList from "@admin/admin-panel/pages/TemplateList";
 
 async function getData(slug) {
     'use server'
@@ -33,7 +24,7 @@ async function getTemplates() {
     return res.json()
 }
 
-async function getSiteSettingData(slug) {
+async function getSiteSettingData() {
     'use server'
     const res = await fetch('http://localhost:3000/api/site-setting', {next: {tags: ['site-setting']}})
     if (!res.ok) {
@@ -43,9 +34,9 @@ async function getSiteSettingData(slug) {
     return res.json()
 }
 
-async function getMenu(slug) {
+async function getMenu() {
     'use server'
-    const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']},cache:"no-cache"})
+    const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']}})
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')
@@ -53,25 +44,7 @@ async function getMenu(slug) {
     return res.json()
 }
 
-async function getFooter(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/footer', {next: {tags: ['footer']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
 
-async function getInventoryPage(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/inventory-page', {next: {tags: ['inventory-page']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
 
 export default async function Page() {
     // const {slug} = params
