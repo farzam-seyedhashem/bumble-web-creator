@@ -3,15 +3,11 @@ import {revalidateTag} from "next/cache";
 import fs from 'fs'
 const PostModel = db.Post
 // import SafeClass from '@/SafeClasses.json'
-async function index(req) {
-    const params = req?.params
-    const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
-    // const resPerPage = parseInt(per_page) || 12;
-    // const page = parseInt(pageNumber) || 1;
-    // const category = req.query.category || "all";
-    // let filterObject = {}
-    // const tagQuery = req.query.tag;
-    // const sQuery = req.query.s;
+async function getPosts(perPageV,pageNumberV) {
+    // const params = req?.params
+   const perPage= perPageV || 12
+   const pageNumber= pageNumberV || 1
+     // {, pageNumber: pageNumber || 1}
 
     // if (tagQuery) {
     //     filterObject.tags = tagQuery;
@@ -28,18 +24,18 @@ async function index(req) {
     const response = {
         "currentPage": pageNumber,
         "data": [],
-        "perPage": per_page,
+        "perPage": perPage,
         "lastPage": false,
         "lastPageIndex": 1,
         "count": 1
     }
     const count = await PostModel.countDocuments();
-    response.lastPageIndex = Math.ceil(count / per_page)
+    response.lastPageIndex = Math.ceil(count / perPage)
     response.itemCount = count
-    if (count <= (per_page * pageNumber)) {
+    if (count <= (perPage * pageNumber)) {
         response.lastPage = true
     }
-    response.data = await PostModel.find({}).populate("tags").populate("thumbnail").skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
+    response.data = await PostModel.find({}).populate("tags").populate("thumbnail").skip((perPage * pageNumber) - perPage).limit(perPage).sort({'createdAt': -1})
     return response
 
     // try {
@@ -90,6 +86,9 @@ async function getBySlug(slug) {
     return await PostModel.findOne({slug: slug}).populate('thumbnail').populate('tags')
 
 }
+async function getPostBySlug(slug) {
+    return await PostModel.findOne({slug: slug}).populate('thumbnail').populate('tags')
+}
 
 async function comments(req, res) {
     let body = req.body;
@@ -133,8 +132,9 @@ async function destroy(id) {
 }
 
 export {
+    getPostBySlug,
     getBySlug,
-    index,
+    getPosts,
     show,
     store,
     getById,

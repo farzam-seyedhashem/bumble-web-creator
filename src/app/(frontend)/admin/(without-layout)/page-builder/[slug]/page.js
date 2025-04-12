@@ -1,48 +1,15 @@
 import PageBuilder from "@page_builder/PageBuilder";
-async function getData(slug) {
-    'use server'
-    const res = await fetch(`http://localhost:3000/api/page/id/${slug}`,{ next: { tags: ['pages'] },cache:"no-cache"})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getSiteSettingData(slug) {
-    'use server'
-    const res = await fetch(`http://localhost:3000/api/site-setting`)
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getTemplateComponent(slug) {
-    'use server'
-    const res = await fetch(`http://localhost:3000/api/site-setting`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getLastPost() {
-    'use server'
-    const res = await fetch(`http://localhost:3000/api/posts?per_page=1`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-
+import {getSiteSetting} from "@controller/SiteSettingController";
+import {getPosts} from "@controller/PostController";
+import {getPageById} from "@controller/PageController";
 
 export default async function page({params}) {
-    const data = await getData(params.slug)
-    const siteSetting = await getSiteSettingData(params.slug)
+    const data = await getPageById(params.slug)
+    const siteSetting = await getSiteSetting()
     let lastPost = []
     // console.log("data",data)
     if (data.slug==="post") {
-
-        lastPost =  await getLastPost()
+        lastPost =  await getPosts(1,12)
     }
     return (
         <PageBuilder lastPost={lastPost} type={"page"} siteSetting={siteSetting} slug={params.slug} data={data}/>

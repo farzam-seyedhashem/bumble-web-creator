@@ -1,7 +1,7 @@
-import {index,store} from '@controller/FooterController'
+import {store} from '@controller/FooterController'
 import {revalidateTag} from "next/cache";
 export async function GET(req) {
-    return Response.json(await index(req))
+    // return Response.json(await index(req))
 }
 export async function POST(request) {
 

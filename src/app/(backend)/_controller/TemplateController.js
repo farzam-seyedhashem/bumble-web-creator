@@ -64,6 +64,50 @@ async function index(req) {
 
 
 }
+async function getTemplates(perPageV,pageNumberV) {
+    // const params = req.params
+    const perPage = perPageV
+    const pageNumber = pageNumberV
+    // const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
+    const response = {
+        "currentPage": pageNumber,
+        "data": [],
+        "perPage": perPage,
+        "lastPage": false,
+        "lastPageIndex": 1,
+        "count": 1
+    }
+    const count = await Template.countDocuments();
+    response.lastPageIndex = Math.ceil(count / perPage)
+    response.itemCount = count
+    if (count <= (perPage * pageNumber)) {
+        response.lastPage = true
+    }
+    response.data = await Template.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).sort({'createdAt': -1})
+    return response
+
+    // try {
+    // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
+    //     .limit(resPerPage).sort({'createdAt': -1}).populate('tags').populate('thumbnail').exec(function (err, docs) {
+    //     Page.count(filterObject).exec(function (err, count) {
+    //
+    //
+    //
+    //         response.data = docs;
+    //         res.send(response);
+    //     })
+    // });
+    //     return Page.find()
+    // } catch (e) {
+    // }
+// Page.find(regexQuery, function (err, docs) {
+//
+//     response.data = docs;
+//     res.send(response);
+// })
+
+
+}
 
 // Store a newly created resource in storage.
 async function store(body) {
@@ -90,6 +134,9 @@ async function getById(id) {
 async function getBySlug(slug) {
     return await Template.findOne({_id: slug})
 
+}
+async function getTemplateById(slug) {
+    return await Template.findOne({_id: slug})
 }
 
 
@@ -118,6 +165,8 @@ async function destroy(id) {
 }
 
 export {
+    getTemplates,
+    getTemplateById,
     getBySlug,
     index,
     show,

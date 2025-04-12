@@ -4,22 +4,10 @@ import Link from "next/link";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Image from "next/image";
 import Icon from "@m3/assets/icons/Icon";
-
-async function getData(slug) {
-	'use server'
-	const res = await fetch(`http://localhost:3000/api/posts`, {next: {tags: ['posts']}})
-	if (!res.ok) {
-		if (res.status === 404) {
-			notFound()
-		}
-		throw new Error('Failed to fetch data')
-	}
-	// return res.json()
-	return res.json()
-}
+import {getPosts} from '@controller/PostController'
 
 export default async function PostPage() {
-	const data = await getData()
+	const data = await getPosts()
 	return (
 		<div className={"px-6 py-6  bg-surface-light dark:bg-surface-dark w-full min-h-screen"}>
 			<Link href={"/admin/posts/addnew"}>
@@ -81,10 +69,11 @@ export default async function PostPage() {
 						{item.tags.map((tag, tagIndex) => <span key={tagIndex}>{tag.title}</span>)}
 					</td>
 					<td className={"w-2/12"}>
-						{item.createdAt}
+						{new Date(item.createdAt).toLocaleDateString("en-US")}
 					</td>
 					<td className={"w-2/12"}>
-						{item.updatedAt}
+						{new Date(item.updatedAt).toLocaleDateString("en-US")}
+
 					</td>
 					<td className={"w-2/12"}>
 						<div className={"flex items-center"}>

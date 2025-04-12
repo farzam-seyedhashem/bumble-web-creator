@@ -1,29 +1,30 @@
 'use strict';
-
-import {revalidateTag} from "next/cache";
-import {NextRequest, NextResponse} from "next/server";
-import {notFound} from "next/navigation";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
 import {StyleToClass} from "@/_helper/StyleToClass";
+import {getPageBySlug} from "@controller/PageController";
+import {notFound} from "next/navigation";
 
-async function getData(slug) {
-    'use server'
-    revalidateTag("page")
-    const res = await fetch(`http://localhost:3000/api/page/${slug}`, {next: {tags: ['pages']}})
-    if (!res.ok) {
-        if (res.status === 404) {
-            notFound()
-        }
-        throw new Error('Failed to fetch data')
-    }
-    // return res.json()
-    return res.json()
-}
+// async function getData(slug) {
+//     'use server'
+//     revalidateTag("page")
+//     const res = await fetch(`http://localhost:3000/api/page/${slug}`, {next: {tags: ['pages']}})
+//     if (!res.ok) {
+//         if (res.status === 404) {
+//             notFound()
+//         }
+//         throw new Error('Failed to fetch data')
+//     }
+//     // return res.json()
+//     return res.json()
+// }
 
 export default async function Page({params}) {
     const slug = params.slug
-    const data = await getData(slug)
+    const data = await getPageBySlug(slug)
+    if (data===null){
+        notFound()
+    }
     // const Style = await import(`@/app/(styles)/${slug}.module.css`)
 
     return (

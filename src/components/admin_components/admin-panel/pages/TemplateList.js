@@ -198,8 +198,8 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 										{page.slug ? "page" : "template"}
 									</div>
 								</td>
-								<td>{page.createdAt}</td>
-								<td>{page.updatedAt}</td>
+								<td>{new Date(page.createdAt).toLocaleString("us")}</td>
+								<td>{new Date(page.updatedAt).toLocaleString("us")}</td>
 								<td>
 									<div className={"flex items-center space-x-1 justify-end"}>
 										<Link

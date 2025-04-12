@@ -7,8 +7,8 @@ import Icon from "@m3/assets/icons/Icon";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import IconButton from "@m3/icon_buttons/IconButton";
-import NavigationBar from "@m3/navigation_bars/NavigationBar";
-import placeholder from "lodash/fp/placeholder";
+// import NavigationBar from "@m3/navigation_bars/NavigationBar";
+// import placeholder from "lodash/fp/placeholder";
 import SocialIcons from "@m3/assets/icons/SocialIcons";
 import Button from "@m3/buttons/Button";
 import {Transition} from "@headlessui/react";
@@ -32,7 +32,6 @@ function Dialog({children, isOpen, onClose, headline}) {
                         leaveFrom="translate-x-0"
                         leaveTo="translate-x-full"
                     >
-
                         <div
                             className={" border-l border-outline-light dark:border-outline-dark w-[400px] h-full overflow-hidden rounded-0 bg-surface-light dark:bg-surface-dark"}>
                             <div
@@ -294,7 +293,6 @@ export default function FooterEditor({footerSetting,siteSetting}) {
 
             }
         })
-
         return v?v:selectedColor
     }
     const saveData = async () => {
@@ -476,42 +474,42 @@ export default function FooterEditor({footerSetting,siteSetting}) {
                                         <h3 className={"font-medium text-title-small"}>
                                             Links
                                         </h3>
-                                    {item.links.map((link, linkIndex) =>
-                                        <div className={"px-2"} key={linkIndex}>
-                                            <FilledTextField  value={link.linkTitle}
-                                                             onChange={(e) => handleLinks("linkTitle", e.target.value,columnIndex, linkIndex)}
-                                                             label={"Title"}/>
-                                            {item.links.length-1!==linkIndex && <div className={"flex items-center justify-center"}>
-                                                <FilledTextField value={link.linkAddr}
-                                                                 onChange={(e) => handleLinks("linkAddr", e.target.value, columnIndex,linkIndex)}
-                                                                 label={"Address"}/>
-                                            </div>}
-                                            {item.links.length-1===linkIndex && <div className={"flex items-center justify-center"}>
-                                                <FilledTextField value={link.linkAddr}
-                                                                 onChange={(e) => handleLinks("linkAddr", e.target.value, columnIndex,linkIndex)}
-                                                                 label={"Address"}/>
-                                                <IconButton onClick={()=>{
+                                        {item.links.map((link, linkIndex) =>
+                                            <div className={"px-2"} key={linkIndex}>
+                                                <FilledTextField  value={link.linkTitle}
+                                                                  onChange={(e) => handleLinks("linkTitle", e.target.value,columnIndex, linkIndex)}
+                                                                  label={"Title"}/>
+                                                {item.links.length-1!==linkIndex && <div className={"flex items-center justify-center"}>
+                                                    <FilledTextField value={link.linkAddr}
+                                                                     onChange={(e) => handleLinks("linkAddr", e.target.value, columnIndex,linkIndex)}
+                                                                     label={"Address"}/>
+                                                </div>}
+                                                {item.links.length-1===linkIndex && <div className={"flex items-center justify-center"}>
+                                                    <FilledTextField value={link.linkAddr}
+                                                                     onChange={(e) => handleLinks("linkAddr", e.target.value, columnIndex,linkIndex)}
+                                                                     label={"Address"}/>
+                                                    <IconButton onClick={()=>{
 
-                                                    const newLinksColumn = items.links
-                                                    newLinksColumn[columnIndex].links.push({linkTitle: "", linkAddr: ""})
+                                                        const newLinksColumn = items.links
+                                                        newLinksColumn[columnIndex].links.push({linkTitle: "", linkAddr: ""})
 
 
-                                                    setItems({...items, "links": newLinksColumn})
-                                                }} className={"ml-2"} selected={true}>
-                                                    add_circle
-                                                </IconButton>
-                                            </div>}
-                                        </div>
-                                    )}
+                                                        setItems({...items, "links": newLinksColumn})
+                                                    }} className={"ml-2"} selected={true}>
+                                                        add_circle
+                                                    </IconButton>
+                                                </div>}
+                                            </div>
+                                        )}
                                     </div>
 
                                 </div>
                             )}
                             {items.links.length<3?<div onClick={addNewLinkColumn} className={"mt-4 flex justify-center"}>
-                                    <Button icon={"add"} type={"elevated"}>
-                                        Add new link column
-                                    </Button>
-                                </div>:<div className={"h-[48px]"}/>}
+                                <Button icon={"add"} type={"elevated"}>
+                                    Add new link column
+                                </Button>
+                            </div>:<div className={"h-[48px]"}/>}
                         </div>
                     </div>
                 </div>}

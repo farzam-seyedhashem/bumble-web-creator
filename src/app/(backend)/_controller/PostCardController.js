@@ -3,9 +3,9 @@ import {revalidateTag} from "next/cache";
 import fs from 'fs'
 const PostModel = db.PostCard
 // import SafeClass from '@/SafeClasses.json'
-async function index(req) {
-    const params = req?.params
-    const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
+async function getPostCard(req) {
+    // const params = req?.params
+    // const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
     // const resPerPage = parseInt(per_page) || 12;
     // const page = parseInt(pageNumber) || 1;
     // const category = req.query.category || "all";
@@ -25,22 +25,22 @@ async function index(req) {
     //         "$regex": sQuery, "$options": "i"
     //     };
     // }
-    const response = {
-        "currentPage": pageNumber,
-        "data": [],
-        "perPage": per_page,
-        "lastPage": false,
-        "lastPageIndex": 1,
-        "count": 1
-    }
-    const count = await PostModel.countDocuments();
-    response.lastPageIndex = Math.ceil(count / per_page)
-    response.itemCount = count
-    if (count <= (per_page * pageNumber)) {
-        response.lastPage = true
-    }
-    response.data = await PostModel.find({}).skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
-    return response
+    // const response = {
+    //     "currentPage": pageNumber,
+    //     "data": [],
+    //     "perPage": per_page,
+    //     "lastPage": false,
+    //     "lastPageIndex": 1,
+    //     "count": 1
+    // }
+    // const count = await PostModel.countDocuments();
+    // response.lastPageIndex = Math.ceil(count / per_page)
+    // response.itemCount = count
+    // if (count <= (per_page * pageNumber)) {
+    //     response.lastPage = true
+    // }
+    return await PostModel.findOne({}).sort({'createdAt': -1})
+
 
     // try {
     // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
@@ -124,7 +124,7 @@ async function destroy(id) {
 
 export {
     getBySlug,
-    index,
+    getPostCard,
     show,
     store,
     getById,

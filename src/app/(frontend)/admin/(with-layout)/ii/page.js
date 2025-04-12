@@ -5,80 +5,63 @@ import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
 import PostEditor from "@admin/admin-panel/pages/PostEditor";
 import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
 
-async function getData(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/page', {next: {tags: ['pages']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-
-    switch (slug) {
-        case "page":
-            return res.json()
-
-        case "menu":
-            return res.json()
-
-        case "footer":
-            break;
-        case "inventory":
-            break;
-        case "template":
-            break;
-        case "post":
-            break;
-        default:
-            return 404;
-    }
-
-
-}
-async function getTemplates() {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/template', {next: {tags: ['template']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getSiteSettingData(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/site-setting', {next: {tags: ['site-setting']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getMenu(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getFooter(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/footer', {next: {tags: ['footer']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
-async function getInventoryPage(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/inventory-page', {next: {tags: ['inventory-page']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
+// async function getData(slug) {
+//     'use server'
+//     const res = await fetch('http://localhost:3000/api/page', {next: {tags: ['pages']}})
+//     if (!res.ok) {
+//         // This will activate the closest `error.js` Error Boundary
+//         throw new Error('Failed to fetch data')
+//     }
+//
+//     switch (slug) {
+//         case "page":
+//             return res.json()
+//
+//         case "menu":
+//             return res.json()
+//
+//         case "footer":
+//             break;
+//         case "inventory":
+//             break;
+//         case "template":
+//             break;
+//         case "post":
+//             break;
+//         default:
+//             return 404;
+//     }
+//
+//
+// }
+// async function getTemplates() {
+//     'use server'
+//     const res = await fetch('http://localhost:3000/api/template', {next: {tags: ['template']}})
+//     if (!res.ok) {
+//         // This will activate the closest `error.js` Error Boundary
+//         throw new Error('Failed to fetch data')
+//     }
+//     return res.json()
+// }
+// async function getMenu(slug) {
+//     'use server'
+//     const res = await fetch('http://localhost:3000/api/menu', {next: {tags: ['menu']}})
+//     if (!res.ok) {
+//         // This will activate the closest `error.js` Error Boundary
+//         throw new Error('Failed to fetch data')
+//     }
+//     return res.json()
+// }
+//
+// async function getInventoryPage(slug) {
+//     'use server'
+//     const res = await fetch('http://localhost:3000/api/inventory-page', {next: {tags: ['inventory-page']}})
+//     if (!res.ok) {
+//         // This will activate the closest `error.js` Error Boundary
+//         throw new Error('Failed to fetch data')
+//     }
+//     return res.json()
+// }
 export default async function Page({params}) {
     const {slug} = params
     // const selectedTab = slug

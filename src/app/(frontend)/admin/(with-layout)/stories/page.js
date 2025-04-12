@@ -1,17 +1,10 @@
 import Button from "@m3/buttons/Button";
 import React from "react";
 import StoryUploader from "@admin/admin-panel/StoryUploader";
-async function getSiteSettingData() {
-	'use server'
-	const res = await fetch(`http://localhost:3000/api/site-setting`)
-	if (!res.ok) {
-		// This will activate the closest `error.js` Error Boundary
-		throw new Error('Failed to fetch data')
-	}
-	return res.json()
-}
+import {getSiteSetting} from "@controller/SiteSettingController";
+
 export default async function StoryPage() {
-	const siteSetting = await getSiteSettingData()
+	const siteSetting = await getSiteSetting()
 	return (
 		<div>
 			<div className={"flex items-center justify-between"}>

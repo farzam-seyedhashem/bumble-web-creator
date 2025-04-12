@@ -10,15 +10,7 @@ import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import Checkbox from "@m3/checkboxes/Checkbox";
 import {Dialog, Transition} from "@headlessui/react";
 
-async function getSiteSettingData(slug) {
-    'use client'
-    const res = await fetch('http://localhost:3000/api/site-setting', {next: {tags: ['site-setting']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
+
 
 export default function InventoryPage() {
     const [inventoryInfoSelected, setInventoryInfoSelected] = useState(["miles", "interior", "est"])

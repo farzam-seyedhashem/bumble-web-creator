@@ -1,43 +1,16 @@
 'use strict';
 import React from "react";
-// import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import PageList from "@admin/admin-panel/pages/PageList";
-// import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import Link from "next/link";
-import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import {getBySlug} from "@controller/PageController";
-import PostEditor from "@admin/admin-panel/pages/PostEditor";
-import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
-import TemplateList from "@admin/admin-panel/pages/TemplateList";
-import InventoryPageEditor from "@admin/admin-panel/pages/InventoryPageEditor";
 import PostCardEditor from "@admin/admin-panel/pages/PostCardEditor";
+import {getSiteSetting} from "@controller/SiteSettingController";
+import {getPostCard} from "@controller/PostCardController";
 
-async function getSiteSettingData(slug) {
-	'use server'
-	const res = await fetch('http://localhost:3000/api/site-setting', {next: {tags: ['site-setting']}})
-	if (!res.ok) {
-		// This will activate the closest `error.js` Error Boundary
-		throw new Error('Failed to fetch data')
-	}
-	return res.json()
-}
-
-async function getPostCard(slug) {
-	'use server'
-	const res = await fetch('http://localhost:3000/api/post-card', {next: {tags: ['post-card']}})
-	if (!res.ok) {
-		// This will activate the closest `error.js` Error Boundary
-		throw new Error('Failed to fetch data')
-	}
-	return res.json()
-}
 
 export default async function Page({params}) {
 	const {slug} = params
 	// const selectedTab = slug
 	// const data = await getData(slug);
-	const siteSetting = await getSiteSettingData();
+	const siteSetting = await getSiteSetting()
+
 	// const templates = await getTemplates();
 	// const menuSetting = await getMenu();
 	const postCard = await getPostCard();

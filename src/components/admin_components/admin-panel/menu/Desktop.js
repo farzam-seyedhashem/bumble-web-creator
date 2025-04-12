@@ -90,12 +90,12 @@ export default function DesktopMenu() {
             link: "/admin/testimonials",
             id: 2
         },
-        {
-            title: "Sliders",
-            icon: "photo_library",
-            link: "/admin/sliders",
-            id: 2
-        },
+        // {
+        //     title: "Sliders",
+        //     icon: "photo_library",
+        //     link: "/admin/sliders",
+        //     id: 2
+        // },
         {
             title: "Stories",
             icon: "web_stories",

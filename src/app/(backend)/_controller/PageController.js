@@ -3,66 +3,25 @@ import {revalidateTag} from "next/cache";
 // import fs from 'fs'
 const Page = db.Page
 // import SafeClass from '@/SafeClasses.json'
-async function index(req) {
-    const params = req.params
-    const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
-    // const resPerPage = parseInt(per_page) || 12;
-    // const page = parseInt(pageNumber) || 1;
-    // const category = req.query.category || "all";
-    // let filterObject = {}
-    // const tagQuery = req.query.tag;
-    // const sQuery = req.query.s;
-
-    // if (tagQuery) {
-    //     filterObject.tags = tagQuery;
-    // }
-    // const idQuery = req.query.id;
-    // if (idQuery) {
-    //     filterObject._id = idQuery;
-    // }
-    // if (sQuery) {
-    //     filterObject.title = {
-    //         "$regex": sQuery, "$options": "i"
-    //     };
-    // }
+async function getPages(req) {
     const response = {
-        "currentPage": pageNumber,
+        "currentPage": 1,
         "data": [],
-        "perPage": per_page,
+        "perPage": 12,
         "lastPage": false,
         "lastPageIndex": 1,
         "count": 1
     }
-    const count = await Page.countDocuments();
-    response.lastPageIndex = Math.ceil(count / per_page)
-    response.itemCount = count
-    if (count <= (per_page * pageNumber)) {
-        response.lastPage = true
-    }
-    response.data = await Page.find({}).skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
+    response.data = await Page.find({}).sort({'createdAt': -1})
     return response
+}
+// Display the specified resource.
+async function getPageById(id) {
+    return await Page.findOne({_id: id})
+}
 
-    // try {
-    // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
-    //     .limit(resPerPage).sort({'createdAt': -1}).populate('tags').populate('thumbnail').exec(function (err, docs) {
-    //     Page.count(filterObject).exec(function (err, count) {
-    //
-    //
-    //
-    //         response.data = docs;
-    //         res.send(response);
-    //     })
-    // });
-    //     return Page.find()
-    // } catch (e) {
-    // }
-// Page.find(regexQuery, function (err, docs) {
-//
-//     response.data = docs;
-//     res.send(response);
-// })
-
-
+async function getPageBySlug(slug) {
+    return await Page.findOne({slug: slug})
 }
 
 // Store a newly created resource in storage.
@@ -81,15 +40,7 @@ async function show(req, res) {
     //  return docs[0]
 }
 
-// Display the specified resource.
-async function getById(id) {
-    return await Page.findOne({_id: id})
-}
 
-async function getBySlug(slug) {
-    return await Page.findOne({slug: slug})
-
-}
 
 
 // Update the specified resource in storage.
@@ -108,11 +59,11 @@ async function destroy(id) {
 }
 
 export {
-    getBySlug,
-    index,
+    getPageById,
+    getPages,
     show,
     store,
-    getById,
+    getPageBySlug,
     update,
     destroy
 

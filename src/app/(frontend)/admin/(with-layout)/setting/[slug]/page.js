@@ -12,41 +12,14 @@ import WebsiteSetting from "@admin/admin-panel/settings/WebsiteSetting";
 import SEOSetting from "@admin/admin-panel/settings/SEOSetting";
 import WebsiteInfo from "@admin/admin-panel/settings/WebsiteInfo";
 import FontSetting from "@admin/admin-panel/settings/FontSetting";
+import {getSiteSetting} from "@controller/SiteSettingController";
 
-async function getData(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/site-setting',{ next: { tags: ['site-setting'] }})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-
-    switch (slug) {
-        case "seo":
-
-
-        case "appearance":
-            break;
-        case "website-color":
-            break;
-        case "users":
-            break;
-        case "website":
-            break;
-
-    }
-    return res.json()
-
-    // The return value is *not* serialized
-    // You can return Date, Map, Set, etc.
-
-
-}
 
 export default async function Page({params}) {
     const {slug} = params
     const selectedTab = slug
-    const data = await getData(slug);
+
+    const siteSetting = await getSiteSetting();
 
     // const tabs = [
     //     {
@@ -84,12 +57,12 @@ export default async function Page({params}) {
         <>
 
             <div className={"h-full"}>
-                {selectedTab === "seo" && <SEOSetting data={data}/>}
-                {selectedTab === "website-info" && <WebsiteInfo data={data}/>}
-                {selectedTab === "font" && <FontSetting data={data}/>}
-                {selectedTab === "website-color" && <Appearance data={data}/>}
-                {selectedTab === "users" && <Appearance data={data}/>}
-                {selectedTab === "website" && <WebsiteSetting data={data}/>}
+                {selectedTab === "seo" && <SEOSetting data={siteSetting}/>}
+                {selectedTab === "website-info" && <WebsiteInfo data={siteSetting}/>}
+                {selectedTab === "font" && <FontSetting data={siteSetting}/>}
+                {selectedTab === "website-color" && <Appearance data={siteSetting}/>}
+                {selectedTab === "users" && <Appearance data={siteSetting}/>}
+                {selectedTab === "website" && <WebsiteSetting data={siteSetting}/>}
             </div>
         </>
 

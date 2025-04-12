@@ -1,62 +1,17 @@
 import {db} from '../_helper/db'
-import {revalidateTag} from "next/cache";
+// import {revalidateTag} from "next/cache";
 
 const Page = db.SiteSetting
 // import SafeClass from '@/SafeClasses.json'
-async function index(req) {
-    const params = req.params
-    const {per_page, pageNumber} = {per_page: params?.per_page || 12, pageNumber: params?.pageNumber || 1}
-    // const resPerPage = parseInt(per_page) || 12;
-    // const page = parseInt(pageNumber) || 1;
-    // const category = req.query.category || "all";
-    // let filterObject = {}
-    // const tagQuery = req.query.tag;
-    // const sQuery = req.query.s;
-
-    // if (tagQuery) {
-    //     filterObject.tags = tagQuery;
-    // }
-    // const idQuery = req.query.id;
-    // if (idQuery) {
-    //     filterObject._id = idQuery;
-    // }
-    // if (sQuery) {
-    //     filterObject.title = {
-    //         "$regex": sQuery, "$options": "i"
-    //     };
-    // }
-
-
-    return await Page.findOne({}).skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1}).populate('favIcon').populate('logo')
-
-    // try {
-    // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
-    //     .limit(resPerPage).sort({'createdAt': -1}).populate('tags').populate('thumbnail').exec(function (err, docs) {
-    //     Page.count(filterObject).exec(function (err, count) {
-    //
-    //
-    //
-    //         response.data = docs;
-    //         res.send(response);
-    //     })
-    // });
-    //     return Page.find()
-    // } catch (e) {
-    // }
-// Page.find(regexQuery, function (err, docs) {
-//
-//     response.data = docs;
-//     res.send(response);
-// })
-
-
+async function getSiteSetting() {
+    return await Page.findOne({}).populate('favIcon').populate('logo')
 }
 
 // Store a newly created resource in storage.
 async function store(body) {
     let newNews = new Page(body);
     await newNews.save();
-    revalidateTag("pages")
+    // revalidateTag("pages")
     return newNews
 }
 
@@ -115,7 +70,7 @@ async function destroy(id) {
 
 export {
     getBySlug,
-    index,
+    getSiteSetting,
     show,
     store,
     getById,

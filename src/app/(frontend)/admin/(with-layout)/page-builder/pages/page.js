@@ -6,29 +6,18 @@ import PageList from "@admin/admin-panel/pages/PageList";
 import Link from "next/link";
 import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
 import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import {getBySlug} from "@controller/PageController";
+import {getBySlug, getPages} from "@controller/PageController";
 import PostEditor from "@admin/admin-panel/pages/PostEditor";
 import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
 import TemplateList from "@admin/admin-panel/pages/TemplateList";
 import Icon from "@m3/assets/icons/Icon";
 
-async function getData(slug) {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/page', {next: {tags: ['pages']}})
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-
-}
-
-
 
 
 export default async function Layout({params}) {
-    const {slug} = params
-    const selectedTab = slug
-    const data = await getData(slug);
+    // const {slug} = params
+    // const selectedTab = slug
+    const data = await getPages();
 
 
     return (

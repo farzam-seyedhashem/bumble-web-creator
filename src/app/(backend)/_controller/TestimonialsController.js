@@ -5,28 +5,8 @@ const PostModel = db.Testimonial
 // import SafeClass from '@/SafeClasses.json'
 async function index(req) {
     const searchParams =  req.nextUrl.searchParams
-
     console.log(req)
     const {per_page, pageNumber} = {per_page:  searchParams.get('per_page') || 12, pageNumber: searchParams.get('page') || 1}
-    // const resPerPage = parseInt(per_page) || 12;
-    // const page = parseInt(pageNumber) || 1;
-    // const category = req.query.category || "all";
-    // let filterObject = {}
-    // const tagQuery = req.query.tag;
-    // const sQuery = req.query.s;
-
-    // if (tagQuery) {
-    //     filterObject.tags = tagQuery;
-    // }
-    // const idQuery = req.query.id;
-    // if (idQuery) {
-    //     filterObject._id = idQuery;
-    // }
-    // if (sQuery) {
-    //     filterObject.title = {
-    //         "$regex": sQuery, "$options": "i"
-    //     };
-    // }
     const response = {
         "currentPage": pageNumber,
         "data": [],
@@ -42,6 +22,51 @@ async function index(req) {
         response.lastPage = true
     }
     response.data = await PostModel.find({}).populate("thumbnail").skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
+    return response
+
+    // try {
+    // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
+    //     .limit(resPerPage).sort({'createdAt': -1}).populate('tags').populate('thumbnail').exec(function (err, docs) {
+    //     Page.count(filterObject).exec(function (err, count) {
+    //
+    //
+    //
+    //         response.data = docs;
+    //         res.send(response);
+    //     })
+    // });
+    //     return Page.find()
+    // } catch (e) {
+    // }
+// Page.find(regexQuery, function (err, docs) {
+//
+//     response.data = docs;
+//     res.send(response);
+// })
+
+
+}
+async function getTestimonials(perPageV,pageNumberV) {
+    // const searchParams =  req.nextUrl.searchParams
+    // console.log(req)
+    const pageNumber = pageNumberV || 1
+    const perPage = perPageV || 12
+    // const {per_page, pageNumber} = {per_page:  searchParams.get('per_page') || 12, pageNumber: searchParams.get('page') || 1}
+    const response = {
+        "currentPage": pageNumber,
+        "data": [],
+        "perPage": perPage,
+        "lastPage": false,
+        "lastPageIndex": 1,
+        "count": 1
+    }
+    const count = await PostModel.countDocuments();
+    response.lastPageIndex = Math.ceil(count / perPage)
+    response.itemCount = count
+    if (count <= (perPage * pageNumber)) {
+        response.lastPage = true
+    }
+    response.data = await PostModel.find({}).populate("thumbnail").skip((perPage * pageNumber) - perPage).limit(perPage).sort({'createdAt': -1})
     return response
 
     // try {
@@ -137,6 +162,7 @@ async function destroy(id) {
 
 export {
     getBySlug,
+    getTestimonials,
     index,
     show,
     store,

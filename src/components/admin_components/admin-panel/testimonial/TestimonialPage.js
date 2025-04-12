@@ -137,10 +137,10 @@ export default function TestimonialPage({data}) {
 						{/*    {item.tags.map((tag, tagIndex) => <span key={tagIndex}>{tag.title}</span>)}*/}
 						{/*</td>*/}
 						<td className={"w-2/12"}>
-							{item.createdAt}
+							{new Date(item.createdAt).toLocaleDateString()}
 						</td>
 						<td className={"w-2/12"}>
-							{item.updatedAt}
+							{new Date(item.updatedAt).toLocaleDateString()}
 						</td>
 						<td className={"w-2/12"}>
 							<div className={"flex items-center"}>

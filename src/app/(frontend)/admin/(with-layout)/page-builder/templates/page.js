@@ -11,17 +11,18 @@ import PostEditor from "@admin/admin-panel/pages/PostEditor";
 import FooterEditor from "@admin/admin-panel/pages/FooterEditor";
 import TemplateList from "@admin/admin-panel/pages/TemplateList";
 import Icon from "@m3/assets/icons/Icon";
+import {getTemplates} from "@controller/TemplateController";
 
 
-async function getTemplates() {
-    'use server'
-    const res = await fetch('http://localhost:3000/api/template', {next: {tags: ['template']}})
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-    return res.json()
-}
+// async function getTemplates() {
+//     'use server'
+//     const res = await fetch('http://localhost:3000/api/template', {next: {tags: ['template']}})
+//     if (!res.ok) {
+//         // This will activate the closest `error.js` Error Boundary
+//         throw new Error('Failed to fetch data')
+//     }
+//     return res.json()
+// }
 
 
 
