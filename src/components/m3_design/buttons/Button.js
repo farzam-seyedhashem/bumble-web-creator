@@ -23,7 +23,7 @@ export default function Button({type, component, children, icon, className, ...o
     }
     return (
         <Component
-            className={`button ${icon ? "button-with-icon" : "button-without-icon"} ${classes} ${typeof className === "object"?className.root:className}`} {...other}>
+            className={`appearance-none button ${icon ? "button-with-icon" : "button-without-icon"} ${classes} ${typeof className === "object"?className.root:className}`} {...other}>
             <div className={`button-state-layer ${typeof className === "object"?className.stateLayer:""}`}>
                 {icon && <Icon weight={500} size={18} className={"icon font-medium text-[18px]"}>
                     {icon}

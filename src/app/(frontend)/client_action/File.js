@@ -1,8 +1,9 @@
+import {FileUploadApiURL} from '@/config'
 export async function UploadFile(fileInput) {
 	const formdata = new FormData();
 	formdata.append("files", fileInput, fileInput.name);
-
-	const response = await fetch(`${"http://localhost:3001/upload"}`, {
+console.log(FileUploadApiURL);
+	const response = await fetch(`${FileUploadApiURL}`, {
 		method: 'POST',
 		body: formdata
 	})

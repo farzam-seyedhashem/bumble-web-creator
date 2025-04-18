@@ -1,11 +1,9 @@
 import {db} from '../_helper/db'
-import {revalidateTag} from "next/cache";
 
 const Page = db.Footer
 
-// import SafeClass from '@/SafeClasses.json'
 async function getFooter() {
-	return await Page.findOne({}).sort({'createdAt': -1})
+	return await Page.find({}).sort({'createdAt': -1})
 }
 
 // Store a newly created resource in storage.

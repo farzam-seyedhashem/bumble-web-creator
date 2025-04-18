@@ -10,19 +10,40 @@ import ImageComponent from "@website/component/ImageComponent";
 import FeatureSection from "@website/component/FeatureSection";
 import SVGComponent from "@website/component/SVGComponent";
 import BlogTagsComponent from "@website/component/BlogTagsComponent";
-export default async function WebComponentGenerator({item}) {
+import LottieFile from "@website/component/LottieFile";
+import Form from "@website/component/Form";
+import PostTitle from "@website/component/PostTitle";
+import PostThumbnailComponent from "@website/component/PostThumbnailComponent";
+import PostContentComponent from "@website/component/PostContentComponent";
+import PostDateAddedComponent from "@website/component/PostDateAddedComponent";
+import PostDateUpdatedComponent from "@website/component/PostDateUpdatedComponent";
+import ShareButtonComponent from "@website/component/ShareButtonComponent";
+import TestimonialComponents from "@website/component/TestimonialComponent";
+export default async function WebComponentGenerator({item,post}) {
     return(
         <>
+
         {item.idType === "title" &&
                 <Typography key={item.uniqueId} item={item}/>}
 
     {item.idType === "paragraph" && <Paragraph key={item.uniqueId} item={item}/>}
     {item.idType === "button" && <Button key={item.uniqueId} item={item}/>}
-    {item.idType === "container" && <Container key={item.uniqueId} item={item}/>}
+    {item.idType === "container" && <Container post={post?post:{}} key={item.uniqueId} item={item}/>}
     {item.idType === "image" && <ImageComponent key={item.uniqueId} item={item}/>}
-    {item.idType === "grid" && <Grid key={item.uniqueId} item={item}/>}
+    {item.idType === "grid" && <Grid post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "lottie" && <LottieFile key={item.uniqueId} item={item}/>}
+    {item.idType === "form" && <Form key={item.uniqueId} item={item}/>}
     {item.idType === "svg" && <SVGComponent key={item.uniqueId} item={item}/>}
     {item.idType === "blogTags" && <BlogTagsComponent key={item.uniqueId} item={item}/>}
+    {item.idType === "blogPosts" && <BlogPostComponent key={item.uniqueId} item={item}/>}
+    {item.idType === "postTitle" && <PostTitle post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "postThumbnail" && <PostThumbnailComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "postContent" && <PostContentComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "postContent" && <PostDateAddedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "postContent" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "shareButton" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "shareButton" && <ShareButtonComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {item.idType === "testimonial" && <TestimonialComponents post={post?post:{}} key={item.uniqueId} item={item}/>}
     {/*{item.idType === "post" && <SVGComponent key={item.uniqueId} item={item}/>}*/}
 
 

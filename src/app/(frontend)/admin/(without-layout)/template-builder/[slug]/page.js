@@ -16,7 +16,7 @@ import {getTemplateById} from "@controller/TemplateController";
 
 export default async function page({params}) {
     const data = await getTemplateById(params.slug)
-    const siteSetting = await getSiteSetting()
+    const siteSetting = JSON.parse(await getSiteSetting())
     return (
         <PageBuilder type={"template"} siteSetting={siteSetting} slug={params.slug} data={data}/>
     )

@@ -4,7 +4,7 @@ import StoryUploader from "@admin/admin-panel/StoryUploader";
 import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function StoryPage() {
-	const siteSetting = await getSiteSetting()
+	const siteSetting = JSON.parse(await getSiteSetting())
 	return (
 		<div>
 			<div className={"flex items-center justify-between"}>

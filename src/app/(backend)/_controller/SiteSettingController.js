@@ -4,6 +4,9 @@ import {db} from '../_helper/db'
 const Page = db.SiteSetting
 // import SafeClass from '@/SafeClasses.json'
 async function getSiteSetting() {
+    return JSON.stringify(await Page.findOne({}).populate('favIcon').populate('logo'))
+}
+async function index() {
     return await Page.findOne({}).populate('favIcon').populate('logo')
 }
 
@@ -69,6 +72,7 @@ async function destroy(id) {
 }
 
 export {
+    index,
     getBySlug,
     getSiteSetting,
     show,

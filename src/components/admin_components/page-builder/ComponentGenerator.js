@@ -29,6 +29,8 @@ import PostTagsComponent from "@page_builder/base_components/PostTagsComponent";
 import PostDateUpdatedComponent from "@page_builder/base_components/PostDateUpdatedComponent";
 import ShareButtonComponent from "@page_builder/base_components/ShareButtonComponent";
 import PostDateAddedComponent from "@page_builder/base_components/PostDateAddedComponent";
+import FormComponent from "@page_builder/base_components/FormComponent";
+import LottieFileComponent from "@page_builder/base_components/LottieFileComponent";
 
 class ComponentGenerator extends React.Component {
 	constructor(props) {
@@ -61,6 +63,15 @@ class ComponentGenerator extends React.Component {
 					            key={item.uniqueId}
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
+				{item.idType === "lottie" &&
+					<LottieFileComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					            editDialogOpenComponentId={editDialogOpenComponentId}
+					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					            key={item.uniqueId}
+					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					            item={item}/>}
 				{item.idType === "testimonial" &&
 					<TestimonialComponent fields={components.find(c => c.uid === item.uid)?.fields}
 					                      editDialogOpenComponentId={editDialogOpenComponentId}
@@ -72,6 +83,15 @@ class ComponentGenerator extends React.Component {
 					                      item={item}/>}
 				{item.idType === "faq" &&
 					<FAQComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					              editDialogOpenComponentId={editDialogOpenComponentId}
+					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					              key={item.uniqueId}
+					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					              item={item}/>}
+				{item.idType === "form" &&
+					<FormComponent fields={components.find(c => c.uid === item.uid)?.fields}
 					              editDialogOpenComponentId={editDialogOpenComponentId}
 					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
@@ -152,7 +172,7 @@ class ComponentGenerator extends React.Component {
 					           isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
 					           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{item.idType === "grid" &&
-					<Grid lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
+					<Grid fields={components.find(c => c.uid === item.uid)?.fields} lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
 					      setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					      dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
 					      isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
@@ -228,6 +248,17 @@ class ComponentGenerator extends React.Component {
 					                    isDesktop={isDesktop} key={item.uniqueId}
 					                    editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                    item={item}/>}
+				{item.idType === "postDateAdded" &&
+					<PostDateAddedComponent lastPost={lastPost}
+					                        fields={components.find(c => c.uid === item.uid)?.fields}
+					                        editDialogOpenComponentId={editDialogOpenComponentId}
+					                        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                        color={siteSetting.color}
+					                        dragFunc={(e) => dragFunc(e, idNumber)}
+					                        removeItemFunc={() => removeItemFunc(idNumber)}
+					                        isDesktop={isDesktop} key={item.uniqueId}
+					                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                        item={item}/>}
 				{item.idType === "postContent" &&
 					<PostContentComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
 					                      editDialogOpenComponentId={editDialogOpenComponentId}
@@ -249,17 +280,7 @@ class ComponentGenerator extends React.Component {
 					                        isDesktop={isDesktop} key={item.uniqueId}
 					                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                        item={item}/>}
-				{item.idType === "postDateAdded" &&
-					<PostDateAddedComponent lastPost={lastPost}
-					                          fields={components.find(c => c.uid === item.uid)?.fields}
-					                          editDialogOpenComponentId={editDialogOpenComponentId}
-					                          setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                          color={siteSetting.color}
-					                          dragFunc={(e) => dragFunc(e, idNumber)}
-					                          removeItemFunc={() => removeItemFunc(idNumber)}
-					                          isDesktop={isDesktop} key={item.uniqueId}
-					                          editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					                          item={item}/>}
+
 				{item.idType === "postDateUpdated" &&
 					<PostDateUpdatedComponent lastPost={lastPost}
 					                          fields={components.find(c => c.uid === item.uid)?.fields}

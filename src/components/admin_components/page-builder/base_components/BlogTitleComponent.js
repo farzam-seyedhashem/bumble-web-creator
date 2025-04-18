@@ -1,15 +1,7 @@
 'use client';
 import {useEffect, useState, Fragment} from "react";
-import TextField from "@m3/text_fields/TextField";
-import IconButton from "@m3/icon_buttons/IconButton";
 import Icon from "@m3/assets/icons/Icon";
-import ColorPicker from "@m3/color_pricker/ColorPicker";
-import {Dialog, Transition} from "@headlessui/react";
-import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToTailwind} from "@/_helper/StyleToTailwind";
-import {StyleToClass} from "@/_helper/StyleToClass";
-import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 
 export default function BlogTitleComponent({
@@ -32,10 +24,10 @@ export default function BlogTitleComponent({
 	let [styles, setStyles] = useState(item?.styles)
 
 	const [editMode, setEditMode] = useState("value")
-	const valueChangeHandler = (value) => {
-		// setValue(value)
-		editItem("value", value, item.uniqueId)
-	}
+	// const valueChangeHandler = (value) => {
+	// 	// setValue(value)
+	// 	editItem("value", value, item.uniqueId)
+	// }
 	let onChangeStyles = (name, value, type) => {
 		let nStyles = {...styles}
 		nStyles[type] = {...nStyles[type], [name]: value}
@@ -80,7 +72,10 @@ export default function BlogTitleComponent({
 						<div
 							className={"px-4 py-1 space-x-3 rounded-t-[8px] flex dark:bg-primary-dark bg-primary-light"}>
 
-							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+							<button onClick={() => {
+								setEditDialogOpenComponentId(item.uniqueId)
+
+							}}
 							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
 								<Icon size={16}
 								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
@@ -100,7 +95,7 @@ export default function BlogTitleComponent({
 							}} onDragStartCapture={(e) => dragFunc(e)} draggable={true}
 							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
 								<Icon size={16}
-								      className={`${item.uniqueId} !text-on-primary-light dark:!text-on-primary-dark text-[20px]`}>
+								      className={` !text-on-primary-light dark:!text-on-primary-dark text-[20px]`}>
 									drag_indicator
 								</Icon>
 							</button>
@@ -117,7 +112,11 @@ export default function BlogTitleComponent({
 				</Component>
 			</div>
 			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
-			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
+			              setIsOpen={() => {
+				              setEditDialogOpenComponentId(null)
+
+			              }}>
+
 				<div
 					className={" flex border-b border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
 					<div onClick={() => setEditMode("value")}

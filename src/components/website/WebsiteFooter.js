@@ -245,12 +245,13 @@ function FooterTwo({color,items}) {
 
 export default function WebsiteFooter({siteSetting, footerSetting}) {
     const {color} = siteSetting;
+    const nf = JSON.parse(footerSetting)
     return (
         <footer>
-            {footerSetting.footerType === 0 ?
-                <FooterOne items={footerSetting} color={color}/>
+            {nf[0].footerType === 0 ?
+                <FooterOne items={nf[0]} color={color}/>
                 :
-                <FooterTwo items={footerSetting} color={color}/>
+                <FooterTwo items={nf[0]} color={color}/>
             }
         </footer>
     )

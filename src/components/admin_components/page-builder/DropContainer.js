@@ -2,9 +2,10 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import Data from '../../../Components.json'
 // import {v4 as uuidv4} from 'uuid';
-import {uuid} from "unique-string-generator";
+import {UniqueCharOTP} from "unique-string-generator";
 import VanillaContextMenu from 'vanilla-context-menu';
 import Icon from "@m3/assets/icons/Icon";
+import {uniqueId} from "lodash/util";
 
 // import fs from 'fs';
 
@@ -62,7 +63,7 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
 	const [onDrop, setOnDrop] = React.useState(false)
 	const [data, setData] = useState()
 	const [onDragStart, setOnDragStart] = React.useState(false)
-	const ref = useRef(uuid.v4)
+	const ref = useRef(UniqueCharOTP(24))
 	// const {components} = Data;
 	useEffect(() => {
 		new VanillaContextMenu({
@@ -93,21 +94,31 @@ content_paste
 		ev.preventDefault();
 
 	}
+	const recursiveUpdateUniqueId = (item) => {
+		item.uniqueId =  UniqueCharOTP(24)
+		if(item.addedItems){
+			for (let i = 0; i < item.addedItems.length; i++) {
+				recursiveUpdateUniqueId(item.addedItems[i])
+			}
+		}
+		return item
+	}
 	const pasteFunction = () => {
 
 		const item = JSON.parse(localStorage.getItem("clipboard"))
-		item.uniqueId = UniqueCharOTP(24)
-		if (item.idType === "container") {
-			item.addedItems.map(item =>
-				item.uniqueId = UniqueCharOTP(24)
-			)
-		}
-		if (item.idType === "grid") {
-			item.addedItems.map(item =>
-				item.uniqueId = UniqueCharOTP(24)
-			)
-		}
-		handleAddedItems(item, idNumber)
+		const nI = recursiveUpdateUniqueId(item)
+		// item.uniqueId = UniqueCharOTP(24)
+		// if (item.idType === "container") {
+		// 	item.addedItems.map(item =>
+		// 		item.uniqueId = UniqueCharOTP(24)
+		// 	)
+		// }
+		// if (item.idType === "grid") {
+		// 	item.addedItems.map(item =>
+		// 		item.uniqueId = UniqueCharOTP(24)
+		// 	)
+		// }
+		handleAddedItems(nI, idNumber)
 
 	}
 	// const getData = () => {
@@ -120,20 +131,19 @@ content_paste
 		if (!item) {
 			const componets = [...Data.components]
 			let component = componets.find(c => c.uid === dragId)
-			component.uniqueId = uuid.v4()
-			if (component.idType === "grid") {
-				component.addedItems.map(item =>
-					item.uniqueId = uuid.v4()
-				)
-			}
 
+
+			if (component.idType === "grid" || component.idType === "container") {
+				component = recursiveUpdateUniqueId(component)
+			}else{
+				component.uniqueId = UniqueCharOTP(24)
+			}
 			if (component) {
 				handleAddedItems(component, idNumber)
-
 			}
 		} else {
 			const itemu = JSON.parse(item)
-			itemu.uniqueId = uuid.v4()
+			itemu.uniqueId = UniqueCharOTP(24)
 			handleAddedItems(itemu, idNumber)
 		}
 		// setItems()

@@ -19,6 +19,7 @@ import {StoreFile} from "@backend/server_action/Files";
 import Link from "next/link";
 // import ReactQuill from "react-quill";
 import QuillEditor from "@admin/admin-panel/post/QuillEditor";
+import {FileUploadStorageURL} from "@/config";
 
 export default function PostEdit({post, siteSetting}) {
 	const [data, setData] = useState(post || {})
@@ -133,9 +134,9 @@ export default function PostEdit({post, siteSetting}) {
 	}, []);
 	const imageInputRef = useRef()
 	const [filterTag, setFilterTag] = useState('');
-	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:"http://localhost:3001/uploaded/"+post.thumbnail.name} : null);
+	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:FileUploadStorageURL+post.thumbnail.name} : null);
 	const [tagData, setTagData] = useState({});
-	const [postTags, setPostTags] = useState(post.tags.map(item=>item._id) || []);
+	const [postTags, setPostTags] = useState(post?.tags.map(item=>item._id) || []);
 	const [tags, setTags] = useState(null)
 	const getTags = async () => {
 		const res = await fetch('http://localhost:3000/api/post-tags')
@@ -158,7 +159,7 @@ export default function PostEdit({post, siteSetting}) {
 		setTagData({...tagData, [key]: value})
 	}
 	useEffect(() => {
-		if (!data.slug || data.slug === "") {
+		if (!post) {
 			data.title && setData({...data, "slug": convertToSlug(data.title)})
 		}
 	}, [data.title])
@@ -174,21 +175,40 @@ export default function PostEdit({post, siteSetting}) {
 	const saveAction = async () => {
 		// const delta = quill.getContents();
 		// console.log(html);
-		const res = await fetch(`http://localhost:3000/api/posts/${post.slug}`, {
-			method: "PUT",
+		if (post) {
+			const res = await fetch(`http://localhost:3000/api/posts/${post.slug}`, {
+				method: "PUT",
 
-			body: JSON.stringify({
-				title: data.title,
-				slug: data.slug,
-				thumbnail: image._id,
-				tags: postTags,
-				content: data.content,
-				metaTitle: data.metaTitle,
-				metaDescription: data.metaDescription,
-				metaKeywords: data.metaKeywords,
-			}),
-		})
-		await res.json()
+				body: JSON.stringify({
+					title: data.title,
+					slug: data.slug,
+					thumbnail: image._id,
+					tags: postTags,
+					content: data.content,
+					metaTitle: data.metaTitle,
+					metaDescription: data.metaDescription,
+					metaKeywords: data.metaKeywords,
+				}),
+			})
+			await res.json()
+		}else{
+			const res = await fetch(`http://localhost:3000/api/posts`, {
+				method: "POST",
+
+				body: JSON.stringify({
+					title: data.title,
+					slug: data.slug,
+					thumbnail: image._id,
+					tags: postTags,
+					content: data.content,
+					metaTitle: data.metaTitle,
+					metaDescription: data.metaDescription,
+					metaKeywords: data.metaKeywords,
+				}),
+			})
+			await res.json()
+		}
+
 		// console.log(await res.json())
 	}
 	let handleChangeValue = (value) => {

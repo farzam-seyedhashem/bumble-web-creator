@@ -25,7 +25,7 @@ import {getPages} from "@controller/PageController";
 // }
 export default async function Page() {
 	const data = await getPages();
-	const siteSetting = await getSiteSetting()
+	const siteSetting = JSON.parse(await getSiteSetting())
 	const menuSetting = await getMenu();
 
 	return (

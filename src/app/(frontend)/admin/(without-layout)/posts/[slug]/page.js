@@ -4,11 +4,11 @@ import {getPostBySlug} from '@controller/PostController'
 import {getPostTags} from '@controller/PostTagController'
 export default async function EditPostPage({params}) {
 	const tags = await getPostTags()
-	const siteSetting = await getSiteSetting()
-	const post = await getPostBySlug(params.slug)
+	const siteSetting = JSON.parse(await getSiteSetting())
+	const post = JSON.stringify(await getPostBySlug(params.slug))
 	return (
 		<div>
-			<PostEdit post={post} siteSetting={siteSetting} tags={tags}/>
+			<PostEdit post={JSON.parse(post)} siteSetting={siteSetting} tags={tags}/>
 		</div>
 	)
 }

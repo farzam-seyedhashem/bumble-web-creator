@@ -64,6 +64,12 @@ async function getPostCard(req) {
 
 
 }
+async function index(req) {
+    return await PostModel.findOne({}).sort({'createdAt': -1})
+
+
+}
+
 
 // Store a newly created resource in storage.
 async function store(body) {
@@ -125,6 +131,7 @@ async function destroy(id) {
 export {
     getBySlug,
     getPostCard,
+    index,
     show,
     store,
     getById,

@@ -15,7 +15,7 @@ import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function Page({params}) {
 	const {slug} = params
-	const siteSetting = await getSiteSetting()
+	const siteSetting = JSON.parse(await getSiteSetting())
 	// const inventoryPage = await getPostPage(slug);
 
 

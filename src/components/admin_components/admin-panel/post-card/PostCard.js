@@ -2,9 +2,10 @@ import Image from "next/image";
 import Button from "@m3/buttons/Button";
 import Icon from "@m3/assets/icons/Icon";
 import {useState} from "react";
+import TruncText from "@/_helper/TruncText";
 const { convert } = require('html-to-text');
 export default function PostCard({postCard, item}) {
-	let [Component, setComponent] = useState(postCard.postTitleType)
+	let [Component, setComponent] = useState(postCard?.postTitleType)
 
 	return (
 		<>
@@ -34,9 +35,9 @@ export default function PostCard({postCard, item}) {
 					color: postCard.descriptionTextColor,
 					margin: postCard.descriptionMargin.join("px ") + "px"
 				}} className={"text-body-large flex-grow"}>
-					{/*<TruncText charNumber={250}>*/}
-						{item?.content ? convert(item.content,{ wordwrap: 130,}) : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Egestas purus viverra accumsan in nisl nisi"}
-					{/*</TruncText>*/}
+					<TruncText charNumber={250}>
+						{item?.content ? convert(item.content) : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Egestas purus viverra accumsan in nisl nisi"}
+					</TruncText>
 				</p>}
 				{postCard.showMoreButton && postCard.buttonType === "text" ?
 					<a style={{color: postCard.buttonTextColor, margin: postCard.buttonMargin.join("px ") + "px"}}

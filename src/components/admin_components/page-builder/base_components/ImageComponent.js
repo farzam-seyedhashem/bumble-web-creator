@@ -37,6 +37,7 @@ export default function ImageComponent({
 	}
 	let handleChangeValue = (value) => {
 		const file = JSON.parse(value)
+		// console.log("ffff",file.name)
 		setValue(file.url)
 		editItem("value", file.url)
 	}
@@ -166,6 +167,7 @@ export default function ImageComponent({
 
 								       const file = fileInputRef.current.files[0]
 								       const res = await UploadFile(file)
+								       console.log("rrrrr",res)
 								       handleChangeValue(await StoreFile(res))
 							       }}
 							       id={"imageFile"} type={"file"}

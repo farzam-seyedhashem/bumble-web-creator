@@ -62,6 +62,7 @@ export default function TestimonialComponents({
     return (
 
         <>
+
             <style>{`
 				.${item.uniqueId}:hover .${item.uniqueId}-panel{
 				display: block;
@@ -71,13 +72,13 @@ export default function TestimonialComponents({
                 <div className={"w-full"}>
                     {localItem.type === 1 && <Swiper className={" w-full"}>
                         {data.data.map((item) => <SwiperSlide key={item._id}>
-                            <PostCard item={item} postCard={postCardData?.data[0]?.data}/>
+                            <PostCard item={item} postCard={postCardData?.data}/>
                         </SwiperSlide>)}
                     </Swiper>}
                     {localItem.type === 2 && <div
                         className={`${isDesktop ? `grid-cols-${localItem.desktopColumn}` : `grid-cols-${localItem.mobileColumn}`} grid  gap-4`}>
                         {data.data.map((item) => <SwiperSlide key={item._id}>
-                            <PostCard item={item} postCard={postCardData?.data[0]?.data}/>
+                            <PostCard item={item} postCard={postCardData?.data}/>
                         </SwiperSlide>)}
                     </div>}
                 </div>

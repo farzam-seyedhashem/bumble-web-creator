@@ -31,12 +31,12 @@ let SiteSettingSchema = new Schema({
     },
     logo:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'Image',
+        ref: 'File',
         required: false,
     },
     favIcon:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'Image',
+        ref: 'File',
         required: false,
     },
     color:{

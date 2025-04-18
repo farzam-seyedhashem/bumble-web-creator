@@ -1,6 +1,7 @@
+'use server'
 import {db} from '../_helper/db'
 import {revalidateTag} from "next/cache";
-import fs from 'fs'
+// import fs from 'fs'
 const PostModel = db.Post
 // import SafeClass from '@/SafeClasses.json'
 async function getPosts(perPageV,pageNumberV) {
@@ -36,6 +37,49 @@ async function getPosts(perPageV,pageNumberV) {
         response.lastPage = true
     }
     response.data = await PostModel.find({}).populate("tags").populate("thumbnail").skip((perPage * pageNumber) - perPage).limit(perPage).sort({'createdAt': -1})
+    return response
+
+    // try {
+    // Page.find(filterObject).skip((resPerPage * page) - resPerPage)
+    //     .limit(resPerPage).sort({'createdAt': -1}).populate('tags').populate('thumbnail').exec(function (err, docs) {
+    //     Page.count(filterObject).exec(function (err, count) {
+    //
+    //
+    //
+    //         response.data = docs;
+    //         res.send(response);
+    //     })
+    // });
+    //     return Page.find()
+    // } catch (e) {
+    // }
+// Page.find(regexQuery, function (err, docs) {
+//
+//     response.data = docs;
+//     res.send(response);
+// })
+
+
+}
+async function index(req) {
+    const searchParams =  req.nextUrl.searchParams
+    // const params = req?.params
+    const {per_page, pageNumber} = {per_page:  searchParams.get('per_page') || 12, pageNumber: searchParams.get('page') || 1}
+    const response = {
+        "currentPage": pageNumber,
+        "data": [],
+        "perPage": per_page,
+        "lastPage": false,
+        "lastPageIndex": 1,
+        "count": 1
+    }
+    const count = await PostModel.countDocuments();
+    response.lastPageIndex = Math.ceil(count / per_page)
+    response.itemCount = count
+    if (count <= (per_page * pageNumber)) {
+        response.lastPage = true
+    }
+    response.data = await PostModel.find({}).populate("tags").populate("thumbnail").skip((per_page * pageNumber) - per_page).limit(per_page).sort({'createdAt': -1})
     return response
 
     // try {
@@ -128,13 +172,15 @@ async function update(body,slug) {
 
 // Remove the specified resource from storage.
 async function destroy(id) {
-    return await PostModel.findOneAndDelete({_id: id});
+     await PostModel.findOneAndDelete({_id: id});
+     return true;
 }
 
 export {
     getPostBySlug,
     getBySlug,
     getPosts,
+    index,
     show,
     store,
     getById,

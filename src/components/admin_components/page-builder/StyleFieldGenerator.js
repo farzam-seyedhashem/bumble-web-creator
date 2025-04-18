@@ -61,10 +61,9 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						Color
 					</label>
 					<ColorPicker onChange={(value) => onChangeValue("borderColor", value)}
-					             value={style[field.type]}/>
+					             value={style?style[field.type]?style[field.type]:"":""}/>
 				</div>
 			</div>}
-
 			{field.type === "boxModel" &&
 				<div className={"px-4"}>
 
@@ -75,16 +74,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 							<label
 								className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-small font-medium top-2 absolute left-2"}>Margin</label>
 
-							<input value={style.marginLeft.replace("px", "")}
+							<input value={style?style?.marginLeft?style?.marginLeft.replace("px", ""):"":""}
 							       onChange={(e) => onChangeValue("marginLeft", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style.marginRight.replace("px", "")}
+							<input value={style?style?.marginRight?style?.marginRight.replace("px", ""):"":""}
 							       onChange={(e) => onChangeValue("marginRight", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style.marginTop.replace("px", "")}
+							<input value={style?style?.marginTop?style?.marginTop.replace("px", ""):"":""}
 							       onChange={(e) => onChangeValue("marginTop", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style.marginBottom.replace("px", "")}
+							<input value={style?style?.marginBottom?style?.marginBottom.replace("px", ""):"":""}
 							       onChange={(e) => onChangeValue("marginBottom", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
 							       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
 
@@ -120,16 +119,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 									<label
 										className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-small font-medium top-2 absolute left-2"}>Padding</label>
 
-									<input value={style.paddingLeft.replace("px", "")}
+									<input value={style?style?.paddingLeft?style?.paddingLeft.replace("px", ""):"":""}
 									       onChange={(e) => onChangeValue("paddingLeft", e.target.value + "px")}
 									       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style.paddingRight.replace("px", "")}
+									<input value={style?style?.paddingRight?style?.paddingRight.replace("px", ""):"":""}
 									       onChange={(e) => onChangeValue("paddingRight", e.target.value + "px")}
 									       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style.paddingTop.replace("px", "")}
+									<input value={style?style?.paddingTop?style?.paddingTop.replace("px", ""):"":""}
 									       onChange={(e) => onChangeValue("paddingTop", e.target.value + "px")}
 									       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style.paddingBottom.replace("px", "")}
+									<input value={style?style?.paddingBottom?style?.paddingBottom.replace("px", ""):"":""}
 									       onChange={(e) => onChangeValue("paddingBottom", e.target.value + "px")}
 									       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 
@@ -252,20 +251,20 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					</label>
 					<div className={"mt-1 flex justify-end space-x-1"}>
 						<button onClick={(e) => onChangeValue("display", "flex")}
-						        className={`${style[field.type] === "flex" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+						        className={`${(style&&style[field.type]&&style[field.type] === "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 							<Icon className={"text-[24px]"}>
 								arrow_right_alt
 							</Icon>
 						</button>
 						<button onClick={(e) => onChangeValue("display", "block")}
-						        className={`${style[field.type] !== "flex" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+						        className={`${(style&&style[field.type]&&style[field.type] !== "flex" )? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 							<Icon className={"text-[24px]"}>
 								arrow_downward_alt
 							</Icon>
 						</button>
 					</div>
 				</div>
-				{style[field.type] === "flex" && <>
+				{(style&&style[field.type]&&style[field.type] === "flex") && <>
 					<div className={"px-4 h-[64px] flex justify-between items-center "}>
 						<label
 							className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
@@ -340,19 +339,19 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				</label>
 				<div className={"mt-1 flex justify-end space-x-1"}>
 					<button onClick={(e) => onChangeValue("textAlign", "left")}
-					        className={`${style[field.type] === "left" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`${(style&&style[field.type]&&style[field.type] === "left") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_left
 						</Icon>
 					</button>
 					<button onClick={(e) => onChangeValue("textAlign", "center")}
-					        className={`${style[field.type] === "center" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`${(style&&style[field.type]&&style[field.type] === "center") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_center
 						</Icon>
 					</button>
 					<button onClick={(e) => onChangeValue("textAlign", "right")}
-					        className={`${style[field.type] === "right" ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`${(style&&style[field.type]&&style[field.type] === "right") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_right
 						</Icon>
@@ -366,7 +365,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Color
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("color", value)}
-				             value={style[field.type]}/>
+				             value={style?style[field.type]?style[field.type]:"":""}/>
 			</div>}
 			{field.type === "fill" && <div
 				className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
@@ -375,7 +374,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Fill
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("fill", value)}
-				             value={style[field.type]}/>
+				             value={style?style[field.type]?style[field.type]:"":""}/>
 			</div>}
 
 			{field.type === "backgroundColor" && <div
@@ -385,8 +384,11 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Background Color
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("backgroundColor", value)}
-				             value={style[field.type]}/>
+				             value={style?style[field.type]?style[field.type]:"":""}/>
 			</div>}
+
+
+
 
 		</div>
 	)

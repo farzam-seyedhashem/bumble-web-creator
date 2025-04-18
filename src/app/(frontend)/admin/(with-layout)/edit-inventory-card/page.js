@@ -16,7 +16,7 @@ export default async function Page({params}) {
 	const {slug} = params
 	// const selectedTab = slug
 	// const data = await getData(slug);
-	const siteSetting = await getSiteSetting()
+	const siteSetting = JSON.parse(await getSiteSetting())
 	// const templates = await getTemplates();
 	// const menuSetting = await getMenu();
 	// const inventoryPage = await getInventoryPage();

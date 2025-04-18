@@ -9,6 +9,7 @@ import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import {UploadFile} from "@frontend/client_action/File";
 import {StoreFile} from "@backend/server_action/Files";
+import {FileUploadApiURL} from "@/config";
 // import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
 export default function VideoComponent({
@@ -57,7 +58,7 @@ export default function VideoComponent({
 		const formdata = new FormData();
 		formdata.append("files", fileInput, fileInput.name);
 
-		const response = await fetch(`${"http://localhost:3001/upload"}`, {
+		const response = await fetch(`${FileUploadApiURL}`, {
 			method: 'POST',
 			body: formdata
 		})

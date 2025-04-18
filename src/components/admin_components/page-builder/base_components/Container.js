@@ -1,7 +1,7 @@
 'use client'
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
-import {useState, Fragment, useEffect} from "react";
+import {useState, Fragment, useEffect, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import IconButton from "@m3/icon_buttons/IconButton";
 import TextField from "@m3/text_fields/TextField";
@@ -13,6 +13,8 @@ import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import {StyleToClass} from "@/_helper/StyleToClass";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Image from 'next/image'
+import {UploadFile} from "@frontend/client_action/File";
+import {FileUploadStorageURL} from "@/config";
 
 export default function Container({
 	                                  fields,
@@ -44,10 +46,11 @@ export default function Container({
 		console.log("styles", nStyles)
 	}
 	useEffect(() => {
-		console.log(item,item.uniqueId)
-	},[])
+		console.log(item, item.uniqueId)
+	}, [])
 
 	let handleChangeBackgroundImageURL = (value) => {
+		// console.log("vvvvv", )
 		setImageURL(value)
 		editItem("backgroundImageURL", value)
 	}
@@ -121,61 +124,64 @@ export default function Container({
 	const copyToClipboard = () => {
 		localStorage.setItem("clipboard", JSON.stringify(item))
 	}
+	const fileInputRef = useRef(item.uniqueId)
 	return (
 		<>
 			<style>{`
-				.${item.uniqueId}:hover .${item.uniqueId}-panel{
-				display: block;
-			}
+				.${item.uniqueId}:hover:not(:has(.${item.uniqueId + "-content"}:hover)) .${item.uniqueId}-panel {
+					display: block;
+				}
+			
 			`}</style>
-			<div>
-
+			<div className={`${item.uniqueId} py-4  hover:outline hover:outline-primary-light/[50%]`}>
+				<div
+					className={`absolute  z-[888] hidden  ${item.uniqueId + "-panel"} top-0 left-0  transform `}>
+					<div
+						className={"px-4 py-0 space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
+						<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
+						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
+							<Icon size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								edit
+							</Icon>
+						</button>
+						<button onClick={() => copyToClipboard()}
+						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
+							<Icon size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								content_copy
+							</Icon>
+						</button>
+						<button onDragEnterCapture={(event) => {
+							removeItemFunc()
+						}} onDragStart={(e) => dragFunc(e)} draggable={true}
+						        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
+							<Icon size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								drag_indicator
+							</Icon>
+						</button>
+						<button
+							className={"flex items-center h-[24px] w-[24px] justify-center rounded-full"}>
+							<Icon onClick={removeItemFunc} size={16}
+							      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
+								delete
+							</Icon>
+						</button>
+					</div>
+				</div>
 				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
-				     className={`${item?.className}  hover:outline hover:outline-primary-light/[50%] ${item.uniqueId} group/container relative ${isBox ? "" : "container mx-auto"}`}>
+				     className={`${item?.className}    relative ${isBox ? "" : "container mx-auto"}`}>
 					{/*{item.uniqueId}*/}
 					{imageOverlay &&
 						<div style={{backgroundColor: imageOverlayColor}} className={"absolute inset-0 z-10"}/>}
-					{imageURL && <Image objectFit={imageStyle} alt={""} src={imageURL} layout="fill"/>}
-					<div
-						className={`absolute  z-[888] hidden  ${item.uniqueId}-panel top-0 left-0  transform `}>
-						<div
-							className={"px-4 py-0 space-x-3 flex rounded-t-[0px] bg-primary-light dark:bg-primary-dark"}>
-							<button onClick={() => setEditDialogOpenComponentId(item.uniqueId)}
-							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full  "}>
-								<Icon size={16}
-								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-									edit
-								</Icon>
-							</button>
-							<button onClick={() => copyToClipboard()}
-							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full   "}>
-								<Icon size={16}
-								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-									content_copy
-								</Icon>
-							</button>
-							<button onDragEnterCapture={(event) => {
-								removeItemFunc()
-							}} onDragStart={(e) => dragFunc(e)} draggable={true}
-							        className={"flex items-center h-[24px] w-[24px] justify-center rounded-full "}>
-								<Icon size={16}
-								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-									drag_indicator
-								</Icon>
-							</button>
-							<button
-								className={"flex items-center h-[24px] w-[24px] justify-center rounded-full"}>
-								<Icon onClick={removeItemFunc} size={16}
-								      className={"!text-on-primary-light dark:!text-on-primary-dark text-[20px]"}>
-									delete
-								</Icon>
-							</button>
-						</div>
-					</div>
+
+					{imageURL &&
+						<Image objectFit={imageStyle} alt={""} src={FileUploadStorageURL + imageURL} layout="fill"/>}
 					{/*<div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>*/}
 
 					{/*</div>*/}
-					<div className={"w-full py-3 z-20"}>
+					<div className={`${item.uniqueId + "-content"} w-full py-3 z-20`}>
 						<div style={isDesktop ? {
 							display: styles.desktop?.display || "block",
 							alignItems: styles.desktop?.alignItems || "flex-start",
@@ -186,7 +192,7 @@ export default function Container({
 							justifyContent: styles.mobile?.justifyContent || "flex-start"
 						}}>
 							{addedItems.map((l, i) =>
-								<div key={item.uniqueId + i + "-container"} className={"relative group"}>
+								<div key={item.uniqueId + i + "-container"} className={"relative "}>
 									<DropContainer idNumber={i} selected={addedItems}
 									               handleAddedItems={handleAddedItems}/>
 									<ComponentGenerator lastPost={lastPost}
@@ -257,7 +263,7 @@ export default function Container({
 								<label className={"text-on-surface-light dark:text-on-surface-dark"}
 								       htmlFor={"imageFile"}>
 									{imageURL ? <img className={"rounded-[4px] w-[64px] h-[64px]"}
-									                 src={imageURL}/>
+									                 src={FileUploadStorageURL + imageURL}/>
 										:
 										<div
 											className={"rounded-[4px] dark:bg-surface-container-high-dark bg-surface-container-high-light flex justify-center items-center w-[64px] h-[64px]"}
@@ -268,10 +274,14 @@ export default function Container({
 											</Icon>
 										</div>}
 								</label>
-								<input
-									onChange={(e) => handleChangeBackgroundImageURL(URL.createObjectURL(e.target.files[0]))}
-									id={"imageFile"} type={"file"}
-									className={"hidden w-0"}/>
+								<input ref={fileInputRef}
+								       onChange={async (e) => {
+									       const file = fileInputRef.current.files[0]
+									       const res = await UploadFile(file)
+									       handleChangeBackgroundImageURL(res.file.name)
+								       }}
+								       id={"imageFile"} type={"file"}
+								       className={"hidden w-0"}/>
 							</div>
 							<label
 								className={" text-body-large font-medium text-on-surface-light dark:text-on-surface-dark"}>

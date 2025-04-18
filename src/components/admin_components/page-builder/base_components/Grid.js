@@ -8,6 +8,7 @@ import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
+import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 
 function Column({
 	                editDialogOpenComponentId,
@@ -109,7 +110,11 @@ class Grid extends React.Component {
 			className: {},
 			gapDesktop: this.props.item.gapDesktop,
 			gapMobile: this.props.item.gapMobile,
-			isSelected: false
+			isSelected: false,
+			editMode:"value",
+			styles:this.props.item.styles
+
+
 		}
 	}
 
@@ -171,11 +176,14 @@ class Grid extends React.Component {
 			idNumber,
 			editItem,
 			removeItemFunc,
-			dragFunc
+			dragFunc,
 		} = this.props
-		let {isSelected, renderStyles} = this.state;
-		const {isDesktop} = this.props;
-		const baseClass = `p-4 hover:outline hover:outline-primary-light/[50%] grid grid-cols-12 justify-end w-full`
+		let {editMode,isSelected, renderStyles,styles} = this.state;
+		const {isDesktop,fields} = this.props;
+		const setStyles = (v) => {
+			this.setState({styles:v})
+		}
+		const baseClass = `grid grid-cols-12 justify-end w-full`
 		const setIsSelected = (v) => {
 			this.setState({isSelected: v});
 		}
@@ -223,26 +231,48 @@ class Grid extends React.Component {
 		const copyToClipboard = () => {
 			localStorage.setItem("clipboard", JSON.stringify(item))
 		}
+		const setEditMode = (v) => {
+			this.setState({editMode: v})
+		}
+		let onChangeStyles = (name, value, type) => {
+			let nStyles = {...styles}
+			if (!nStyles[type]){
+				nStyles[type] = {}
+			}
+			nStyles[type] = {...nStyles[type], [name]: value}
+			console.log(nStyles)
+			editItem("styles", nStyles, item.uniqueId)
+			setStyles(nStyles)
+			console.log("styles", nStyles)
+		}
 		return (
 			<>
+				{/*	<style>{`*/}
+				{/*	.${item.uniqueId}:hover .${item.uniqueId}-panel{*/}
+				{/*	display: block;*/}
+				{/*}*/}
+				{/*`}</style>*/}
 				<style>{`
-				.${item.uniqueId}:hover .${item.uniqueId}-panel{
-				display: block;
-			}
+				.${item.uniqueId}:hover:not(:has(.${item.uniqueId + "-content"}:hover)) .${item.uniqueId}-panel {
+					display: block;
+				}
+			
 			`}</style>
-				<div style={{justifyContent: "end", gap: item.gapDesktop + "px", ...renderStyles}}
-				     className={`${baseClass} ${item.uniqueId}`}>
+				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}} className={`p-4 hover:outline hover:outline-primary-light/[50%] w-full ${item.uniqueId}`}>
+					<div style={{justifyContent: "end", gap: item.gapDesktop + "px", ...renderStyles}}
+					     className={`${baseClass}  ${item.uniqueId}-content`}>
 
-					{this.state.addedItems.map((m, i) =>
-						<Column lastPost={this.props.lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
-						        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-						        siteSetting={this.props.siteSetting} removeColumnFunc={() => removeColumnFunc(i)}
-						        isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]}
-						        columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId}
-						        key={item.uniqueId + i + "-grid"}
-						        idNumber={i} editItem={this.editItemC}
-						        item={m}/>
-					)}
+						{this.state.addedItems.map((m, i) =>
+							<Column lastPost={this.props.lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
+							        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+							        siteSetting={this.props.siteSetting} removeColumnFunc={() => removeColumnFunc(i)}
+							        isDesktop={isDesktop} columnSizeDesktop={this.state.columnSizeDesktop[i]}
+							        columnSizeMobile={this.state.columnSizeMobile[i]} id={item.uniqueId}
+							        key={item.uniqueId + i + "-grid"}
+							        idNumber={i} editItem={this.editItemC}
+							        item={m}/>
+						)}
+					</div>
 					<div
 						className={`absolute  z-[999] hidden ${item.uniqueId}-panel  top-[0px] left-0 transform `}>
 						<div
@@ -283,60 +313,88 @@ class Grid extends React.Component {
 					<EditorDialog
 						isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
 						setIsOpen={() => setEditDialogOpenComponentId(null)}>
-						<div>
-							<label
-								className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-								Columns Gap
-								<span
-									className={"ml-1 text-label-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                            (px)
-                                </span>
-							</label>
-							<div
-								className={"w-4/12 mt-2 rounded-full ml-auto"}>
-								<input value={isDesktop ? this.state.gapDesktop : this.state.gapMobile}
-								       onChange={(e) => checkIsNumber(e.target.value) ? gapHandler(e.target.value) : (e.target.value === null || e.target.value === "") ? gapHandler(0) : ""}
-								       className={"mt-2 text-center text-body-large px-4 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark"}/>
+						<div
+							className={" flex border-b border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
+							<div onClick={() => setEditMode("value")}
+							     className={`${editMode === "value" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} w-6/12 relative flex justify-center items-center h-full`}>
+								<Icon className={"mr-2"}>
+									Title
+								</Icon>
+								Value
+								{editMode === "value" && <div
+									className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+							</div>
+							<div onClick={() => setEditMode("style")}
+							     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+								<Icon className={"mr-2"}>
+									style
+								</Icon>
+								Style
+								{editMode === "style" && <div
+									className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+
 							</div>
 						</div>
-						<div className={"grid grid-cols-12 gap-4 py-2"}>
-							<div className={"col-span-6 justify-between items-center "}>
+
+						{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
+							onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index}
+							field={field}/>)}
+						{editMode === "value" && <div>
+							<div>
 								<label
 									className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-									Align Items
+									Columns Gap
+									<span
+										className={"ml-1 text-label-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+                            (px)
+                                </span>
 								</label>
-								<div className={"w-full mt-2 justify-end"}>
-									<select onChange={(e) => onChange("alignItems", e.target.value)}
-									        type={"text"}
-									        value={renderStyles.alignItems}
-									        className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
-										<option label={"start"} value={"start"}/>
-										<option label={"center"} value={"center"}/>
-										<option label={"end"} value={"end"}/>
-									</select>
+								<div
+									className={"w-4/12 mt-2 rounded-full ml-auto"}>
+									<input value={isDesktop ? this.state.gapDesktop : this.state.gapMobile}
+									       onChange={(e) => checkIsNumber(e.target.value) ? gapHandler(e.target.value) : (e.target.value === null || e.target.value === "") ? gapHandler(0) : ""}
+									       className={"mt-2 text-center text-body-large px-4 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark"}/>
 								</div>
 							</div>
-						</div>
-						{this.state.addedItems.map((item, i) =>
-
-								this.state.addedItems.length - 1 > i && <div key={i}>
-
+							<div className={"grid grid-cols-12 gap-4 py-2"}>
+								<div className={"col-span-6 justify-between items-center "}>
 									<label
 										className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
-										Column Number {i} Size is
+										Align Items
 									</label>
-									<div
-										className={"w-11/12 mt-2 rounded-full ml-auto bg-surface-variant-light dark:bg-surface-variant-dark"}>
-										<div className={"grid grid-cols-12 gap-1 h-[40px]"}>
-											{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m, index) => <div
-												className={`${(isDesktop ? m === this.state.columnSizeDesktop[i] : m === this.state.columnSizeMobile[i]) ? "bg-primary-light text-on-primary-light dark:bg-primary-dark dark:text-on-primary-dark" : "bg-transparent text-on-surface-variant-light dark:text-on-surface-variant-dark"} h-[40px] cursor-pointer w-full flex justify-center items-center text-label-large rounded-full`}
-												key={index} onClick={() => changeColumnSizeHandler(i, m)}>
-												{m}
-											</div>)}
-										</div>
+									<div className={"w-full mt-2 justify-end"}>
+										<select onChange={(e) => onChange("alignItems", e.target.value)}
+										        type={"text"}
+										        value={renderStyles.alignItems}
+										        className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
+											<option label={"start"} value={"start"}/>
+											<option label={"center"} value={"center"}/>
+											<option label={"end"} value={"end"}/>
+										</select>
 									</div>
 								</div>
-						)}
+							</div>
+							{this.state.addedItems.map((item, i) =>
+
+									this.state.addedItems.length - 1 > i && <div key={i}>
+
+										<label
+											className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
+											Column Number {i} Size is
+										</label>
+										<div
+											className={"w-11/12 mt-2 rounded-full ml-auto bg-surface-variant-light dark:bg-surface-variant-dark"}>
+											<div className={"grid grid-cols-12 gap-1 h-[40px]"}>
+												{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m, index) => <div
+													className={`${(isDesktop ? m === this.state.columnSizeDesktop[i] : m === this.state.columnSizeMobile[i]) ? "bg-primary-light text-on-primary-light dark:bg-primary-dark dark:text-on-primary-dark" : "bg-transparent text-on-surface-variant-light dark:text-on-surface-variant-dark"} h-[40px] cursor-pointer w-full flex justify-center items-center text-label-large rounded-full`}
+													key={index} onClick={() => changeColumnSizeHandler(i, m)}>
+													{m}
+												</div>)}
+											</div>
+										</div>
+									</div>
+							)}
+						</div>}
 					</EditorDialog>
 				</div>
 			</>

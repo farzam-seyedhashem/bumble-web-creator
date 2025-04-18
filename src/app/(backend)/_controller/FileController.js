@@ -3,6 +3,7 @@ import {db} from '../_helper/db'
 import fs from 'fs';
 import {pipeline} from 'stream';
 import {promisify} from 'util';
+import {FileUploadStorageURL} from "@/config";
 
 const pump = promisify(pipeline);
 
@@ -74,6 +75,7 @@ async function index() {
 // Store a newly created resource in storage.
 async function store(file) {
 console.log(file)
+
 	var fileUpload = new File({
 		name: file.name,
 		encoding: file.encoding,
@@ -83,13 +85,12 @@ console.log(file)
 		tempFilePath: file.tempFilePath,
 		truncated: file.truncated,
 		alt: "",
-		url
 	});
 	const f = await fileUpload.save();
 
 	// f.url = "http://localhost:3001/uploaded/" + f.name
 	// console.log(fileUpload)
-	const url = {url:("http://localhost:3001/uploaded/" + f.name)}
+	const url = {url:(FileUploadStorageURL + f.name)}
 
 
 	// console.log({...f._doc, "url": url})

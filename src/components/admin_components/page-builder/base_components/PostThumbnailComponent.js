@@ -9,6 +9,7 @@ import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import {UploadFile} from "@frontend/client_action/File";
 import {StoreFile} from "@backend/server_action/Files";
+import {FileUploadStorageURL} from "@/config";
 // import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
 export default function PostThumbnailComponent({
@@ -65,7 +66,7 @@ export default function PostThumbnailComponent({
 					{post.thumbnail ?
 						<img className={"z-[1]"}
 						     style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
-						     onClick={() => setIsSelected(true)} src={"http://localhost:3001/uploaded/"+post.name}/> :
+						     onClick={() => setIsSelected(true)} src={FileUploadStorageURL+post.thumbnail.name}/> :
 						<div
 							style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
 							onClick={() => setIsSelected(true)}

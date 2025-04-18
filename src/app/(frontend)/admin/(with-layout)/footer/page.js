@@ -22,7 +22,7 @@ import {getFooter} from "@controller/FooterController";
 // }
 export default async function Page() {
     // const siteSetting = await getSiteSettingData();
-    const siteSetting = await getSiteSetting()
+    const siteSetting = JSON.parse(await getSiteSetting())
 
     const footer = await getFooter();
 

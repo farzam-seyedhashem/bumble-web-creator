@@ -174,11 +174,10 @@ export default function MenuItemEditor({menuListItems,onMenuItemChange,editMenuI
 		console.log(di)
 		console.log(doi)
 		copyListItem.move(di,doi)
-		// console.log(copyListItem,dragItem.current,dragOverItem.current)
-		// console.log(menuItems)
 		dragItem.current = null
 		dragOverItem.current = null
 		setMenuItems(copyListItem)
+		onMenuItemChange(editMenuItemType,copyListItem)
 	}
 
 	return (

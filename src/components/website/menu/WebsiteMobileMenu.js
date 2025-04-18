@@ -1,6 +1,8 @@
 'use client'
 import Icon from "@m3/assets/icons/Icon";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
+import Image from "next/image";
+import {FileUploadStorageURL} from "@/config";
 
 export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
     const {color} = siteSetting;
@@ -50,7 +52,7 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
                 `}
             </style>
             {menuSetting.showSearchBarFull ?
-                <div className={"fixed px-2 top-2 left-0 w-full"}>
+                <div className={"z-[1001] fixed px-2 top-2 left-0 w-full"}>
                     <div
                          className={"searchbar-mobile  flex relative h-[56px] rounded-full"}>
                         {!menuSetting.showDrawer ?
@@ -73,15 +75,18 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
                             </Icon>}
                     </div>
                 </div> : <div
-                              className={"fixed w-full top-0 left-0 px-4 flex items-center h-[64px] mobile-top-appbar"}>
+                              className={"z-[1001] fixed w-full top-0 left-0 px-4 flex items-center h-[64px] mobile-top-appbar"}>
                     {menuSetting.showDrawer &&
                         <Icon
                               className={"left-4 mr-6 appbar-primary-icon"}>
                             menu
                         </Icon>}
-                    <h2 className={"flex-1 text-title-large text-on-surface-light dark:text-on-surface-dark font-black"}>
-                        Logo
-                    </h2>
+                    <div className={"flex-1"}>
+                    <div className={"h-[24px] relative "}>
+                        <Image quality={100} width={120} height={24} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name} alt={"logo"}/>
+
+                    </div>
+                    </div>
                     <Icon
                           className={"appbar-icon  !text-on-surface-variant-light dark:!text-on-surface-variant-dark"}>
                         search
@@ -91,7 +96,7 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
             </div>
             {menuSetting.showBottomSheet &&
                 <div
-                     className={"mobile-bottom-navigation px-2 fixed bottom-0 left-0 space-x-2 h-[80px] w-full flex "}>
+                     className={" z-[1001] mobile-bottom-navigation px-2 fixed bottom-0 left-0 space-x-2 h-[80px] w-full flex "}>
                     <button className={"selected-bottom-navigation-item pt-3 pb-4 w-full"}>
                         <div
                              className={"selected-item-icon-container mx-auto rounded-full h-[32px] w-[64px] flex items-center justify-center mb-1"}>

@@ -1,5 +1,5 @@
 'use client'
-export default function FilledTextField({value,onChange,label,className}) {
+export default function FilledTextField({value,onChange,label,className,type}) {
     // after:content['']
     // pointer-events-none
     // absolute
@@ -38,7 +38,7 @@ export default function FilledTextField({value,onChange,label,className}) {
     return (
         <div
             className={`bg-surface-container-highest-light dark:bg-surface-container-highest-dark relative h-[56px] rounded-t-[4px] w-full min-w-[20px] ${className}`}>
-            <input onChange={onChange || null} value={value} placeholder={label}
+            <input type={type?type:"text"} onChange={onChange || null} value={value} placeholder={label}
                    className="peer h-full w-full border-0 border-b border-on-surface-variant-light dark:border-on-surface-variant-dark bg-transparent px-4 pt-6 font-sans text-body-large font-normal text-on-surface-light dark:text-on-surface-dark outline outline-0 transition-all placeholder-shown:border-on-surface-variant-light dark:placeholder-shown:border-on-surface-variant-dark dark:focus:border-on-surface-variant-dark focus:border-on-surface-variant-light focus:outline-0 placeholder:opacity-0 "/>
             {/*transform top-1/2 -translate-y-1/2*/}
             {/*peer-focus:top-2 peer-focus:translate-y-0*/}

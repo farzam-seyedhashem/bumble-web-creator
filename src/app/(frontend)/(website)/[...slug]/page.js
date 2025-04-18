@@ -47,7 +47,7 @@ export default async function Page({params}) {
                 `}
             </style>
             {JSON.parse(data.content).map((item, index) =>
-                <WebComponentGenerator key={index} item={item}/>
+                <WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
             )}
         </div>
     )
