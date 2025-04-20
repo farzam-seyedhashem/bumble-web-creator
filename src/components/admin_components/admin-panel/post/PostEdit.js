@@ -3,27 +3,23 @@ import IconButton from "@m3/icon_buttons/IconButton";
 import FilledTextField from "@m3/text_fields/FilledTextField";
 import Button from "@m3/buttons/Button";
 import Icon from "@m3/assets/icons/Icon";
-// import Quill from "quill";
 import {useEffect, useMemo, useRef} from "react";
-import "quill/dist/quill.snow.css"
-import '@/app/editor.css'
+// import "quill/dist/quill.snow.css"
+// import '@/app/editor.css'
 import {useState} from 'react'
 import {checkSlugRegex} from "@/_helper/checkSlugRegex";
 import {convertToSlug} from "@/_helper/convertToSlug";
 import Image from 'next/image'
 import FilterChips from "@m3/chips/FilterChips";
 import BasicDialog from "@m3/dialogs/BasicDialog";
-import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import {UploadFile} from "@frontend/client_action/File";
 import {StoreFile} from "@backend/server_action/Files";
 import Link from "next/link";
-// import ReactQuill from "react-quill";
 import QuillEditor from "@admin/admin-panel/post/QuillEditor";
 import {FileUploadStorageURL} from "@/config";
 
 export default function PostEdit({post, siteSetting}) {
 	const [data, setData] = useState(post || {})
-	console.log(post)
 	// const [quill, setQuill] = useState(null)
 	const [openTagAddDialog, setOpenTagAddDialog] = useState(false);
 	const handleChangeForm = (key, value) => {
@@ -82,7 +78,7 @@ export default function PostEdit({post, siteSetting}) {
 	// ]
 	useEffect(() => {
 		return () => {
-			const color = Object.values(siteSetting.color);
+			// const color = Object.values(siteSetting?.color);
 			// console.log(rgbaObjToRgba(siteSetting.color))
 			// hljs.registerLanguage('javascript', javascript);
 			// const toolbarOptions = ['bold', 'italic', 'underline', 'strike'];
@@ -106,12 +102,12 @@ export default function PostEdit({post, siteSetting}) {
 
 				['clean']                                         // remove formatting button
 			];
-			Object.keys(siteSetting.color).map((k, index) => {
-				if ((index !== 24 && index !== 25) && (index < 12 || index > 15)) {
-					toolbarOptions[7][0].color.push(rgbaObjToRgba(siteSetting.color[k]))
-					toolbarOptions[7][1].background.push(rgbaObjToRgba(siteSetting.color[k]))
-				}
-			})
+			// Object.keys(siteSetting?.color).map((k, index) => {
+			// 	if ((index !== 24 && index !== 25) && (index < 12 || index > 15)) {
+			// 		toolbarOptions[7][0].color.push(rgbaObjToRgba(siteSetting?.color[k]))
+			// 		toolbarOptions[7][1].background.push(rgbaObjToRgba(siteSetting?.color[k]))
+			// 	}
+			// })
 
 			// const quilln = new Quill('#editor', {
 			// 	debug: false,
@@ -134,13 +130,15 @@ export default function PostEdit({post, siteSetting}) {
 	}, []);
 	const imageInputRef = useRef()
 	const [filterTag, setFilterTag] = useState('');
-	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:FileUploadStorageURL+post.thumbnail.name} : null);
+	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:FileUploadStorageURL+post?.thumbnail.name} : null);
 	const [tagData, setTagData] = useState({});
 	const [postTags, setPostTags] = useState(post?.tags.map(item=>item._id) || []);
 	const [tags, setTags] = useState(null)
 	const getTags = async () => {
 		const res = await fetch('http://localhost:3000/api/post-tags')
-		setTags(await res.json())
+		if (res.status === 200) {
+			setTags(await res.json())
+		}
 	}
 	useMemo(async () => {
 		await getTags()

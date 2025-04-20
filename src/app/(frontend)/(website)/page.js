@@ -1,23 +1,7 @@
 import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
-import {revalidateTag} from "next/cache";
-import {notFound} from "next/navigation";
-import Head from "next/head";
 import {getPageBySlug} from "@controller/PageController";
-// async function getData() {
-// 	'use server'
-// 	revalidateTag("page")
-// 	const res = await fetch(`http://localhost:3000/api/page/home`, {next: {tags: ['pages']}})
-// 	if (!res.ok) {
-// 		if (res.status === 404) {
-// 			notFound()
-// 		}
-// 		throw new Error('Failed to fetch data')
-// 	}
-// 	// return res.json()
-// 	return res.json()
-// }
 export default async function Page() {
 	const data = await getPageBySlug("home")
 
@@ -91,7 +75,7 @@ export default async function Page() {
 				</style>
 
 			{data.content !== null && JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
+				<WebComponentGenerator  key={index} item={item}/>
 			)}
 		</div>
 	)

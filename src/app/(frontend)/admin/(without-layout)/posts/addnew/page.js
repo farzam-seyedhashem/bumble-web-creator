@@ -11,11 +11,11 @@ import {getPostTags} from "@controller/PostTagController";
 //     return res.json()
 // }
 export default async function AddNewPage() {
-    const tags = await getPostTags()
-    const siteSetting = JSON.parse(await getSiteSetting())
+    // const tags = JSON.stringify(await getPostTags())
+    // const siteSetting = JSON.parse(await getSiteSetting())
     return (
         <div>
-        <PostEdit siteSetting={siteSetting} tags={tags}/>
+        <PostEdit siteSetting={{}} />
         </div>
     )
 }

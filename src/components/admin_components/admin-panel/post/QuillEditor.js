@@ -1,17 +1,18 @@
+'use client'
 import React, {useEffect} from 'react';
 
 import {useQuill} from 'react-quilljs';
 // or const { useQuill } = require('react-quilljs');
 
 import 'quill/dist/quill.snow.css';
-import Quill from "quill"; // Add css for snow theme
+// import Quill from "quill"; // Add css for snow theme
 // or import 'quill/dist/quill.bubble.css'; // Add css for bubble theme
 
 export default function QuillEditor({onChange, defaultValue}) {
 	const {quill, quillRef} = useQuill();
 	useEffect(() => {
 		import('quill/ui/icons');
-		var icons = Quill.import('ui/icons');
+		// var icons = Quill.import('ui/icons');
 		icons['bold'] = '<span class="material-symbols-outlined font-vs-[0_500_0_24]">format_bold</span>';
 		icons['italic'] = '<span class="material-symbols-outlined font-vs-[0_500_0_24]">format_italic</span>';
 		icons['underline'] = '<span class="material-symbols-outlined font-vs-[0_500_0_24]">format_underlined</span>';

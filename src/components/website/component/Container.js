@@ -4,7 +4,7 @@ import {StyleToClass} from "@/_helper/StyleToClass";
 import Image from 'next/image'
 import {FileUploadStorageURL} from "@/config";
 
-export default async function Container({item, key, Style, post}) {
+export default async function Container({item, post}) {
 
 	return (
 		<>
@@ -75,7 +75,7 @@ export default async function Container({item, key, Style, post}) {
                 `}
 			</style>
 
-			<div id={key} className={`relative ${item.uniqueId} overflow-hidden h-fit`}>
+			<div id={item.uniqueId+"c"} className={`relative ${item.uniqueId} overflow-hidden h-fit`}>
 				{/*{console.log("mmmm",item)}*/}
 				{item?.backgroundImageURL && <Image layout={"fill"} objectFit={item.backgroundImageStyle}
 				                                    src={FileUploadStorageURL + item.backgroundImageURL}
@@ -87,18 +87,8 @@ export default async function Container({item, key, Style, post}) {
 				{/*"imageOverlay": false,*/}
 				{/*"imageOverlayColor": "#000",*/}
 				<div className={`${item.uniqueId}-content ${item.isBox ? "w-full " : "container mx-auto"} z-[100]`}>
-					{/*{addedItems.length!==0 && <div onClick={() => setIsSelected(true)}*/}
-					{/*      className={"hidden group-hover:block absolute top-1/2 -translate-y-1/2 transform right-4 "}>*/}
-					{/*    <button*/}
-					{/*        className={"flex items-center h-[32px] w-[32px] justify-center rounded-full  !bg-tertiary-container-light "}>*/}
-					{/*        <Icon size={16} className={"!text-on-tertiary-container-light text-[24px]"}>*/}
-					{/*            edit*/}
-					{/*        </Icon>*/}
-					{/*    </button>*/}
-					{/*</div>}*/}
-
-					{item.addedItems.map((l, i) =>
-						<WebComponentGenerator post={post ? post : {}} Style={Style} key={i} item={l}/>
+					{item?.addedItems.map((l, i) =>
+						<WebComponentGenerator post={post? post : {}}  key={item.uniqueId+"co"} item={l}/>
 					)}
 				</div>
 
