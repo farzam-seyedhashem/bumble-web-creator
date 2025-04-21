@@ -3,7 +3,7 @@ import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
 import {getPageBySlug} from "@controller/PageController";
 export default async function Page() {
-	const data = await getPageBySlug("home")
+	const data = JSON.parse(await getPageBySlug("home"))
 
 	return (
 		<div>

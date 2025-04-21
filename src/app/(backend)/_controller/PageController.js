@@ -21,7 +21,7 @@ async function getPageById(id) {
 }
 
 async function getPageBySlug(slug) {
-    return await Page.findOne({slug: slug})
+    return JSON.stringify(await Page.findOne({slug: slug}))
 }
 
 // Store a newly created resource in storage.

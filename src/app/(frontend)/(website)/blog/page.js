@@ -31,8 +31,8 @@ import {getPosts} from "@controller/PostController";
 // 	return res.json()
 // }
 export default async function Blog() {
-	const data = await getPageBySlug("blog")
-	const posts = await getPosts()
+	const data = JSON.parse(await getPageBySlug("blog"))
+	// const posts = await getPosts()
 
 	return (
 		<div>
