@@ -49,71 +49,70 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                     className={"mr-4 h-[40px] w-[170px] relative font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>
                    <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>
                 </div>}
-            </div>
-            {/*    {menuSetting.menuRight ? menuSetting.isSearchbarInput ?*/}
-            {/*        <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto 400px`}>*/}
-            {/*            <div className={"relative w-full"}>*/}
-            {/*                <Icon*/}
-            {/*                    className={"absolute text-on-surface-light dark:text-on-surface-dark left-4 top-1/2 transform -translate-y-1/2"}>*/}
-            {/*                    search*/}
-            {/*                </Icon>*/}
-            {/*                <input placeholder="Search..."*/}
-            {/*                       className={"placeholder-on-surface-variant-light dark:placeholder-on-surface-variant-dark text-on-surface-light dark:text-on-surface-dark text-body-large px-[56px] border-0 h-[56px] w-full rounded-full bg-surface-container-high-light dark:bg-surface-container-high-dark"}/>*/}
-            {/*                /!*<Icon*!/*/}
-            {/*                /!*    className={"text-on-surface-variant-light dark:text-on-surface-variant-dark absolute right-4 top-1/2 transform -translate-y-1/2"}>*!/*/}
-            {/*                /!*    close*!/*/}
-            {/*                /!*</Icon>*!/*/}
-            {/*            </div>*/}
-            {/*        </div> : <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto`}><IconButton>*/}
-            {/*            search*/}
-            {/*        </IconButton></div> : ""}*/}
-            {/*    /!*{!menuSetting.menuCenter&&<ul className={`${menuSetting.menuRight && "ml-auto"} *:px-4 *:relative *:h-full flex items-center`}>*!/*/}
-            {/*    /!*    {menuSetting.menuItems.desktopAppbar.map((item, index) =>*!/*/}
-            {/*    /!*        <Link href={item.slug === "home" ? "/" : ("/" + item.slug)} key={index}>*!/*/}
-            {/*    /!*            <li*!/*/}
-            {/*    /!*                className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2 text-primary-light dark:text-primary-dark`}>*!/*/}
-            {/*    /!*                {item.title}*!/*/}
-            {/*    /!*            </li>*!/*/}
-            {/*    /!*        </Link>*!/*/}
-            {/*    /!*    )}*!/*/}
-            {/*    /!*</ul>}*!/*/}
-            {/*    {<ul className={`${menuSetting.menuRight && "ml-auto"} *:px-4 *:relative *:h-full flex items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2`}>*/}
-            {/*        {menuSetting.menuItems.desktopAppbar.map((item, index) =>*/}
-            {/*            <Link href={item.slug === "home" ? "/" : ("/" + item.slug)} key={index}>*/}
-            {/*                <li*/}
-            {/*                    className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2 text-primary-light dark:text-primary-dark`}>*/}
-            {/*                    {item.title}*/}
-            {/*                </li>*/}
-            {/*            </Link>*/}
-            {/*        )}*/}
-            {/*    </ul>}*/}
-            {/*    {menuSetting?.showSearchbar ? !menuSetting.menuRight ? menuSetting.isSearchbarInput ? <div className={`ml-auto 400px`}>*/}
-            {/*        <div className={"relative w-full"}>*/}
-            {/*            <Icon*/}
-            {/*                  className={"searchbar-primary-icon absolute left-4 top-1/2 transform -translate-y-1/2"}>*/}
-            {/*                search*/}
-            {/*            </Icon>*/}
-            {/*            <input placeholder="Search..."*/}
-            {/*                   className={"searchbar searchInputD text-body-large px-[56px] border-0 h-[56px] w-full rounded-full"}/>*/}
+                {menuSetting.menuRight ? menuSetting.isSearchbarInput ?
+                    <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto 400px`}>
+                        <div className={"relative w-full"}>
+                            <Icon
+                                className={"absolute text-on-surface-light dark:text-on-surface-dark left-4 top-1/2 transform -translate-y-1/2"}>
+                                search
+                            </Icon>
+                            <input placeholder="Search..."
+                                   className={"placeholder-on-surface-variant-light dark:placeholder-on-surface-variant-dark text-on-surface-light dark:text-on-surface-dark text-body-large px-[56px] border-0 h-[56px] w-full rounded-full bg-surface-container-high-light dark:bg-surface-container-high-dark"}/>
+                            {/*<Icon*/}
+                            {/*    className={"text-on-surface-variant-light dark:text-on-surface-variant-dark absolute right-4 top-1/2 transform -translate-y-1/2"}>*/}
+                            {/*    close*/}
+                            {/*</Icon>*/}
+                        </div>
+                    </div> : <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto`}><IconButton>
+                        search
+                    </IconButton></div> : ""}
+                {/*{!menuSetting.menuCenter&&<ul className={`${menuSetting.menuRight && "ml-auto"} *:px-4 *:relative *:h-full flex items-center`}>*/}
+                {/*    {menuSetting.menuItems.desktopAppbar.map((item, index) =>*/}
+                {/*        <Link href={item.slug === "home" ? "/" : ("/" + item.slug)} key={index}>*/}
+                {/*            <li*/}
+                {/*                className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2 text-primary-light dark:text-primary-dark`}>*/}
+                {/*                {item.title}*/}
+                {/*            </li>*/}
+                {/*        </Link>*/}
+                {/*    )}*/}
+                {/*</ul>}*/}
+                {<ul className={`${menuSetting.menuRight && "ml-auto"} *:px-4 *:relative *:h-full flex items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2`}>
+                    {menuSetting.menuItems.desktopAppbar.map((item, index) =>
+                        <Link href={item.slug === "home" ? "/" : ("/" + item.slug)} key={index}>
+                            <li
+                                className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2 text-primary-light dark:text-primary-dark`}>
+                                {item.title}
+                            </li>
+                        </Link>
+                    )}
+                </ul>}
+                {menuSetting?.showSearchbar ? !menuSetting.menuRight ? menuSetting.isSearchbarInput ? <div className={`ml-auto 400px`}>
+                    <div className={"relative w-full"}>
+                        <Icon
+                              className={"searchbar-primary-icon absolute left-4 top-1/2 transform -translate-y-1/2"}>
+                            search
+                        </Icon>
+                        <input placeholder="Search..."
+                               className={"searchbar searchInputD text-body-large px-[56px] border-0 h-[56px] w-full rounded-full"}/>
 
-            {/*            /!*<Icon*!/*/}
-            {/*            /!*    className={"text-on-surface-variant-light dark:text-on-surface-variant-dark absolute right-4 top-1/2 transform -translate-y-1/2"}>*!/*/}
-            {/*            /!*    close*!/*/}
-            {/*            /!*</Icon>*!/*/}
-            {/*        </div>*/}
-            {/*    </div> : <div className={"ml-auto"}><IconButton>*/}
-            {/*        search*/}
-            {/*    </IconButton></div> : "" : <div className={"ml-auto"}/>}*/}
-            {/*    <button style={{backgroundColor:`${rgbaObjToRgba(color.primary)}`,color:`${rgbaObjToRgba(color.onPrimary)}`}} className={`px-6 h-[40px] ml-2 rounded-full`}>*/}
-            {/*        Get in touch*/}
-            {/*    </button>*/}
-            {/*    {menuSetting.logoCenter && <h1*/}
-            {/*        className={"absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 flex-grow mr-4 font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>*/}
-            {/*       <div className={"relative h-[40px] w-[170px]"}>*/}
-            {/*        <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>*/}
-            {/*       </div>*/}
-            {/*    </h1>}*/}
-            {/*</div>*/}
+                        {/*<Icon*/}
+                        {/*    className={"text-on-surface-variant-light dark:text-on-surface-variant-dark absolute right-4 top-1/2 transform -translate-y-1/2"}>*/}
+                        {/*    close*/}
+                        {/*</Icon>*/}
+                    </div>
+                </div> : <div className={"ml-auto"}><IconButton>
+                    search
+                </IconButton></div> : "" : <div className={"ml-auto"}/>}
+                <button style={{backgroundColor:`${rgbaObjToRgba(color.primary)}`,color:`${rgbaObjToRgba(color.onPrimary)}`}} className={`px-6 h-[40px] ml-2 rounded-full`}>
+                    Get in touch
+                </button>
+                {menuSetting.logoCenter && <h1
+                    className={"absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 flex-grow mr-4 font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>
+                   <div className={"relative h-[40px] w-[170px]"}>
+                    <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>
+                   </div>
+                </h1>}
+            </div>
         </div>
     )
 }
