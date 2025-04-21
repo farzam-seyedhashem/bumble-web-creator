@@ -30,25 +30,25 @@ export default async function Page({params}) {
     return (
         <div>
 
-            {/*<style>*/}
-            {/*    {`*/}
-            {/*  */}
-            {/*       ${JSON.parse(data.content).map((item, index) => {*/}
-            {/*        if (item.styles) {*/}
-            {/*            const mobileStyles = item.styles.mobile*/}
-            {/*            const desktopStyles = item.styles.desktop*/}
-            {/*            const globalStyles = item.styles.global*/}
-            {/*            const mc = StyleToClass(desktopStyles,true,item.uniqueId)*/}
-            {/*            const dc = StyleToClass(mobileStyles,false,item.uniqueId)*/}
-            {/*            const gc = StyleToClass(globalStyles,false,item.uniqueId)*/}
-            {/*           return gc+dc+mc*/}
-            {/*        }*/}
-            {/*    }).join("")}*/}
-            {/*    `}*/}
-            {/*</style>*/}
-            {/*{JSON.parse(data.content).map((item, index) =>*/}
-            {/*    <WebComponentGenerator slug={'mmmm'} key={index} item={item}/>*/}
-            {/*)}*/}
+            <style>
+                {`
+              
+                   ${JSON.parse(data.content).map((item, index) => {
+                    if (item.styles) {
+                        const mobileStyles = item.styles.mobile
+                        const desktopStyles = item.styles.desktop
+                        const globalStyles = item.styles.global
+                        const mc = StyleToClass(desktopStyles,true,item.uniqueId)
+                        const dc = StyleToClass(mobileStyles,false,item.uniqueId)
+                        const gc = StyleToClass(globalStyles,false,item.uniqueId)
+                       return gc+dc+mc
+                    }
+                }).join("")}
+                `}
+            </style>
+            {JSON.parse(data.content).map((item, index) =>
+                <WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
+            )}
         </div>
     )
 }
