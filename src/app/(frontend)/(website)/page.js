@@ -74,9 +74,9 @@ export default async function Page() {
                 `}
 				</style>
 
-			{data.content !== null && JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator  key={index} item={item}/>
-			)}
+			{/*{data.content !== null && JSON.parse(data.content).map((item, index) =>*/}
+			{/*	<WebComponentGenerator  key={index} item={item}/>*/}
+			{/*)}*/}
 		</div>
 	)
 }
