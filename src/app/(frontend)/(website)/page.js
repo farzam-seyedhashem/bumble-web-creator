@@ -2,7 +2,7 @@ import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import {getPageBySlug} from "@controller/PageController";
 export default async function Page() {
-	const data = JSON.parse(await getPageBySlug("home"))
+	// const data = JSON.parse(await getPageBySlug("home"))
 
 	return (
 		<div>
