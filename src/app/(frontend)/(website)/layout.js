@@ -10,7 +10,7 @@ import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function layout({children}) {
     const siteSetting = JSON.parse(await getSiteSetting());
-    const menuSetting = await getMenu()
+    const menuSetting = JSON.stringify(await getMenu())
     const footerSetting = await getFooter()
     return (
         <>
@@ -23,7 +23,7 @@ export default async function layout({children}) {
             </style>
         <div className={" page-style min-h-screen"}>
 
-            <WebsiteDesktopMenu menuSetting={menuSetting} siteSetting={siteSetting}/>
+            <WebsiteDesktopMenu menuSetting={JSON.parse(menuSetting)} siteSetting={siteSetting}/>
 
         {/*    <WebsiteMobileMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
             <div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>
