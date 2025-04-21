@@ -32,7 +32,7 @@ import {getPosts} from "@controller/PostController";
 // }
 export default async function Blog() {
 	const data = JSON.parse(await getPageBySlug("blog"))
-	// const posts = await getPosts()
+	const posts = await getPosts()
 
 	return (
 		<div>
