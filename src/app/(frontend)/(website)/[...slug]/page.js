@@ -20,7 +20,7 @@ import {notFound} from "next/navigation";
 
 export default async function Page({params}) {
     const slug = params.slug
-    const data = await getPageBySlug(slug)
+    const data = JSON.parse(await getPageBySlug(slug))
 
     // const Style = await import(`@/app/(styles)/${slug}.module.css`)
 
