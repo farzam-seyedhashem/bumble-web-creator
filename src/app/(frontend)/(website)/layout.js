@@ -25,7 +25,7 @@ export default async function layout({children}) {
 
             {/*<WebsiteDesktopMenu menuSetting={JSON.parse(menuSetting)} siteSetting={siteSetting}/>*/}
 
-        {/*    <WebsiteMobileMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
+            <WebsiteMobileMenu menuSetting={menuSetting} siteSetting={siteSetting}/>
             <div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>
                 {children}
             </div>
