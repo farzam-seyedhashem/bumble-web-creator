@@ -34,16 +34,16 @@ export default async function WebComponentGenerator({item,post}) {
     {item.idType === "lottie" && <LottieFile key={item.uniqueId} item={item}/>}
     {item.idType === "form" && <Form key={item.uniqueId} item={item}/>}
     {item.idType === "svg" && <SVGComponent key={item.uniqueId} item={item}/>}
-    {item.idType === "blogTags" && <BlogTagsComponent key={item.uniqueId} item={item}/>}
-    {item.idType === "blogPosts" && <BlogPostComponent key={item.uniqueId} item={item}/>}
-    {item.idType === "postTitle" && <PostTitle post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "postThumbnail" && <PostThumbnailComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "postContent" && <PostContentComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "postContent" && <PostDateAddedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "postContent" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "shareButton" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "shareButton" && <ShareButtonComponent post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {item.idType === "testimonial" && <TestimonialComponents post={post?post:{}} key={item.uniqueId} item={item}/>}
+    {/*{item.idType === "blogTags" && <BlogTagsComponent key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "blogPosts" && <BlogPostComponent key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "postTitle" && <PostTitle post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "postThumbnail" && <PostThumbnailComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "postContent" && <PostContentComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "postContent" && <PostDateAddedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "postContent" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "shareButton" && <PostDateUpdatedComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "shareButton" && <ShareButtonComponent post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
+    {/*{item.idType === "testimonial" && <TestimonialComponents post={post?post:{}} key={item.uniqueId} item={item}/>}*/}
     {/*{item.idType === "post" && <SVGComponent key={item.uniqueId} item={item}/>}*/}
 
 
