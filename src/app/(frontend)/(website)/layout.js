@@ -1,15 +1,15 @@
-// import WebsiteDesktopMenu from "@website/menu/WebsiteDesktopMenu";
-// import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
+import WebsiteDesktopMenu from "@website/menu/WebsiteDesktopMenu";
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 // import WebsiteMobileMenu from "@website/menu/WebsiteMobileMenu";
 // import WebsiteFooter from "@website/WebsiteFooter";
-// import {getMenu} from "@controller/MenuController";
-// import {getFooter} from "@controller/FooterController";
-// import {getSiteSetting} from "@controller/SiteSettingController";
+import {getMenu} from "@controller/MenuController";
+import {getFooter} from "@controller/FooterController";
+import {getSiteSetting} from "@controller/SiteSettingController";
 
 
 
 export default async function layout({children}) {
-    // const siteSetting = JSON.parse(await getSiteSetting());
+    const siteSetting = JSON.parse(await getSiteSetting());
     // const menuSetting = await getMenu()
     // const footerSetting = await getFooter()
     return (
