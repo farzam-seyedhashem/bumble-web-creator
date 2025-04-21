@@ -23,7 +23,7 @@ export default async function layout({children}) {
             </style>
         <div className={" page-style min-h-screen"}>
 
-        {/*    <WebsiteDesktopMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
+            <WebsiteDesktopMenu menuSetting={menuSetting} siteSetting={siteSetting}/>
 
         {/*    <WebsiteMobileMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
             <div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>
