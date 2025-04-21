@@ -1,6 +1,5 @@
-'use strict';
 import WebComponentGenerator from "@website/WebComponentGenerator";
-import React from "react";
+// import React from "react";
 import {StyleToClass} from "@/_helper/StyleToClass";
 import {getPageBySlug} from "@controller/PageController";
 import {notFound} from "next/navigation";
