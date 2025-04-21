@@ -1,3 +1,4 @@
+'use server'
 import {db} from '../_helper/db'
 import {revalidateTag} from "next/cache";
 // import fs from 'fs'

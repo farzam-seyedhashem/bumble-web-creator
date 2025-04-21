@@ -1,6 +1,5 @@
 import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
-import React from "react";
 import {getPageBySlug} from "@controller/PageController";
 export default async function Page() {
 	const data = JSON.parse(await getPageBySlug("home"))
@@ -74,9 +73,9 @@ export default async function Page() {
                 `}
 				</style>
 
-			{/*{data.content !== null && JSON.parse(data.content).map((item, index) =>*/}
-			{/*	<WebComponentGenerator  key={index} item={item}/>*/}
-			{/*)}*/}
+			{data.content !== null && JSON.parse(data.content).map((item, index) =>
+				<WebComponentGenerator  key={index} item={item}/>
+			)}
 		</div>
 	)
 }
