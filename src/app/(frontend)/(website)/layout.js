@@ -14,24 +14,24 @@ export default async function layout({children}) {
     const footerSetting = await getFooter()
     return (
         <>
-        {/*    <style>*/}
-        {/*        {`*/}
-        {/*        .page-style{*/}
-        {/*        background:${rgbaObjToRgba(siteSetting.color.background)};*/}
-        {/*        }*/}
-        {/*        `}*/}
-        {/*    </style>*/}
-        {/*<div className={" page-style min-h-screen"}>*/}
+            <style>
+                {`
+                .page-style{
+                background:${rgbaObjToRgba(siteSetting.color.background)};
+                }
+                `}
+            </style>
+        <div className={" page-style min-h-screen"}>
 
         {/*    <WebsiteDesktopMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
 
         {/*    <WebsiteMobileMenu menuSetting={menuSetting} siteSetting={siteSetting}/>*/}
-        {/*    <div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>*/}
-        {/*        {children}*/}
-        {/*    </div>*/}
+            <div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>
+                {children}
+            </div>
         {/*    <WebsiteFooter footerSetting={JSON.stringify(footerSetting)} siteSetting={siteSetting}/>*/}
 
-        {/*</div>*/}
+        </div>
         </>
     )
 }
