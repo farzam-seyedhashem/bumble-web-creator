@@ -10,7 +10,7 @@ import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function layout({children}) {
     const siteSetting = JSON.parse(await getSiteSetting());
-    const menuSetting = await getMenu()
+    const menuSetting = JSON.stringify(await getMenu())
     const footerSetting = await getFooter()
     return (
         <>
