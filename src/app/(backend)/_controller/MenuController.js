@@ -6,7 +6,7 @@ const Page = db.Menu
 async function getMenu() {
 
 
-    return await Page.findOne({})
+    return JSON.stringify(await Page.findOne({}))
 
 
 }
