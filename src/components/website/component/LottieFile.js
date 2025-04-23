@@ -3,30 +3,39 @@
 // const Lottie = dynamic(() => import('react-lottie'), { ssr: false });
 
 
-import Lottie from "react-lottie";
+// import Lottie from "react-lottie";
+import { useLottie } from 'lottie-react'
 
 export default function LottieFile({
 
 	                                     item,
 
                                      }) {
-
+	const options = {
+		loop: true,
+		autoplay: true,
+		animationData: JSON.parse(item.value),
+	}
+	const { View } = useLottie(options)
 	return (
 		<>
-			{item?.value&&<Lottie
-				options={{
+			<div className="w-full h-fit flex items-center justify-center text-center">
+				<div className="lottie">{View}</div>
+			</div>
+			{/*{item?.value && <Lottie*/}
+			{/*	options={{*/}
 
-					loop: true,
-					autoplay: true,
-					animationData: JSON.parse(item.value),
-					rendererSettings: {
-						preserveAspectRatio: "xMidYMid slice"
-					}
+			{/*		loop: true,*/}
+			{/*		autoplay: true,*/}
+			{/*		animationData: JSON.parse(item.value),*/}
+			{/*		rendererSettings: {*/}
+			{/*			preserveAspectRatio: "xMidYMid slice"*/}
+			{/*		}*/}
 
-				}}
-				height={400}
-				width={400}
-			/>}
+			{/*	}}*/}
+			{/*	height={400}*/}
+			{/*	width={400}*/}
+			{/*/>}*/}
 		</>
 	)
 }
