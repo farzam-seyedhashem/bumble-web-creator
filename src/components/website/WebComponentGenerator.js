@@ -1,4 +1,4 @@
-'use server'
+'use strict';
 import Typography from "@website/component/Typography";
 import Paragraph from "@website/component/Paragraph";
 import Button from "@website/component/ButtonComponent";
@@ -31,7 +31,7 @@ export default async function WebComponentGenerator({item,post}) {
     {item.idType === "container" && <Container post={post?post:{}} key={item.uniqueId} item={item}/>}
     {item.idType === "image" && <ImageComponent key={item.uniqueId} item={item}/>}
     {item.idType === "grid" && <Grid post={post?post:{}} key={item.uniqueId} item={item}/>}
-    {/*{item.idType === "lottie" && <LottieFile key={item.uniqueId} item={item}/>}*/}
+    {item.idType === "lottie" && <LottieFile key={item.uniqueId} item={item}/>}
     {item.idType === "form" && <Form key={item.uniqueId} item={item}/>}
     {item.idType === "svg" && <SVGComponent key={item.uniqueId} item={item}/>}
     {item.idType === "blogTags" && <BlogTagsComponent key={item.uniqueId} item={item}/>}

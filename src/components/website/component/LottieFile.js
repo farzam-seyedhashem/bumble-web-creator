@@ -2,6 +2,7 @@
 // import dynamic from 'next/dynamic';
 // const Lottie = dynamic(() => import('react-lottie'), { ssr: false });
 
+// const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 // import Lottie from "react-lottie";
 import { useLottie } from 'lottie-react'
