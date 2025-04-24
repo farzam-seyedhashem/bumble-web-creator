@@ -14,6 +14,7 @@ import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation} from "swiper/modules";
+import {ApiURL} from "@/config";
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
@@ -32,7 +33,7 @@ export default function TestimonialComponents({
 	const slideRef = useRef(item.uniqueId);
 
 	const {data, error, isLoading, mutate} = useSWR(
-		`http://localhost:3000/api/testimonials?per_page=${item.numberLoad}`,
+		`${ApiURL}/testimonials?per_page=${item.numberLoad}`,
 		fetcher
 	)
 

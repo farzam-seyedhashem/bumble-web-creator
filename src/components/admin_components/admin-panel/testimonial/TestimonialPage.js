@@ -8,6 +8,7 @@ import {useState} from "react";
 import FilledTextField from "@m3/text_fields/FilledTextField";
 import FilledTextArea from "@m3/text_area/FilledTextArea";
 import Button from "@m3/buttons/Button";
+import {ApiURL} from "@/config";
 function TestimonialDialog({editObj,setAddDialogOpen,setEditObj}){
 	const isEditMode = !!editObj
 	const [data, setData] = useState(editObj?editObj:{});
@@ -16,13 +17,13 @@ function TestimonialDialog({editObj,setAddDialogOpen,setEditObj}){
 	}
 	const saveAction = async () => {
 		if(isEditMode){
-			const res = await fetch(`http://localhost:3000/api/testimonials/${data._id}`, {
+			const res = await fetch(`${ApiURL}/testimonials/${data._id}`, {
 				method: "PUT",
 				body: JSON.stringify(data),
 			})
 			await res.json()
 		}else {
-			const res = await fetch("http://localhost:3000/api/testimonials", {
+			const res = await fetch(`${ApiURL}/testimonials`, {
 				method: "POST",
 				body: JSON.stringify(data),
 			})

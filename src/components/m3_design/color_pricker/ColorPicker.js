@@ -4,6 +4,7 @@ import {SketchPicker} from 'react-color';
 import {Popover} from "@headlessui/react";
 import Icon from "@m3/assets/icons/Icon";
 import TextField from "@m3/text_fields/TextField";
+import {ApiURL} from "@/config";
 
 
 export default function ColorPicker({children, value, onChange, isLeft, jsonExp}) {
@@ -22,7 +23,7 @@ export default function ColorPicker({children, value, onChange, isLeft, jsonExp}
         return `rgba(${obj.r}, ${obj.g}, ${obj.b}, ${obj.a})`
     }
     useMemo(async () => {
-        const res = await fetch('http://localhost:3000/api/site-setting')
+        const res = await fetch(`${ApiURL}/site-setting`)
         const responseValue = await res.json()
         const presetColorsArray = []
         Object.keys(responseValue.color).map((k,index)=>

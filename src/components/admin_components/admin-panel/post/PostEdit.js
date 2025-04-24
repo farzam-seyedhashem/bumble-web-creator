@@ -16,7 +16,7 @@ import {UploadFile} from "@frontend/client_action/File";
 import {StoreFile} from "@backend/server_action/Files";
 import Link from "next/link";
 import QuillEditor from "@admin/admin-panel/post/QuillEditor";
-import {FileUploadStorageURL} from "@/config";
+import {ApiURL, FileUploadStorageURL} from "@/config";
 
 export default function PostEdit({post, siteSetting}) {
 	const [data, setData] = useState(post || {})
@@ -135,7 +135,7 @@ export default function PostEdit({post, siteSetting}) {
 	const [postTags, setPostTags] = useState(post?.tags.map(item=>item._id) || []);
 	const [tags, setTags] = useState(null)
 	const getTags = async () => {
-		const res = await fetch('http://localhost:3000/api/post-tags')
+		const res = await fetch(`${ApiURL}/post-tags`)
 		if (res.status === 200) {
 			setTags(await res.json())
 		}
@@ -162,7 +162,7 @@ export default function PostEdit({post, siteSetting}) {
 		}
 	}, [data.title])
 	const addTagSubmit = async () => {
-		const res = await fetch("http://localhost:3000/api/post-tags", {
+		const res = await fetch(`${ApiURL}/post-tags`, {
 			method: "POST",
 			body: JSON.stringify(tagData),
 		})
@@ -174,7 +174,7 @@ export default function PostEdit({post, siteSetting}) {
 		// const delta = quill.getContents();
 		// console.log(html);
 		if (post) {
-			const res = await fetch(`http://localhost:3000/api/posts/${post.slug}`, {
+			const res = await fetch(`${ApiURL}/posts/${post.slug}`, {
 				method: "PUT",
 
 				body: JSON.stringify({
@@ -190,7 +190,7 @@ export default function PostEdit({post, siteSetting}) {
 			})
 			await res.json()
 		}else{
-			const res = await fetch(`http://localhost:3000/api/posts`, {
+			const res = await fetch(`${ApiURL}/posts`, {
 				method: "POST",
 
 				body: JSON.stringify({

@@ -13,6 +13,7 @@ import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
+import {ApiURL} from "@/config";
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
@@ -31,7 +32,7 @@ export default function TestimonialComponents({
 
 	const [localItem, setLocalItem] = useState(item)
 	const {data, error, isLoading, mutate} = useSWR(
-		`http://localhost:3000/api/testimonials?per_page=${localItem.numberLoad}`,
+		`${ApiURL}/testimonials?per_page=${localItem.numberLoad}`,
 		fetcher
 	)
 	// useEffect(() => {
