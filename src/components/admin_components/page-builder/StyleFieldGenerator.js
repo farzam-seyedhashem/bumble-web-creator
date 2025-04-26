@@ -274,7 +274,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 							</Icon>
 						</button>
 						<button onClick={(e) => onChangeValue("display", "block")}
-						        className={`${(style && style[field.type] && style[field.type] !== "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+						        className={`${(style && style[field.type] && style[field.type] === "block") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 							<Icon className={"text-[24px]"}>
 								arrow_downward_alt
 							</Icon>
