@@ -820,6 +820,9 @@
       ],
       "styles": {
         "mobile": {
+          "display": "block",
+          "justifyContent": "center",
+          "alignItems": "center",
           "marginTop": "0px",
           "marginBottom": "0px",
           "marginLeft": "auto",
@@ -832,6 +835,9 @@
           "height": "auto"
         },
         "desktop": {
+          "display": "block",
+          "justifyContent": "center",
+          "alignItems": "center",
           "marginTop": "0px",
           "marginBottom": "0px",
           "marginLeft": "auto",
@@ -845,9 +851,6 @@
         },
         "global": {
           "borderRadius": "0px",
-          "display": "flex",
-          "justifyContent": "center",
-          "alignItems": "center",
           "backgroundColor": "transparent"
         }
       },

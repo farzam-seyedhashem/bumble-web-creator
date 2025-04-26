@@ -1,0 +1,37 @@
+
+.OVVXKAKNRNQW {
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+.OVVXKAKNRNQW {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: auto;
+    padding-right: auto;
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+@media only screen and (min-width: 840px) {
+    .OVVXKAKNRNQW {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: auto;
+        padding-right: auto;
+        width: 100%;
+        height: auto;
+    }
+}
