@@ -14,34 +14,34 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
     // const menuSetting = {...menuSettings,["menuItemsCenter"]:true}
     return (
         <div className="md:block hidden">
-            {/*<style>*/}
-            {/*    {`*/}
-            {/*    .appbarStyle {*/}
-            {/*       background:${color[desktopColors.backgroundColor] ? rgbaObjToRgba(color[desktopColors.backgroundColor]) : desktopColors.backgroundColor}*/}
-            {/*    }*/}
-            {/*    .selectedStyleItem{*/}
-            {/*    color:${color[desktopColors.selectedItemColor] ? rgbaObjToRgba(color[desktopColors.selectedItemColor]) : desktopColors.selectedItemColor}*/}
-            {/*    }*/}
-            {/*    .unSelectedStyleItem{*/}
-            {/*   */}
-            {/*    color:${color[desktopColors.itemColor] ? rgbaObjToRgba(color[desktopColors.itemColor]) : desktopColors.itemColor}*/}
-            {/*    }*/}
-            {/*    .searchbar-primary-icon{*/}
-            {/*    color:${color[desktopColors.searchBarPrimaryIconColor] ? rgbaObjToRgba(color[desktopColors.searchBarPrimaryIconColor]) : desktopColors.searchBarPrimaryIconColor}*/}
-            {/*    */}
-            {/*    }*/}
-            {/*    .searchbar{*/}
-            {/* */}
-            {/*     color:${color[desktopColors.searchBarInputColor] ? rgbaObjToRgba(color[desktopColors.searchBarInputColor]) : desktopColors.searchBarInputColor};*/}
-            {/*     background:${color[desktopColors.searchBarBackground] ? rgbaObjToRgba(color[desktopColors.searchBarBackground]) : desktopColors.searchBarBackground}*/}
-            {/*   }*/}
-
-            {/*   .searchbar::placeholder{*/}
-            {/* */}
-            {/*     color:${color[desktopColors.searchBarPlaceholderColor] ? rgbaObjToRgba(color[desktopColors.searchBarPlaceholderColor]) : desktopColors.searchBarPlaceholderColor};*/}
-            {/*   }*/}
-            {/*    `}*/}
-            {/*</style>*/}
+            <style>
+                {`
+                .appbarStyle {
+                   background:${color[desktopColors.backgroundColor] ? rgbaObjToRgba(color[desktopColors.backgroundColor]) : desktopColors.backgroundColor}
+                }
+                .selectedStyleItem{
+                color:${color[desktopColors.selectedItemColor] ? rgbaObjToRgba(color[desktopColors.selectedItemColor]) : desktopColors.selectedItemColor}
+                }
+                .unSelectedStyleItem{
+               
+                color:${color[desktopColors.itemColor] ? rgbaObjToRgba(color[desktopColors.itemColor]) : desktopColors.itemColor}
+                }
+                .searchbar-primary-icon{
+                color:${color[desktopColors.searchBarPrimaryIconColor] ? rgbaObjToRgba(color[desktopColors.searchBarPrimaryIconColor]) : desktopColors.searchBarPrimaryIconColor}
+                
+                }
+                .searchbar{
+             
+                 color:${color[desktopColors.searchBarInputColor] ? rgbaObjToRgba(color[desktopColors.searchBarInputColor]) : desktopColors.searchBarInputColor};
+                 background:${color[desktopColors.searchBarBackground] ? rgbaObjToRgba(color[desktopColors.searchBarBackground]) : desktopColors.searchBarBackground}
+               }
+            
+               .searchbar::placeholder{
+             
+                 color:${color[desktopColors.searchBarPlaceholderColor] ? rgbaObjToRgba(color[desktopColors.searchBarPlaceholderColor]) : desktopColors.searchBarPlaceholderColor};
+               }
+                `}
+            </style>
             <div
                 className={"fixed appbarStyle z-[999] w-full border-outline-variant-light dark:border-outline-variant-dark items-center px-6 flex h-[64px] "}>
 
@@ -80,7 +80,7 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                     {menuSetting.menuItems.desktopAppbar.map((item, index) =>
                         <Link href={item.slug === "home" ? "/" : ("/" + item.slug)} key={index}>
                             <li
-                                className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2 text-primary-light dark:text-primary-dark`}>
+                                className={`${item.slug === "home" && pathname === "/" ? "selectedStyleItem font-bold" : "/" + item.slug === pathname ? "selectedStyleItem font-bold" : "unSelectedStyleItem font-normal"}  font-bold py-2`}>
                                 {item.title}
                             </li>
                         </Link>
@@ -107,7 +107,7 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                     Get in touch
                 </button>
                 {menuSetting.logoCenter && <h1
-                    className={"absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 flex-grow mr-4 font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>
+                    className={"absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 flex-grow mr-4 font-black text-[24px] "}>
                    <div className={"relative h-[40px] w-[170px]"}>
                     <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>
                    </div>
