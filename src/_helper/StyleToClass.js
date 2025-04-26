@@ -25,7 +25,6 @@ const styleCss = [
     {style:"borderBottom",cssStyle:"border-bottom"},
     {style:"borderTop",cssStyle:"border-top"},
     {style:"borderColor",cssStyle:"border-color"},
-    {style:"display",cssStyle:"display"},
 ]
 export function StyleToClass(style,isLargeDevice,componentId) {
     if(typeof style === 'undefined'){
