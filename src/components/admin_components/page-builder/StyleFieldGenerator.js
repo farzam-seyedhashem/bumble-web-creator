@@ -175,16 +175,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					                 defValue={style?.width || ""}/>
 				</div>
 			</div>}
-			{field.type === "visibility" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
-				<label
-					className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
-					Hide Component
-				</label>
-				<div className={"mt-0 w-[120px]"}>
-					<Switch setIsCheck={(e)=>onChangeValue("display",e?"none":"block")}
-					                 isCheck={style?.display==="none"}/>
-				</div>
-			</div>}
+			{/*{field.type === "visibility" && <div className={"flex px-4 h-[64px] justify-between items-center"}>*/}
+			{/*	<label*/}
+			{/*		className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>*/}
+			{/*		Hide Component*/}
+			{/*	</label>*/}
+			{/*	<div className={"mt-0 w-[120px]"}>*/}
+			{/*		<Switch setIsCheck={(e)=>onChangeValue("display",e?"none":"block")}*/}
+			{/*		                 isCheck={style?.display==="none"}/>*/}
+			{/*	</div>*/}
+			{/*</div>}*/}
 			{field.type === "maxWidth" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
 				<label
 					className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
@@ -261,21 +261,27 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						Display
 					</label>
 					<div className={"mt-1 flex justify-end space-x-1"}>
+						<button onClick={(e) => onChangeValue("display", "none")}
+						        className={`${(style && style[field.type] && style[field.type] === "none") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+							<Icon className={"text-[24px]"}>
+								block
+							</Icon>
+						</button>
 						<button onClick={(e) => onChangeValue("display", "flex")}
-						        className={`${(style&&style[field.type]&&style[field.type] === "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+						        className={`${(style && style[field.type] && style[field.type] === "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 							<Icon className={"text-[24px]"}>
 								arrow_right_alt
 							</Icon>
 						</button>
 						<button onClick={(e) => onChangeValue("display", "block")}
-						        className={`${(style&&style[field.type]&&style[field.type] !== "flex" )? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+						        className={`${(style && style[field.type] && style[field.type] !== "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 							<Icon className={"text-[24px]"}>
 								arrow_downward_alt
 							</Icon>
 						</button>
 					</div>
 				</div>
-				{(style&&style[field.type]&&style[field.type] === "flex") && <>
+				{(style && style[field.type] && style[field.type] === "flex") && <>
 					<div className={"px-4 h-[64px] flex justify-between items-center "}>
 						<label
 							className={" text-title-small font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
