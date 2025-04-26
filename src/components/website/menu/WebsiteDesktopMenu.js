@@ -14,34 +14,34 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
     // const menuSetting = {...menuSettings,["menuItemsCenter"]:true}
     return (
         <div className="md:block hidden">
-            <style>
-                {`
-                .appbarStyle {
-                   background:${color[desktopColors.backgroundColor] ? rgbaObjToRgba(color[desktopColors.backgroundColor]) : desktopColors.backgroundColor}
-                }
-                .selectedStyleItem{
-                color:${color[desktopColors.selectedItemColor] ? rgbaObjToRgba(color[desktopColors.selectedItemColor]) : desktopColors.selectedItemColor}
-                }
-                .unSelectedStyleItem{
-               
-                color:${color[desktopColors.itemColor] ? rgbaObjToRgba(color[desktopColors.itemColor]) : desktopColors.itemColor}
-                }
-                .searchbar-primary-icon{
-                color:${color[desktopColors.searchBarPrimaryIconColor] ? rgbaObjToRgba(color[desktopColors.searchBarPrimaryIconColor]) : desktopColors.searchBarPrimaryIconColor}
-                
-                }
-                .searchbar{
-             
-                 color:${color[desktopColors.searchBarInputColor] ? rgbaObjToRgba(color[desktopColors.searchBarInputColor]) : desktopColors.searchBarInputColor};
-                 background:${color[desktopColors.searchBarBackground] ? rgbaObjToRgba(color[desktopColors.searchBarBackground]) : desktopColors.searchBarBackground}
-               }
-            
-               .searchbar::placeholder{
-             
-                 color:${color[desktopColors.searchBarPlaceholderColor] ? rgbaObjToRgba(color[desktopColors.searchBarPlaceholderColor]) : desktopColors.searchBarPlaceholderColor};
-               }
-                `}
-            </style>
+            {/*<style>*/}
+            {/*    {`*/}
+            {/*    .appbarStyle {*/}
+            {/*       background:${color[desktopColors.backgroundColor] ? rgbaObjToRgba(color[desktopColors.backgroundColor]) : desktopColors.backgroundColor}*/}
+            {/*    }*/}
+            {/*    .selectedStyleItem{*/}
+            {/*    color:${color[desktopColors.selectedItemColor] ? rgbaObjToRgba(color[desktopColors.selectedItemColor]) : desktopColors.selectedItemColor}*/}
+            {/*    }*/}
+            {/*    .unSelectedStyleItem{*/}
+            {/*   */}
+            {/*    color:${color[desktopColors.itemColor] ? rgbaObjToRgba(color[desktopColors.itemColor]) : desktopColors.itemColor}*/}
+            {/*    }*/}
+            {/*    .searchbar-primary-icon{*/}
+            {/*    color:${color[desktopColors.searchBarPrimaryIconColor] ? rgbaObjToRgba(color[desktopColors.searchBarPrimaryIconColor]) : desktopColors.searchBarPrimaryIconColor}*/}
+            {/*    */}
+            {/*    }*/}
+            {/*    .searchbar{*/}
+            {/* */}
+            {/*     color:${color[desktopColors.searchBarInputColor] ? rgbaObjToRgba(color[desktopColors.searchBarInputColor]) : desktopColors.searchBarInputColor};*/}
+            {/*     background:${color[desktopColors.searchBarBackground] ? rgbaObjToRgba(color[desktopColors.searchBarBackground]) : desktopColors.searchBarBackground}*/}
+            {/*   }*/}
+
+            {/*   .searchbar::placeholder{*/}
+            {/* */}
+            {/*     color:${color[desktopColors.searchBarPlaceholderColor] ? rgbaObjToRgba(color[desktopColors.searchBarPlaceholderColor]) : desktopColors.searchBarPlaceholderColor};*/}
+            {/*   }*/}
+            {/*    `}*/}
+            {/*</style>*/}
             <div
                 className={"fixed appbarStyle z-[999] w-full border-outline-variant-light dark:border-outline-variant-dark items-center px-6 flex h-[64px] "}>
 
