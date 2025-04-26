@@ -6,6 +6,7 @@ import TextField from "@m3/text_fields/TextField";
 import FilledTextField from "@m3/text_fields/FilledTextField";
 import FilledSelect from "@m3/text_fields/FilledSelect";
 import Select from "@m3/text_fields/Select";
+import Switch from "@m3/switch/Switch";
 
 export default function StyleFieldGenerator({field, onChange, isDesktop, styles}) {
 	const [style, setStyle] = useState(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"])
@@ -172,6 +173,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				<div className={"mt-0 w-[120px]"}>
 					<TextFieldEditor id={"width"} onChange={onChangeValue}
 					                 defValue={style?.width || ""}/>
+				</div>
+			</div>}
+			{field.type === "visibility" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
+				<label
+					className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
+					Hide Component
+				</label>
+				<div className={"mt-0 w-[120px]"}>
+					<Switch setIsCheck={(e)=>onChangeValue("display",e?"none":"block")}
+					                 isCheck={style?.display==="none"}/>
 				</div>
 			</div>}
 			{field.type === "maxWidth" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
