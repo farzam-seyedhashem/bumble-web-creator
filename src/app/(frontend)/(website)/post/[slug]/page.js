@@ -8,7 +8,7 @@ import {getPageBySlug} from "@controller/PageController";
 
 export default async function PostPage({params}) {
 
-	const data = await getPageBySlug("post")
+	const data = JSON.parse(await getPageBySlug("post"))
 	const slug = params.slug
 	const postData = JSON.stringify(await getPostBySlug(slug))
 
