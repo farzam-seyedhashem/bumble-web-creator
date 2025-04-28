@@ -108,34 +108,34 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
 				</div>}
 			<div style={{background: rgbaObjToRgba(color.surface)}} className={"h-full"}>
 			</div>
-			{menuSetting.showBottomSheet &&
-				<div
-					className={" z-[1001] mobile-bottom-navigation px-2 fixed bottom-0 left-0 space-x-2 h-[80px] w-full flex "}>
-					<button className={"selected-bottom-navigation-item pt-3 pb-4 w-full"}>
-						<div
-							className={"selected-item-icon-container mx-auto rounded-full h-[32px] w-[64px] flex items-center justify-center mb-1"}>
-							<Icon fill={1}>
-								home
-							</Icon>
-						</div>
-						<label
-							className={"selected-item-label text-label-medium font-medium text-center"}>
-							Label
-						</label>
-					</button>
-					<button className={"un-selected-bottom-navigation-item w-full"}>
-						<div
-							className={" mx-auto rounded-full h-[32px] w-[64px] flex items-center justify-center mb-1"}>
-							<Icon fill={0}>
-								post
-							</Icon>
-						</div>
-						<label
-							className={"text-center text-label-medium font-medium "}>
-							Label
-						</label>
-					</button>
-				</div>}
+			{/*{menuSetting.showBottomSheet &&*/}
+			{/*	<div*/}
+			{/*		className={" z-[1001] mobile-bottom-navigation px-2 fixed bottom-0 left-0 space-x-2 h-[80px] w-full flex "}>*/}
+			{/*		<button className={"selected-bottom-navigation-item pt-3 pb-4 w-full"}>*/}
+			{/*			<div*/}
+			{/*				className={"selected-item-icon-container mx-auto rounded-full h-[32px] w-[64px] flex items-center justify-center mb-1"}>*/}
+			{/*				<Icon fill={1}>*/}
+			{/*					home*/}
+			{/*				</Icon>*/}
+			{/*			</div>*/}
+			{/*			<label*/}
+			{/*				className={"selected-item-label text-label-medium font-medium text-center"}>*/}
+			{/*				Label*/}
+			{/*			</label>*/}
+			{/*		</button>*/}
+			{/*		<button className={"un-selected-bottom-navigation-item w-full"}>*/}
+			{/*			<div*/}
+			{/*				className={" mx-auto rounded-full h-[32px] w-[64px] flex items-center justify-center mb-1"}>*/}
+			{/*				<Icon fill={0}>*/}
+			{/*					post*/}
+			{/*				</Icon>*/}
+			{/*			</div>*/}
+			{/*			<label*/}
+			{/*				className={"text-center text-label-medium font-medium "}>*/}
+			{/*				Label*/}
+			{/*			</label>*/}
+			{/*		</button>*/}
+			{/*	</div>}*/}
 		</div>
 	)
 }
