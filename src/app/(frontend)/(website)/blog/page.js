@@ -1,38 +1,14 @@
+'use strict';
 import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
-import {revalidateTag} from "next/cache";
-import {notFound} from "next/navigation";
-import Head from "next/head";
 import {getPageBySlug} from "@controller/PageController";
 import {getPosts} from "@controller/PostController";
-// async function getData() {
-// 	'use server'
-// 	revalidateTag("page")
-// 	const res = await fetch(`http://localhost:3000/api/page/blog`, {next: {tags: ['pages']}})
-// 	if (!res.ok) {
-// 		if (res.status === 404) {
-// 			notFound()
-// 		}
-// 		throw new Error('Failed to fetch data')
-// 	}
-// 	// return res.json()
-// 	return res.json()
-// }
-// async function getPosts() {
-// 	'use server'
-// 	const res = await fetch(`http://localhost:3000/api/posts`, {next: {tags: ['pages']}})
-// 	if (!res.ok) {
-// 		if (res.status === 404) {
-// 			notFound()
-// 		}
-// 		throw new Error('Failed to fetch data')
-// 	}
-// 	return res.json()
-// }
+import { unstable_noStore as noStore } from 'next/cache';
+
 export default async function Blog() {
+	noStore()
 	const data = JSON.parse(await getPageBySlug("blog"))
-	const posts = await getPosts()
 
 	return (
 		<div>
