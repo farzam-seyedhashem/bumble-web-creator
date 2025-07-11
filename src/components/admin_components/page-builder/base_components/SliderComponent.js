@@ -16,11 +16,7 @@ import Switch from "@m3/switch/Switch";
 import {
 	Autoplay, EffectCards, EffectCoverflow, EffectCreative, EffectCube, EffectFlip, Mousewheel, Navigation, Pagination
 } from "swiper/modules";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
-import {hexFromArgb} from "@material/material-color-utilities";
-
-// import {useSwiper} from "swiper/re";
+import {UploadFile} from "@controller/FileController";
 
 function SlideImageUploadComponent({defValue, handleChange, keyUnique}) {
 	const fileInputRef = useRef(keyUnique);
@@ -31,8 +27,8 @@ function SlideImageUploadComponent({defValue, handleChange, keyUnique}) {
 	}, [defValue]);
 	const handleChangeValue = (value) => {
 		const file = JSON.parse(value)
-		setValue(file.url)
-		handleChange(file.url)
+		setValue(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
+		handleChange(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
 	}
 	return (<>
 			<div key={keyUnique} className={"mr-2"}>
@@ -54,7 +50,7 @@ function SlideImageUploadComponent({defValue, handleChange, keyUnique}) {
 
 					       const file = fileInputRef.current.files[0]
 					       const res = await UploadFile(file)
-					       handleChangeValue(await StoreFile(res))
+					       handleChangeValue(res)
 				       }}
 				       id={"imageFile"} type={"file"}
 				       className={"hidden w-0"}/>

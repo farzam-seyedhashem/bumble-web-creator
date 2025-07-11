@@ -385,7 +385,6 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         plugin(function ({matchUtilities, addUtilities, theme}) {
             // const fillV=[0,1]

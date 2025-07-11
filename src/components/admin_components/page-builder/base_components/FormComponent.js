@@ -39,7 +39,6 @@ export default function FormComponent({
 	                                     isDesktop,
 	                                     editItem,
 	                                     item,
-	                                     key
                                      }) {
 
 	const [localItem, setLocalItem] = useState(item)

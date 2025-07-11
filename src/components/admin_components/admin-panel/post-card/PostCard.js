@@ -17,8 +17,10 @@ export default function PostCard({postCard, item}) {
 			}} className="">
 				{!postCard.imageCenter && <div style={{borderRadius: postCard.imageBorderRadius.join("px ") + "px"}}
 				                               className={"aspect-w-16 aspect-h-8 overflow-hidden relative"}>
+					{/*{console.log("ttt",item.thumbnail)}*/}
+
 					<Image alt={""} objectFit={"cover"} layout={"fill"}
-					       src={item ? item.thumbnail ? "" : "/bg.webp" : "/bg.webp"}/>
+					       src={(item && item?.thumbnail && item?.thumbnail?.name) ? process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+item.thumbnail.name : "/bg.webp"}/>
 				</div>}
 				<Component style={{color: postCard.titleTextColor, margin: postCard.titleMargin.join("px ") + "px"}}
 				           className={"text-title-large font-bold mt-4"}>

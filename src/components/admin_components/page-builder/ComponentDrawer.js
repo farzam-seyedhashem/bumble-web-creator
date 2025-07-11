@@ -1,382 +1,146 @@
+'use client'
 import {Dialog, Transition} from "@headlessui/react";
-import {useState, Fragment} from "react";
+import {useState, Fragment, useRef, useEffect} from "react";
 import Icon from "@m3/assets/icons/Icon";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Button from "@m3/buttons/Button";
 import Components from "@/Components.json";
-export default function ComponentDrawer({isOpen, dragFunc, setIsOpen}) {
+import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
-    return (
-        <>
-            {/*<Transition.Root show={isOpen} as={Fragment}>*/}
-            {/*    <div  className="fixed w-[360px] h-full left-0 top-0 z-[1001] overflow-hidden" onClose={()=>{}}>*/}
+function ItemView({item, viewMode,dragFunc,onDragEnd}) {
+	return (
+		<div onDragEnd={()=>{
+			onDragEnd()
+			// document.getElementById("search-component-dialog").style.visibility = "visible"
+		}} id={item.uid} onDragStart={(e) => {
+			dragFunc(e)
 
-            {/*        /!*<Dialog.Overlay className="absolute bg-black bg-opacity-30 inset-0"/>*!/*/}
+		}} draggable={true}
+		     className={`${viewMode === "grid" ? "block py-4 rounded-[12px] overflow-hidden px-0 *:text-center *:flex *:justify-center *:mx-auto" : "px-4 flex items-center h-[56px]"} cursor-grab relative after:absolute after:inset-0 after:opacity-0 hover:after:opacity-[8%] focus:after:opacity-10 active:after:opacity-10 after:bg-on-surface-light dark:after:bg-on-surface-dark `}>
+			<Icon weight={500} size={24} fill={1}
+			      className={`${viewMode === "grid" ? "mb-2" : ""} text-on-surface-variant-light dark:text-on-surface-variant-dark`}>
+				{item.icon}
+			</Icon>
+			<div
+				className={`${viewMode === "grid" ? "text-label-medium" : "text-body-large ml-4 flex-1"}    text-on-surface-light dark:text-on-surface-dark`}>
+				{item.label}
+			</div>
+		</div>
+	)
+}
 
-            {/*        <div className="h-screen rtl:right-0 ltr:left-0 max-w-full flex">*/}
-            {/*            <Transition.Child*/}
-            {/*                as={Fragment}*/}
-            {/*                enter="transform transition ease-in-out duration-300"*/}
-            {/*                enterFrom="-translate-x-full"*/}
-            {/*                enterTo="translate-x-0"*/}
-            {/*                leave="transform transition ease-in-out duration-300"*/}
-            {/*                leaveFrom="translate-x-0"*/}
-            {/*                leaveTo="-translate-x-full"*/}
-            {/*            >*/}
-            <div
-                className="h-[calc(100%_-_64px)] overflow-scroll w-[360px] border-r border-outline-variant-light dark:border-outline-dark max-w-[360px] ">
-                <div
-                    className="h-full flex flex-col bg-surface-light dark:bg-surface-dark overflow-y-scroll">
-                    {/*<div*/}
-                    {/*    className={"pl-6 pr-4 justify-between text-title-large text-on-surface-variant-light dark:text-on-surface-variant-dark pt-2 flex items-center"}>*/}
-                    {/*    All Components*/}
-                    {/*    <IconButton  onClick={()=>setIsOpen(false)}>*/}
-                    {/*        close*/}
-                    {/*    </IconButton>*/}
-                    {/*</div>*/}
-                    <div className={"px-6"}>
-                        <div className={"mt-4 flex items-center justify-between"}>
-                            <h2 className={"text-title-small text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                Basic Components
-                            </h2>
-                            <button
-                                className={"text-primary-light dark:text-primary-dark text-label-large"}>
-                                Show All
-                            </button>
-                        </div>
-                        <div className={"grid mt-3 grid-cols-2 gap-4"}>
-                            {Components.components.map(item=>item.icon&&<div key={item.uid} onDragStart={(e) => dragFunc(e)} draggable={true} id={item.uid}
-                                  className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>
-                                {/*<div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                                {/*<div*/}
-                                {/*    className={"text-headline-small  text-on-primary-container-light dark:text-on-primary-container-dark "}>*/}
-                                <Icon weight={700} size={48} fill={1}
-                                      className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>
-                                    {item.icon}
-                                </Icon>
-                                {/*</div>*/}
-                                <label
-                                    className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
-                                    {item.label}
-                                </label>
-                            </div>)}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"2"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        notes*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Paragraph*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"3"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        image*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        image*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"4"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Button*/}
-                            {/*        className={"*:text-secondary-container-light dark:*:!text-on-secondary-container-dark bg-on-primary-container-light dark:bg-on-primary-container-light"}>*/}
-                            {/*        Button*/}
-                            {/*    </Button>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Button*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"5"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        crop_5_4*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Container*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"6"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        view_column*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Column*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        star*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Icon*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"7"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        gallery_thumbnail*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Slider*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"8"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        star*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Featured*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"9"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        post*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Posts*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"10"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        inventory*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Inventories*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
+function GroupView({groupName, components, viewMode, searchText,dragFunc,onDragEnd}) {
+	const [isMinimise, setIsMinimise] = useState(true)
+	return (
+		<div>
+			<div className={`${viewMode === "grid" ? "px-6" : "px-4"} flex items-center  pt-3 pb-2 justify-between`}>
+				<h2 className="text-on-surface-light text-label-large font-medium ">{groupName}</h2>
+				{components.filter(item=>item?.icon).length>=5&&<>
+					{isMinimise ? <button onClick={() => setIsMinimise(!isMinimise)}
+					                      className={"flex items-center font-medium text-label-large text-primary-light dark:text-primary-dark"}>
+						<Icon className={"mr-1"} size={20}>
+							add
+						</Icon>
+						Show More
+					</button> : <button onClick={() => setIsMinimise(!isMinimise)}
+					                    className={"flex items-center font-medium text-label-large text-primary-light dark:text-primary-dark"}>
+						<Icon className={"mr-1"} size={20}>
+							check_indeterminate_small
+						</Icon>
+						Show Less
+					</button>
+					}
+				</>}
+			</div>
+			<div className={viewMode === "grid" ? "grid grid-cols-5 gap-4 px-4" : ""}>
+				{components.filter(item => item.label && item?.label.toLowerCase().includes(searchText.toLowerCase())).map((item, index) => item.icon &&
+					((isMinimise && index < 5) || (!isMinimise)) &&
+					<ItemView onDragEnd={onDragEnd} dragFunc={dragFunc} viewMode={viewMode} key={index} item={item}/>
+				)}
+			</div>
+		</div>
+	)
+}
+
+export default function ComponentDrawer({dragFunc}) {
+	const [isSearchMenuOpen, setIsSearchMenuOpen] = useState(false)
+	// const handleSearchMenuOpen = (v) => {
+	// 	setIsSearchMenuOpen(v)
+	// 	setIsOpen(v)
+	// }
+	const [searchText, setSearchText] = useState("")
+	const [viewMode, setViewMode] = useState("grid")
+	const searchDialogWrapperRef = useRef()
+	const searchComponentDialogRef = useRef(null)
+	const dragFuncHandler = (e) => {
+		dragFunc(e)
+		// document.getElementById("search-component-dialog").style.visibility = "hidden"
+	}
+	const onDragEnd = () =>{
+		setIsSearchMenuOpen(false)
+		setSearchText("")
+	}
 
 
 
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
 
+	}, []);
+	const handleClickOutside = (event) => {
+		if (searchDialogWrapperRef.current && !searchDialogWrapperRef.current.contains(event.target)) {
+			setIsSearchMenuOpen(false)
+			setSearchText("")
+		}
+	};
+	const groupedComponents = Components.components.reduce((acc, component) => {
+		const groupName = component.group.groupName;
+		if (!acc[groupName]) {
+			acc[groupName] = [];
+		}
+		acc[groupName].push(component);
+		return acc;
+	}, {});
+	console.log(groupedComponents)
 
+	return (
+		<>
+			<div ref={searchDialogWrapperRef} onClick={() => !isSearchMenuOpen && setIsSearchMenuOpen(true)}
+			     className={`${isSearchMenuOpen ? "" : "rounded-full after:absolute after:inset-0 after:opacity-0 hover:after:opacity-[8%] focus:after:opacity-10 active:after:opacity-10 after:rounded-full"} relative   after:z-20   after:bg-on-surface-light dark:after:bg-on-surface-dark  w-6/12 h-[56px] max-w-[720px] min-w-[360px]`}>
+				<Icon
+					className={"absolute z-10 left-4 text-on-surface-light dark:text-on-surface-dark top-1/2 transform -translate-y-1/2"}>
+					search
+				</Icon>
+				<input onChange={(e) => setSearchText(e.target.value)}
+				       placeholder={"Search Component ..."}
+				       className={`bg-surface-container-high-light ${isSearchMenuOpen ? " rounded-t-[16px]" : "rounded-full"} px-[56px] text-body-large text-on-surface-light dark:text-on-surface-dark placeholder-on-surface-variant-light dark:placeholder-on-surface-variant-dark  border-0 w-full  h-full dark:bg-surface-container-high-dark`}/>
+				<div
+				     className={"flex items-center absolute z-10 right-0  top-1/2 transform -translate-y-1/2"}>
+					{!isSearchMenuOpen?<IconButton
+						onClick={() => setIsSearchMenuOpen(false)}
+						className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
+						{isSearchMenuOpen ? "arrow_drop_up" : "arrow_drop_down"}
+					</IconButton>:<IconButton className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
+						onClick={() => setViewMode(viewMode==="grid"?"list":"grid")}>
+						{viewMode==="grid" ? "grid_view" : "table_rows"}
+					</IconButton>}
+					{/*<IconButton*/}
+					{/*	className={""}>*/}
+					{/*	{isSearchMenuOpen ? "arrow_drop_up" : "arrow_drop_down"}*/}
+					{/*</IconButton>*/}
+				</div>
 
+				{isSearchMenuOpen &&
+					<div id={"search-component-dialog"} className={` bg-surface-container-high-light rounded-b-[16px] pb-4 h-[340px] overflow-hidden`}>
+						<div className={"h-full w-full overflow-scroll"}>
+							{Object.entries(groupedComponents).map(([groupName, components]) => (
+								<GroupView onDragEnd={onDragEnd} dragFunc={dragFuncHandler} searchText={searchText} viewMode={viewMode} key={groupName}
+								           groupName={groupName} components={components}/>
+							))}
 
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"12"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        h*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Title*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"12"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[12px] bg-secondary-container-light dark:bg-secondary-container-dark w-full h-[132px]"}>*/}
-                            {/*    <Icon weight={700} size={48} fill={1}*/}
-                            {/*          className={"text-[48px] text-on-primary-container-light dark:text-on-primary-container-light"}>*/}
-                            {/*        map*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 font-medium block text-title-medium text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Map*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"4"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-
-                            {/*    <Button type={"tonal"}>*/}
-                            {/*        Button*/}
-                            {/*    </Button>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Button*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"5"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Container*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"6"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        view_column*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Column*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <div*/}
-                            {/*        className={"text-headline-small font-medium text-on-surface-light dark:text-on-surface-dark "}>*/}
-                            {/*        <Icon className={"text-[36px]"}>*/}
-                            {/*            star*/}
-                            {/*        </Icon>*/}
-
-                            {/*    </div>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Icon Picker*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"7"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        gallery_thumbnail*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Slider*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"8"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        star*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Feature Section*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"9"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        post*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Blog Post*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"10"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        inventory*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Inventories*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"11"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        /!*user_circle*!/*/}
-                            {/*        interpreter_mode*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Testimonial*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div onDragStart={(e) => dragFunc(e)} draggable={true} id={"12"}*/}
-                            {/*     className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        /!*user_circle*!/*/}
-                            {/*        align_space_even*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        Space*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-
-                            {/*<div*/}
-                            {/*    className={"relative flex items-center justify-center rounded-[8px] bg-surface-container-light dark:bg-surface-container-dark w-full h-[132px]"}>*/}
-                            {/*    <div className={"z-10 absolute inset-0 w-full h-full"}/>*/}
-                            {/*    <Icon*/}
-                            {/*        className={"text-[32px] text-on-surface-variant-light dark:text-on-surface-variant-dark "}>*/}
-                            {/*        list*/}
-                            {/*    </Icon>*/}
-                            {/*    <label*/}
-                            {/*        className={"z-20 absolute bottom-2 block text-label-large text-center text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                            {/*        List*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-
-                        </div>
-                        {/*<div className={"mt-4 flex items-center justify-between"}>*/}
-                        {/*    <h2 className={"text-title-small text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                        {/*        Sliders*/}
-                        {/*    </h2>*/}
-                        {/*    <button*/}
-                        {/*        className={"text-primary-light dark:text-primary-dark text-label-large"}>*/}
-                        {/*        Show All*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
-                        {/*<div className={"mt-4 flex items-center justify-between"}>*/}
-                        {/*    <h2 className={"text-title-small text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                        {/*        Testimonial Card*/}
-                        {/*    </h2>*/}
-                        {/*    <button*/}
-                        {/*        className={"text-primary-light dark:text-primary-dark text-label-large"}>*/}
-                        {/*        Show All*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
-                        {/*<div className={"mt-4 flex items-center justify-between"}>*/}
-                        {/*    <h2 className={"text-title-small text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-                        {/*        Text & Image Components*/}
-                        {/*    </h2>*/}
-                        {/*    <button*/}
-                        {/*        className={"text-primary-light dark:text-primary-dark text-label-large"}>*/}
-                        {/*        Show All*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
-                    </div>
-                </div>
-            </div>
-            {/*            </Transition.Child>*/}
-            {/*        </div>*/}
-
-            {/*    </div>*/}
-            {/*</Transition.Root>*/}
-        </>
-    )
+						</div>
+					</div>}
+			</div>
+		</>
+	)
 }

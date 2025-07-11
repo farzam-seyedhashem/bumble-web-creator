@@ -2,7 +2,7 @@
 import Icon from "@m3/assets/icons/Icon";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import Image from "next/image";
-import {FileUploadStorageURL} from "@/config";
+
 import Link from "next/link";
 import {useState} from "react";
 
@@ -97,7 +97,7 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
 						</Icon>}
 					<div className={"flex-1"}>
 						{/*<div className={"h-[24px] relative "}>*/}
-						{/*    <Image quality={100} width={120} height={24} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name} alt={"logo"}/>*/}
+						{/*    <Image quality={100} width={120} height={24} objectFit={"contain"}  src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+siteSetting.logo.name} alt={"logo"}/>*/}
 
 						{/*</div>*/}
 					</div>

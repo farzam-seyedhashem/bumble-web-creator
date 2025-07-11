@@ -22,8 +22,7 @@ export default function Map({
 	                            removeItemFunc,
 	                            isDesktop,
 	                            editItem,
-	                            item,
-	                            key
+	                            item
                             }) {
 	let [isSelected, setIsSelected] = useState(false)
 	let [value, setValue] = useState(item.addr)
@@ -74,7 +73,7 @@ export default function Map({
 				justifyContent: styles.mobile?.justifyContent || "flex-start"
 			}}>
 
-				<div id={key}
+				<div id={item.uniqueId}
 				     className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
 				     style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
 

@@ -1,44 +1,23 @@
-import WebComponentGenerator from "@website/WebComponentGenerator";
-// import React from "react";
 import {StyleToClass} from "@/_helper/StyleToClass";
+import WebComponentGenerator from "@website/WebComponentGenerator";
 import {getPageBySlug} from "@controller/PageController";
-import {notFound} from "next/navigation";
-
-// async function getData(slug) {
-//     'use server'
-//     revalidateTag("page")
-//     const res = await fetch(`http://localhost:3000/api/page/${slug}`, {next: {tags: ['pages']}})
-//     if (!res.ok) {
-//         if (res.status === 404) {
-//             notFound()
-//         }
-//         throw new Error('Failed to fetch data')
-//     }
-//     // return res.json()
-//     return res.json()
-// }
-
-export default async function Page({params}) {
-	const {slug} = await params
-	const data = JSON.parse(await getPageBySlug(slug))
-	if (!data) notFound();
-	// const Style = await import(`@/app/(styles)/${slug}.module.css`)
+export default async function Page() {
+	const data = JSON.parse(await getPageBySlug("404"))
 
 	return (
 		<div>
 
 			<style>
 				{`
-              
-                  ${JSON.parse(data.content).map((item, index) => {
+                   ${JSON.parse(data.content).map((item, index) => {
 					let desktopStyles = []
 					let mobileStyles = []
-					let mobileAlignItems = "flex-start"
-					let mobileJustifyContent = "flex-start"
-					let mobileDisplay = "block"
-					let desktopAlignItems = "flex-start"
-					let desktopJustifyContent = "flex-start"
-					let desktopDisplay = "block"
+					let mobileAlignItems="flex-start"
+					let mobileJustifyContent="flex-start"
+					let mobileDisplay="block"
+					let desktopAlignItems="flex-start"
+					let desktopJustifyContent="flex-start"
+					let desktopDisplay="block"
 					if (item.styles) {
 						if (item.styles?.mobile?.display) {
 							const {
@@ -51,7 +30,7 @@ export default async function Page({params}) {
 							mobileJustifyContent = mobileJustifyContentx;
 							mobileDisplay = mobileDisplayx;
 							mobileStyles = other
-						} else {
+						}else{
 
 							mobileStyles = item.styles.mobile
 						}
@@ -62,11 +41,11 @@ export default async function Page({params}) {
 								justifyContent: desktopJustifyContentx,
 								...other
 							} = item.styles.desktop
-							desktopStyles = other
+							desktopStyles=other
 							desktopAlignItems = desktopAlignItemsx;
 							desktopJustifyContent = desktopJustifyContentx;
 							desktopDisplay = desktopDisplayx;
-						} else {
+						}else{
 							desktopStyles = item.styles.desktop
 						}
 
@@ -93,8 +72,9 @@ export default async function Page({params}) {
 				
                 `}
 			</style>
-			{JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
+
+			{data.content !== null && JSON.parse(data.content).map((item, index) =>
+				<WebComponentGenerator  key={index} item={item}/>
 			)}
 		</div>
 	)

@@ -5,9 +5,8 @@ import Button from "@m3/buttons/Button";
 import {useRef, useState} from "react";
 import Image from 'next/image'
 import favicon from '@/app/favicon.ico'
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
-import {FileUploadStorageURL} from "@/config";
+
+import {UploadFile} from "@controller/FileController";
 
 export default function WebsiteInfo({data}) {
 	const [pageInfo, setPageInfo] = useState(data)
@@ -101,7 +100,7 @@ export default function WebsiteInfo({data}) {
 						<div className={"flex items-center space-x-4"}>
 							<div
 								className="flex justify-center items-center relative h-[150px] w-[150px] rounded-[12px] bg-surface-container-highest-light dark:bg-surface-container-highest-dark">
-								{pageInfo.logo?<Image layout={"fixed"} width={1080} height={1080} src={FileUploadStorageURL+pageInfo.logo.name}/>:<Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
+								{pageInfo.logo?<Image layout={"fixed"} width={1080} height={1080} src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+pageInfo.logo.name}/>:<Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
 								       size={36}>
 									image
 								</Icon>}
@@ -112,10 +111,8 @@ export default function WebsiteInfo({data}) {
 								       onChange={async (e) => {
 									       const file = logoInputRef.current.files[0]
 									       const res = await UploadFile(file)
-									       const saveFile = JSON.parse(await StoreFile(res))
-									       console.log(saveFile)
+									       const saveFile = JSON.parse(res)
 									       handleChangeWebsiteInfo('logo',saveFile)
-									       // console.log(pageInfo)
 								       }}
 								       id={"logo-upload-input"} type={"file"}
 								       className={"hidden w-0"}/>

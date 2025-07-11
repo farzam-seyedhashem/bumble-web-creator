@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import Data from '../../../Components.json'
 // import {v4 as uuidv4} from 'uuid';
 import {UniqueCharOTP} from "unique-string-generator";
-import VanillaContextMenu from 'vanilla-context-menu';
+// import VanillaContextMenu from 'vanilla-context-menu';
 import Icon from "@m3/assets/icons/Icon";
 import {uniqueId} from "lodash/util";
 
@@ -66,28 +66,28 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
 	const ref = useRef(UniqueCharOTP(24))
 	// const {components} = Data;
 	useEffect(() => {
-		new VanillaContextMenu({
-			scope: ref.current,
-			customClass:"context-menu",
-			menuItems: [
-				// {
-				// 	label: 'Copy',
-				// 	callback: () => {
-				// 		// your code here
-				// 	},
-				// },
-				// 'hr',
-				{
-
-					iconHTML:`<span class="material-symbols-outlined">
-content_paste
-</span>`,
-					label: 'Paste',
-					callback: pasteFunction,
-				},
-
-			],
-		})
+// 		new VanillaContextMenu({
+// 			scope: ref.current,
+// 			customClass:"context-menu",
+// 			menuItems: [
+// 				// {
+// 				// 	label: 'Copy',
+// 				// 	callback: () => {
+// 				// 		// your code here
+// 				// 	},
+// 				// },
+// 				// 'hr',
+// 				{
+//
+// 					iconHTML:`<span class="material-symbols-outlined">
+// content_paste
+// </span>`,
+// 					label: 'Paste',
+// 					callback: pasteFunction,
+// 				},
+//
+// 			],
+// 		})
 	}, []);
 	// const {t} = useTranslation('page-editor')
 	const allowDrop = (ev) => {

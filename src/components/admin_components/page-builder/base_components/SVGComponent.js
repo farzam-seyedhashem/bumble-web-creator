@@ -7,9 +7,9 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
+
 import TextArea from "@m3/TextArea";
+import FilledTextArea from "@m3/text_area/FilledTextArea";
 // import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
 export default function SVGComponent({
@@ -51,7 +51,7 @@ export default function SVGComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
+			<div id={item.uniqueId} style={isDesktop ? {
 				display: styles.desktop?.display || "block",
 				alignItems: styles.desktop?.alignItems || "flex-start",
 				justifyContent: styles.desktop?.justifyContent || "flex-start"
@@ -134,10 +134,11 @@ export default function SVGComponent({
 				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 					onChange={onChangeStyles} isDesktop={isDesktop}
 					styles={styles} key={index} field={field}/>)}
-
+				<div className={"px-4 py-4"}>
 				{editMode === "value" &&
-					<TextArea label={"SVG Code"} defaultValue={value}
+					<FilledTextArea rowNumber={10} label={"SVG Code"} value={value}
 					          onChange={(e) => handleChangeValue(e.target.value)}/>}
+				</div>
 
 				{/*<div className={"col-span-4 justify-between items-center"}>*/}
 				{/*    <label*/}

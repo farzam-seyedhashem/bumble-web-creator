@@ -13,9 +13,9 @@ import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
-import {ApiURL} from "@/config";
 
-const fetcher = (url) => fetch(url).then((r) => r.json())
+
+const fetcher = (url) => fetch(url,{cache:'no-cache'}).then((r) => r.json())
 
 export default function TestimonialComponents({
 	                                              fields,
@@ -26,13 +26,12 @@ export default function TestimonialComponents({
 	                                              removeItemFunc,
 	                                              isDesktop,
 	                                              editItem,
-	                                              item,
-	                                              key
+	                                              item
                                               }) {
 
 	const [localItem, setLocalItem] = useState(item)
 	const {data, error, isLoading, mutate} = useSWR(
-		`${ApiURL}/testimonials?per_page=${localItem.numberLoad}`,
+		`${process.env.NEXT_PUBLIC_SERVER_API_URL}/testimonials?per_page=${localItem.numberLoad}`,
 		fetcher
 	)
 	// useEffect(() => {
@@ -72,7 +71,6 @@ export default function TestimonialComponents({
 								     className={"text-headline-large font-black"}>
 									“
 									{item.description}
-									With Tarro, I don’t have to worry about employees taking sick days or vacations.
 									”
 								</div>
 								<div style={{color: localItem.primaryTextColor}}

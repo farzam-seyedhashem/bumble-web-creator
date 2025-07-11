@@ -51,7 +51,7 @@ export default function DesktopMenu() {
         {
             title: "Page Builder",
             icon: "layers",
-            link: "/admin/page-builder",
+            link: "/admin/layouts",
             id: 1
         },
         {

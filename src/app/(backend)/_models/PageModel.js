@@ -29,6 +29,11 @@ let PageSchema = new Schema({
         type:Boolean,
         default: false,
     },
+    displayAs:{
+        type:String,
+        default: 'other',
+        enum:["home","post-card","post-archive","post-single",'inventory-archive','inventory-card','inventory',"not-found","other"],
+    }
 
     // metaTitle:{
     //     type: String,

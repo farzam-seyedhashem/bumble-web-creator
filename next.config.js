@@ -3,7 +3,8 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{hostname: 'localhost',},
-			{hostname: '45.79.218.197',}
+			{hostname: '45.79.218.197',},
+			{hostname: 'file.dealergenius.ai',}
 		]
 	},
 	experimental: {

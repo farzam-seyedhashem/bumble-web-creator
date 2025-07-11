@@ -1,6 +1,7 @@
 'use server'
 import {db} from '../_helper/db'
 import {revalidateTag} from "next/cache";
+import {notFound, redirect} from "next/navigation";
 // import fs from 'fs'
 const Page = db.Page
 // import SafeClass from '@/SafeClasses.json'
@@ -22,7 +23,12 @@ async function getPageById(id) {
 }
 
 async function getPageBySlug(slug) {
-    return JSON.stringify(await Page.findOne({slug: slug}))
+    const page = await Page.findOne({slug: slug})
+    // console.log(page)
+    // if (!page) {
+    //
+    // }
+    return JSON.stringify(page)
 }
 
 // Store a newly created resource in storage.

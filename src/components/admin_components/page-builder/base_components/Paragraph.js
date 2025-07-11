@@ -6,6 +6,8 @@ import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Components from '@/Components.json'
+import FilledTextField from "@m3/text_fields/FilledTextField";
+import FilledTextArea from "@m3/text_area/FilledTextArea";
 
 export default function Paragraph({
 	                                  fields,
@@ -14,7 +16,6 @@ export default function Paragraph({
 	                                  color,
 	                                  isDesktop,
 	                                  item,
-	                                  key,
 	                                  editItem,
 	                                  removeItemFunc,
 	                                  dragFunc
@@ -49,18 +50,10 @@ export default function Paragraph({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 
-				<p className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  min-h-[24px] relative ${item.uniqueId}`}
-				   id={key}
+				<div className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  min-h-[24px] relative ${item.uniqueId}`}
+				   id={item.uniqueId}
 				   style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
 				   onClick={() => setIsSelected(true)}>
 					{value}
@@ -102,7 +95,7 @@ export default function Paragraph({
 						</div>
 					</div>
 
-				</p>
+				</div>
 			</div>
 			<EditorDialog isOpen={editDialogOpenComponentId ? editDialogOpenComponentId === item.uniqueId : false}
 			              setIsOpen={() => setEditDialogOpenComponentId(null)}>
@@ -122,9 +115,9 @@ export default function Paragraph({
 
 					</div>
 				</div>
-				{editMode === "value" && <div className={"px-4"}><TextArea label={"Text"}
+				{editMode === "value" && <div className={"px-4 py-6"}><FilledTextArea label={"Text"}
 				                                                           onChange={(e) => valueChangeHandler(e.target.value)}
-				                                                           defaultValue={value}/></div>}
+				                                                           value={value}/></div>}
 
 				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 					onChange={onChangeStyles} isDesktop={isDesktop}

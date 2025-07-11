@@ -3,12 +3,12 @@ import Button from "@m3/buttons/Button";
 import IconButton from "@m3/icon_buttons/IconButton";
 import {useEffect, useRef, useState} from "react";
 import Icon from "@m3/assets/icons/Icon";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
+import {UploadFile} from "@controller/FileController";
 import React from "react";
 import Image from 'next/image'
 import {Swiper, SwiperSlide} from "swiper/react";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
+
 
 
 export default function StoryUploader({siteSetting}) {
@@ -400,7 +400,7 @@ export default function StoryUploader({siteSetting}) {
 
 												       const file = fileInputRef.current.files[0]
 												       const res = await UploadFile(file)
-												       setMediaURL(JSON.parse(await StoreFile(res)).url)
+												       setMediaURL(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+res)
 
 												       setShowStoryUploadButton(true)
 											       }}

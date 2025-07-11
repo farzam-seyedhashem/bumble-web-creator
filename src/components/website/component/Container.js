@@ -2,7 +2,7 @@
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import {StyleToClass} from "@/_helper/StyleToClass";
 import Image from 'next/image'
-import {FileUploadStorageURL} from "@/config";
+
 
 export default async function Container({item, post}) {
 
@@ -78,7 +78,7 @@ export default async function Container({item, post}) {
 			<div id={item.uniqueId+"c"} className={`relative ${item.uniqueId} overflow-hidden h-fit`}>
 				{/*{console.log("mmmm",item)}*/}
 				{item?.backgroundImageURL && <Image layout={"fill"} objectFit={item.backgroundImageStyle}
-				                                    src={FileUploadStorageURL + item.backgroundImageURL}
+				                                    src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + item.backgroundImageURL}
 				                                    alt={item.alt}/>}
 				{/*<div className={""}></div>*/}
 				{item.imageOverlay &&

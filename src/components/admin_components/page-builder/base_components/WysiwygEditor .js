@@ -5,8 +5,8 @@ import Icon from "@m3/assets/icons/Icon";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 
 export default function WysiwygEditor({
 	                                      fields,
@@ -15,7 +15,6 @@ export default function WysiwygEditor({
 	                                      color,
 	                                      isDesktop,
 	                                      item,
-	                                      key,
 	                                      editItem,
 	                                      removeItemFunc,
 	                                      dragFunc
@@ -77,7 +76,7 @@ export default function WysiwygEditor({
 
 				<div
 					className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  min-h-[24px] relative ${item.uniqueId}`}
-					id={key}
+					id={item.uniqueId}
 					style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
 					onClick={() => setIsSelected(true)}>
 					<div dangerouslySetInnerHTML={{__html: value}}>
@@ -142,8 +141,8 @@ export default function WysiwygEditor({
 				{/*	</div>*/}
 				{/*</div>*/}
 				{editMode === "value" && <div className={"px-0  *:border-0"}>
-					<ReactQuill className={"*:!border-0"} modules={modules}
-					            formats={formats} theme="snow" value={value} onChange={setValue}/>
+					{/*<ReactQuill className={"*:!border-0"} modules={modules}*/}
+					{/*            formats={formats} theme="snow" value={value} onChange={setValue}/>*/}
 				</div>}
 
 				{/*{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator*/}

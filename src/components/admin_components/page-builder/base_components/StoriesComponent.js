@@ -1,19 +1,10 @@
 'use client';
 import {useEffect, useState, Fragment} from "react";
 import TextField from "@m3/text_fields/TextField";
-import IconButton from "@m3/icon_buttons/IconButton";
 import Icon from "@m3/assets/icons/Icon";
-import ColorPicker from "@m3/color_pricker/ColorPicker";
-import {Dialog, Transition} from "@headlessui/react";
-import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToTailwind} from "@/_helper/StyleToTailwind";
-import {StyleToClass} from "@/_helper/StyleToClass";
-import {rgbaObjToRgba} from '@/_helper/rgbaObjtoRgba'
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import {uniqueId} from "lodash/util";
-import FilledTextArea from "@m3/text_area/FilledTextArea";
-import FilledTextField from "@m3/text_fields/FilledTextField";
+import Image from 'next/image'
 
 export default function TextComponents({
 	                                       fields,
@@ -47,6 +38,8 @@ export default function TextComponents({
 		editItem("type", type)
 	]
 	useEffect(() => {
+		// setEditDialogOpenComponentId(item.uniqueId)
+		// console.log(editDialogOpenComponentId)
 		console.log("lweknfklw", editDialogOpenComponentId)
 	}, [editDialogOpenComponentId])
 	const copyToClipboard = () => {
@@ -59,19 +52,35 @@ export default function TextComponents({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
-				<Component id={item.uniqueId}
-				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
-				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
-					{value}
+			<div>
+				<div id={item.uniqueId} className={`${item.uniqueId} ${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"} `}>
+					<div className={"flex items-center space-x-4"}>
+
+						<div
+							className={"h-[110px] w-[110px] border-4 overflow-hidden relative  border-outline-variant-light bg-surface-container-light rounded-full"}>
+							<Image objectFit={"cover"} layout={"fill"} src={"/1.webp"}/>
+						</div>
+						<div
+							className={"h-[110px] w-[110px] border-4 overflow-hidden relative  border-outline-variant-light bg-surface-container-light rounded-full"}>
+							<Image objectFit={"cover"} layout={"fill"} src={"/1.webp"}/>
+						</div>
+						<div
+							className={"h-[110px] w-[110px] border-4 overflow-hidden relative  border-outline-variant-light bg-surface-container-light rounded-[20%]"}>
+							<Image objectFit={"cover"} layout={"fill"} src={"/1.webp"}/>
+						</div>
+
+					</div>
+					{/*<div className={"flex items-center"}>*/}
+					{/*	<div className={"h-[1px] bg-outline-variant-light w-full flex-1"}/>*/}
+					{/*	<div className={"flex items-center px-2 text-label-large font-medium text-primary-light space-x-2 "}>*/}
+					{/*		<Icon size={20}>*/}
+					{/*			add*/}
+					{/*		</Icon>*/}
+					{/*		Show All*/}
+					{/*	</div>*/}
+					{/*	<div className={"h-[1px] bg-outline-variant-light w-full w-full flex-1"}/>*/}
+
+					{/*</div>*/}
 					<div
 						className={`absolute hidden ${item.uniqueId}-panel z-[888]   -top-[32px] right-0  transform `}>
 						<div
@@ -111,7 +120,7 @@ export default function TextComponents({
 						</div>
 					</div>
 
-				</Component>
+				</div>
 			</div>
 			{/*<div className={"inset-0 fixed top-0 left-0 bg-white z-1001"}>*/}
 
@@ -141,11 +150,12 @@ export default function TextComponents({
 					</div>
 				</div>
 				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
-					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={item.uniqueId+field.type+"style-field-generator"+index} field={field}/>)}
+					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={item.uniqueId}
+					field={field}/>)}
 				{editMode === "value" && <div className={"mt-4 "}>
 					<div className={"px-4"}>
-						<FilledTextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
-						           value={value}/>
+						<TextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
+						           defaultValue={value}/>
 					</div>
 					<div className={" mt-3 justify-end"}>
 						<label

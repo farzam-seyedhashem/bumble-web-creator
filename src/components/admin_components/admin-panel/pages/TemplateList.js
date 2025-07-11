@@ -15,22 +15,22 @@ import Select from "@m3/text_fields/Select";
 import {deletePage} from "@backend/server_action/Pages";
 import {deleteTemplate} from "@backend/server_action/Templates";
 
-export default function TemplateList({data,showDefaultPages,showDefaultTemplate}) {
+export default function TemplateList({data, showDefaultPages, showDefaultTemplate}) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newPageData, setNewPageData] = useState({})
-	const [selectedIndexType, setSelectedIndexType] = useState(showDefaultPages?0:1);
+	const [selectedIndexType, setSelectedIndexType] = useState(showDefaultPages ? 0 : 1);
 	const items = [
 		{title: "Page"},
 		{title: "Template"},
 	]
 	const defaultPages = [
-		{title:"Inventory List Page",slug:"/inventories",adminLink:"/admin/edit-inventory-list-page"},
-		{title:"Single Inventory Page",slug:"/post/[slug]",adminLink:"/admin/edit-inventory-page"},
-		{title:"Single Post Page",slug:"/inventory/[slug]",adminLink:"/admin/edit-post-page"},
+		// {title:"Inventory List Page",slug:"/inventories",adminLink:"/admin/edit-inventory-list-page"},
+		// {title:"Single Inventory Page",slug:"/post/[slug]",adminLink:"/admin/edit-inventory-page"},
+		// {title:"Single Post Page",slug:"/inventory/[slug]",adminLink:"/admin/edit-post-page"},
 	]
 	const defaultComponent = [
-		{title:"Inventory Card",slug:"",adminLink:"/admin/edit-inventory-card"},
-		{title:"Post Card",slug:"/post/[slug]",adminLink:"/admin/edit-post-card"},
+		// {title:"Inventory Card",slug:"",adminLink:"/admin/edit-inventory-card"},
+		{title: "Post Card", slug: "/post/[slug]", adminLink: "/admin/edit-post-card"},
 	]
 	const CreateNewTemplate = () => {
 		try {
@@ -63,7 +63,6 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 	const submitNewOne = () => {
 		selectedIndexType === 0 ? CreateNewPage() : CreateNewTemplate()
 	}
-
 
 
 	return (
@@ -141,14 +140,14 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 							</thead>
 							<tbody
 								className={"*:text-on-surface-variant-light dark:*:text-on-surface-variant-dark dark:hover:*:text-on-surface-dark hover:*:text-on-surface-light dark:hover:*:bg-on-surface-dark/[8%] hover:*:bg-on-surface-light/[8%]  *:border-b dark:*:border-outline-variant-dark *:border-outline-variant-light"}>
-							{showDefaultPages&&defaultPages.map((item, index) => (
+							{showDefaultPages && defaultPages.map((item, index) => (
 								<tr key={index} className={"*:px-4 *:h-[56px] "}>
 									<td className={"font-medium"}>{item.title}</td>
 									<td>{item.slug}</td>
 									<td>
 										<div
 											className={"h-[32px] px-3 w-fit text-label-large font-medium flex justify-center items-center rounded-[8px] text-on-tertiary-container-light dark:text-on-tertiary-container-dark bg-tertiary-container-light dark:bg-tertiary-container-dark"}>
-											 Base Page
+											Base Page
 										</div>
 									</td>
 									<td>-</td>
@@ -165,7 +164,7 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 									</td>
 								</tr>
 							))}
-							{showDefaultTemplate&&defaultComponent.map((item, index) => (
+							{showDefaultTemplate && defaultComponent.map((item, index) => (
 								<tr key={index} className={"*:px-4 *:h-[56px] "}>
 									<td className={"font-medium"}>{item.title}</td>
 									<td>{""}</td>
@@ -208,13 +207,13 @@ export default function TemplateList({data,showDefaultPages,showDefaultTemplate}
 												edit
 											</IconButton>
 										</Link>
-										<button onClick={async () => {
+
+										<IconButton onClick={async () => {
 											page.slug ? await deletePage(page._id) : await deleteTemplate(page._id)
-										}}>
-											<IconButton className={"text-error-light dark:text-error-dark"}>
-												delete
-											</IconButton>
-										</button>
+										}} className={"text-error-light dark:text-error-dark"}>
+											delete
+										</IconButton>
+
 									</div>
 								</td>
 							</tr>)}

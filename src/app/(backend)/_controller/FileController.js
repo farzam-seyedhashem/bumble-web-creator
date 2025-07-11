@@ -3,13 +3,91 @@ import {db} from '../_helper/db'
 import fs from 'fs';
 import {pipeline} from 'stream';
 import {promisify} from 'util';
-import {FileUploadStorageURL} from "@/config";
+
+import {PutObjectCommand} from "@aws-sdk/client-s3";
+import sharp from "sharp";
+import {r2} from "@backend/_helper/R2";
 
 const pump = promisify(pipeline);
 
 const File = db.File
-// import uploadFile from '@/app/_helper/UploadImage'
-// import multer from "multer";
+
+
+export async function UploadFile(fileInput) {
+	let type = ""
+	switch (fileInput.type.split("/")[0]) {
+		case "image":
+			type = "images"
+			break;
+		case "video":
+			type = "videos"
+			break;
+		default:
+			type=""
+	}
+	if (type !== "") {
+		const arrayBuffer = await fileInput.arrayBuffer();
+		const buffer = Buffer.from(arrayBuffer);
+		let optimized=null;
+		let fileName="";
+		console.log("videoUpload1",buffer)
+		if (type==="images") {
+			optimized = await sharp(buffer).webp({quality: 90}).toBuffer();
+			fileName = `${type}/${fileInput.name}-${Date.now()}.webp`;
+			await r2.send(
+				new PutObjectCommand({
+					Bucket: process.env.R2_BUCKET_NAME,
+					Key: fileName,
+					Body: optimized,
+					ContentType: "image/webp",
+				})
+			)
+			var newFile = new File({
+				name: fileName,
+				encoding: 'webp',
+				mimetype: fileInput.mimetype,
+				md5: fileInput.md5,
+				size: fileInput.size,
+				tempFilePath: fileInput.tempFilePath,
+				truncated: fileInput.truncated,
+				alt: "",
+			});
+			// console.log( JSON.stringify(await newFile.save()))
+			return JSON.stringify(await newFile.save());
+		}
+		if (type==="videos"){
+			optimized = buffer;
+			// console.log(fileInput.originalname)
+			fileName = `${type}/${fileInput.name.split(".")[0]}-${Date.now()}.${fileInput.name.split(".")[1]}`;
+			await r2.send(
+				new PutObjectCommand({
+					Bucket: process.env.R2_BUCKET_NAME,
+					Key: fileName,
+					Body: optimized,
+					ContentType: fileInput.mimetype,
+				})
+			)
+			var newFile = new File({
+				name: fileName,
+				encoding: 'mp4',
+				mimetype: fileInput.mimetype,
+				md5: fileInput.md5,
+				size: fileInput.size,
+				tempFilePath: fileInput.tempFilePath,
+				truncated: fileInput.truncated,
+				alt: "",
+			});
+			console.log(newFile)
+			// console.log( JSON.stringify(await newFile.save()))
+			return JSON.stringify(await newFile.save());
+		}
+
+	} else {
+		return JSON.stringify({error: ""})
+	}
+}
+
+
 
 // import {ImageModel} from "@/app/_models/ImageModel";
 async function index() {
@@ -73,31 +151,31 @@ async function index() {
 }
 
 // Store a newly created resource in storage.
-async function store(file) {
-console.log(file)
-
-	var fileUpload = new File({
-		name: file.name,
-		encoding: file.encoding,
-		mimetype: file.mimetype,
-		md5: file.md5,
-		size: file.size,
-		tempFilePath: file.tempFilePath,
-		truncated: file.truncated,
-		alt: "",
-	});
-	const f = await fileUpload.save();
-
-	// f.url = "http://localhost:3001/uploaded/" + f.name
-	// console.log(fileUpload)
-	const url = {url:(FileUploadStorageURL + f.name)}
-
-
-	// console.log({...f._doc, "url": url})
-	return {...f._doc, ...url};
-
-
-}
+// async function store(file) {
+// console.log(file)
+//
+// 	var fileUpload = new File({
+// 		name: file.name,
+// 		encoding: file.encoding,
+// 		mimetype: file.mimetype,
+// 		md5: file.md5,
+// 		size: file.size,
+// 		tempFilePath: file.tempFilePath,
+// 		truncated: file.truncated,
+// 		alt: "",
+// 	});
+// 	const f = await fileUpload.save();
+//
+// 	// f.url = "http://localhost:3001/uploaded/" + f.name
+// 	// console.log(fileUpload)
+// 	const url = {url:(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + f.name)}
+//
+//
+// 	// console.log({...f._doc, "url": url})
+// 	return {...f._doc, ...url};
+//
+//
+// }
 
 // Display the specified resource.
 async function show(req, res) {
@@ -136,7 +214,7 @@ async function destroy(req, res) {
 export {
 	index,
 	show,
-	store,
+	UploadFile,
 	getById,
 	update,
 	destroy

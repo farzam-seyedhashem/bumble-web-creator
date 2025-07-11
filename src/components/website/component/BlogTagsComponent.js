@@ -14,7 +14,7 @@ import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
 import Link from "next/link";
-import {ApiURL} from "@/config";
+
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
@@ -33,7 +33,7 @@ export default function BlogTagsComponent({
 
 	const [localItem, setLocalItem] = useState(item)
 	const {data, error, isLoading, mutate} = useSWR(
-		`${ApiURL}/post-tags?per_page=100`,
+		`${process.env.NEXT_PUBLIC_SERVER_API_URL}/post-tags?per_page=100`,
 		fetcher
 	)
 	let [styles, setStyles] = useState(item?.styles)

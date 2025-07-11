@@ -7,6 +7,7 @@ import FilledTextField from "@m3/text_fields/FilledTextField";
 import FilledSelect from "@m3/text_fields/FilledSelect";
 import Select from "@m3/text_fields/Select";
 import Switch from "@m3/switch/Switch";
+import {Tooltip} from "@m3/tooltips/Tooltip";
 
 export default function StyleFieldGenerator({field, onChange, isDesktop, styles}) {
 	const [style, setStyle] = useState(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"])
@@ -44,7 +45,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
 						Rounded
 					</label>
-					<div className={"w-[120px]"}>
+					<div className={"w-[120px] appearance-none"}>
 						<Select onChange={(e) => {
 							onChangeValue("borderStyle", e.target.value)
 						}} options={[
@@ -62,7 +63,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						Color
 					</label>
 					<ColorPicker onChange={(value) => onChangeValue("borderColor", value)}
-					             value={style?style[field.type]?style[field.type]:"":""}/>
+					             value={style ? style[field.type] ? style[field.type] : "" : ""}/>
 				</div>
 			</div>}
 			{field.type === "boxModel" &&
@@ -75,18 +76,18 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 							<label
 								className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-small font-medium top-2 absolute left-2"}>Margin</label>
 
-							<input value={style?style?.marginLeft?style?.marginLeft.replace("px", ""):"":""}
+							<input value={style ? style?.marginLeft ? style?.marginLeft.replace("px", "") : "" : ""}
 							       onChange={(e) => onChangeValue("marginLeft", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
-							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style?style?.marginRight?style?.marginRight.replace("px", ""):"":""}
+							       className={"outline-none text-on-surface-light absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+							<input value={style ? style?.marginRight ? style?.marginRight.replace("px", "") : "" : ""}
 							       onChange={(e) => onChangeValue("marginRight", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
-							       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style?style?.marginTop?style?.marginTop.replace("px", ""):"":""}
+							       className={"outline-none text-on-surface-light  absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+							<input value={style ? style?.marginTop ? style?.marginTop.replace("px", "") : "" : ""}
 							       onChange={(e) => onChangeValue("marginTop", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
-							       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
-							<input value={style?style?.marginBottom?style?.marginBottom.replace("px", ""):"":""}
+							       className={"outline-none text-on-surface-light  absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+							<input value={style ? style?.marginBottom ? style?.marginBottom.replace("px", "") : "" : ""}
 							       onChange={(e) => onChangeValue("marginBottom", e.target.value === "auto" ? e.target.value : (e.target.value + "px"))}
-							       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
+							       className={"outline-none text-on-surface-light  absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 
 							<div
 								className={"relative w-[240px] rounded-[8px] h-[240px] flex items-center justify-center border border-outline-light dark:border-outline-dark"}>
@@ -98,40 +99,44 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 									       onChangeValue("borderLeft", e.target.value + "px")
 									       // onChangeValue("borderStyle", "solid")
 								       }}
-								       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
+								       className={"text-on-surface-light  outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 								<input value={style?.borderRight?.replace("px", "")}
 								       onChange={(e) => {
 									       onChangeValue("borderRight", e.target.value + "px")
 								       }}
-								       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
+								       className={"text-on-surface-light  outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 								<input value={style?.borderTop?.replace("px", "")}
 								       onChange={(e) => {
 									       onChangeValue("borderTop", e.target.value + "px")
 								       }}
-								       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
+								       className={"text-on-surface-light outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 								<input value={style?.borderBottom?.replace("px", "")}
 								       onChange={(e) => {
 									       onChangeValue("borderBottom", e.target.value + "px")
 								       }}
-								       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border-b border-outline-light dark:border-outline-dark"}/>
+								       className={"text-on-surface-light outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 
 								<div
 									className={"w-[160px] bg-surface-variant-light dark:bg-surface-variant-dark relative rounded-[8px] h-[160px] flex items-center justify-center border border-outline-light dark:border-outline-dark"}>
 									<label
 										className={"text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-small font-medium top-2 absolute left-2"}>Padding</label>
 
-									<input value={style?style?.paddingLeft?style?.paddingLeft.replace("px", ""):"":""}
-									       onChange={(e) => onChangeValue("paddingLeft", e.target.value + "px")}
-									       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style?style?.paddingRight?style?.paddingRight.replace("px", ""):"":""}
-									       onChange={(e) => onChangeValue("paddingRight", e.target.value + "px")}
-									       className={"outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style?style?.paddingTop?style?.paddingTop.replace("px", ""):"":""}
-									       onChange={(e) => onChangeValue("paddingTop", e.target.value + "px")}
-									       className={"outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
-									<input value={style?style?.paddingBottom?style?.paddingBottom.replace("px", ""):"":""}
-									       onChange={(e) => onChangeValue("paddingBottom", e.target.value + "px")}
-									       className={"outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+									<input
+										value={style ? style?.paddingLeft ? style?.paddingLeft.replace("px", "") : "" : ""}
+										onChange={(e) => onChangeValue("paddingLeft", e.target.value + "px")}
+										className={"text-on-surface-light outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 left-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+									<input
+										value={style ? style?.paddingRight ? style?.paddingRight.replace("px", "") : "" : ""}
+										onChange={(e) => onChangeValue("paddingRight", e.target.value + "px")}
+										className={"text-on-surface-light outline-none absolute text-label-large transform top-1/2 -translate-y-1/2 right-1 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+									<input
+										value={style ? style?.paddingTop ? style?.paddingTop.replace("px", "") : "" : ""}
+										onChange={(e) => onChangeValue("paddingTop", e.target.value + "px")}
+										className={"text-on-surface-light outline-none absolute text-label-large transform top-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
+									<input
+										value={style ? style?.paddingBottom ? style?.paddingBottom.replace("px", "") : "" : ""}
+										onChange={(e) => onChangeValue("paddingBottom", e.target.value + "px")}
+										className={"text-on-surface-light outline-none absolute text-label-large transform bottom-[4px] -translate-x-1/2 left-1/2 h-[28px] w-[32px] rounded-[4px] bg-transparent px-1 text-center border border-outline-light dark:border-outline-dark"}/>
 
 									<div
 										className={"text-label-medium font-medium text-on-surface-variant-light dark:text-on-surface-variant-dark bg-surface-variant-light dark:bg-surface-variant-dark w-[80px] rounded-[8px] h-[80px] flex items-center justify-center border border-outline-light dark:border-outline-dark"}>
@@ -175,16 +180,16 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					                 defValue={style?.width || ""}/>
 				</div>
 			</div>}
-			{/*{field.type === "visibility" && <div className={"flex px-4 h-[64px] justify-between items-center"}>*/}
-			{/*	<label*/}
-			{/*		className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>*/}
-			{/*		Hide Component*/}
-			{/*	</label>*/}
-			{/*	<div className={"mt-0 w-[120px]"}>*/}
-			{/*		<Switch setIsCheck={(e)=>onChangeValue("display",e?"none":"block")}*/}
-			{/*		                 isCheck={style?.display==="none"}/>*/}
-			{/*	</div>*/}
-			{/*</div>}*/}
+			{field.type === "visibility" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
+				<label
+					className={" text-body-large  font-normal text-on-surface-light dark:text-on-surface-dark"}>
+					Is Component Hide ?
+				</label>
+				<div className={"mt-0 "}>
+					<Switch setIsCheck={(e)=>onChangeValue("display",e?"none":"block")}
+					                 isCheck={style?.display==="none"}/>
+				</div>
+			</div>}
 			{field.type === "maxWidth" && <div className={"flex px-4 h-[64px] justify-between items-center"}>
 				<label
 					className={" text-body-large font-normal text-on-surface-light dark:text-on-surface-dark"}>
@@ -215,17 +220,21 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 								className={" text-body-large font-normal text-on-surface-variant-light dark:text-on-surface-variant-dark"}>
 								Font Weight
 							</label>
-							<div className={"w-[120px]  justify-end"}>
+							<div className={"w-[120px] relative  justify-end"}>
 								<select onChange={(e) => onChangeValue("fontWeight", e.target.value)}
 								        type={"text"}
 								        value={style?.fontWeight}
-								        className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
+								        className={"w-full relative appearance-none py-2 px-4 text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark  border border-outline-light dark:border-outline-dark "}>
 									<option label={"light"} value={"300"}/>
 									<option label={"normal"} value={"400"}/>
 									<option label={"medium"} value={"500"}/>
 									<option label={"bold"} value={"700"}/>
 									<option label={"black"} value={"900"}/>
+
 								</select>
+								<Icon className={"absolute top-[10px] z-10 right-2 text-on-surface-variant-light"}>
+									arrow_drop_down
+								</Icon>
 							</div>
 						</div>
 						<div className={"h-[64px] flex justify-between items-center"}>
@@ -248,7 +257,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						<div className={"flex mt-0 justify-end"}>
 							<input onChange={(e) => onChangeValue("lineHeight", e.target.value)} type={"text"}
 							       value={style?.lineHeight}
-							       className={"text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-[120px] border border-outline-light dark:border-outline-dark "}/>
+							       className={"text-center h-[46px] bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-[120px] border border-outline-variant-light focus:border-outline-light "}/>
 						</div>
 
 					</div>
@@ -261,24 +270,33 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 						Display
 					</label>
 					<div className={"mt-1 flex justify-end space-x-1"}>
-						<button onClick={(e) => onChangeValue("display", "none")}
-						        className={`${(style && style[field.type] && style[field.type] === "none") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-							<Icon className={"text-[24px]"}>
-								block
-							</Icon>
-						</button>
-						<button onClick={(e) => onChangeValue("display", "flex")}
-						        className={`${(style && style[field.type] && style[field.type] === "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-							<Icon className={"text-[24px]"}>
-								arrow_right_alt
-							</Icon>
-						</button>
-						<button onClick={(e) => onChangeValue("display", "block")}
-						        className={`${(style && style[field.type] && style[field.type] === "block") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
-							<Icon className={"text-[24px]"}>
-								arrow_downward_alt
-							</Icon>
-						</button>
+						{field.enum.findIndex(item => item === "hidden") !== -1 &&
+							<button  onClick={(e) => onChangeValue("display", "none")}
+							        className={`group relative ${(style && style[field.type] && style[field.type] === "none") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									block
+								</Icon>
+								<Tooltip className={"group-hover:flex"} position={["top","left"]} label={"Hide"}/>
+
+							</button>}
+						{field.enum.findIndex(item => item === "flex") !== -1 &&
+							<button onClick={(e) => onChangeValue("display", "flex")}
+							        className={`relative group ${(style && style[field.type] && style[field.type] === "flex") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									arrow_right_alt
+								</Icon>
+								<Tooltip className={"group-hover:flex"} position={["top","center"]} label={"Display Flex"}/>
+
+							</button>}
+						{field.enum.findIndex(item => item === "block") !== -1 &&
+							<button onClick={(e) => onChangeValue("display", "block")}
+							        className={`relative group ${(style && style[field.type] && style[field.type] === "block") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+								<Icon className={"text-[24px]"}>
+									arrow_downward_alt
+								</Icon>
+								<Tooltip className={"group-hover:flex"} position={["top","right"]} label={"Display Block"}/>
+
+							</button>}
 					</div>
 				</div>
 				{(style && style[field.type] && style[field.type] === "flex") && <>
@@ -356,22 +374,27 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 				</label>
 				<div className={"mt-1 flex justify-end space-x-1"}>
 					<button onClick={(e) => onChangeValue("textAlign", "left")}
-					        className={`${(style&&style[field.type]&&style[field.type] === "left") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`group relative ${(style && style[field.type] && style[field.type] === "left") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_left
 						</Icon>
+						<Tooltip className={"group-hover:flex"} position={["top","left"]} label={"Align Left"}/>
 					</button>
 					<button onClick={(e) => onChangeValue("textAlign", "center")}
-					        className={`${(style&&style[field.type]&&style[field.type] === "center") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`group relative ${(style && style[field.type] && style[field.type] === "center") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_center
 						</Icon>
+						<Tooltip className={"group-hover:flex"} position={["top","center"]} label={"Align Center"}/>
+
 					</button>
 					<button onClick={(e) => onChangeValue("textAlign", "right")}
-					        className={`${(style&&style[field.type]&&style[field.type] === "right") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
+					        className={`group relative ${(style && style[field.type] && style[field.type] === "right") ? "border-primary-light bg-primary-container-light/[12%] text-primary-light dark:border-primary-dark dark:bg-primary-container-dark/[12%] dark:text-primary-dark" : "text-on-surface-variant-light border-outline-variant-light dark:text-on-surface-variant-dark dark:border-outline-variant-dark bg-transparent"} flex items-center justify-center rounded-[8px] border  h-[40px] w-[40px]`}>
 						<Icon className={"text-[24px]"}>
 							format_align_right
 						</Icon>
+						<Tooltip className={"group-hover:flex"} position={["top","right"]} label={"Align Right"}/>
+
 					</button>
 				</div>
 			</div>}
@@ -382,7 +405,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Color
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("color", value)}
-				             value={style?style[field.type]?style[field.type]:"":""}/>
+				             value={style ? style[field.type] ? style[field.type] : "" : ""}/>
 			</div>}
 			{field.type === "fill" && <div
 				className={"px-4 hover:bg-on-surface-light/[8%] dark:hover:bg-on-surface-dark/[8%] h-[64px] flex justify-between items-center "}>
@@ -391,7 +414,7 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Fill
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("fill", value)}
-				             value={style?style[field.type]?style[field.type]:"":""}/>
+				             value={style ? style[field.type] ? style[field.type] : "" : ""}/>
 			</div>}
 
 			{field.type === "backgroundColor" && <div
@@ -401,10 +424,8 @@ export default function StyleFieldGenerator({field, onChange, isDesktop, styles}
 					Background Color
 				</label>
 				<ColorPicker onChange={(value) => onChangeValue("backgroundColor", value)}
-				             value={style?style[field.type]?style[field.type]:"":""}/>
+				             value={style ? style[field.type] ? style[field.type] : "" : ""}/>
 			</div>}
-
-
 
 
 		</div>

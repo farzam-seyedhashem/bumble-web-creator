@@ -31,6 +31,7 @@ import ShareButtonComponent from "@page_builder/base_components/ShareButtonCompo
 import PostDateAddedComponent from "@page_builder/base_components/PostDateAddedComponent";
 import FormComponent from "@page_builder/base_components/FormComponent";
 import LottieFileComponent from "@page_builder/base_components/LottieFileComponent";
+import StoriesComponent from "@page_builder/base_components/StoriesComponent";
 
 class ComponentGenerator extends React.Component {
 	constructor(props) {
@@ -60,7 +61,16 @@ class ComponentGenerator extends React.Component {
 					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					            key={item.uniqueId}
+					           
+					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					            item={item}/>}
+				{item.idType === "story" &&
+					<StoriesComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					            editDialogOpenComponentId={editDialogOpenComponentId}
+					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
 				{item.idType === "lottie" &&
@@ -69,7 +79,6 @@ class ComponentGenerator extends React.Component {
 					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					            key={item.uniqueId}
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
 				{item.idType === "testimonial" &&
@@ -78,7 +87,7 @@ class ComponentGenerator extends React.Component {
 					                      setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					                      color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					                      removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                      key={item.uniqueId}
+					                     
 					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                      item={item}/>}
 				{item.idType === "faq" &&
@@ -87,7 +96,7 @@ class ComponentGenerator extends React.Component {
 					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					              key={item.uniqueId}
+					             
 					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					              item={item}/>}
 				{item.idType === "form" &&
@@ -96,7 +105,7 @@ class ComponentGenerator extends React.Component {
 					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					              key={item.uniqueId}
+					             
 					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					              item={item}/>}
 
@@ -106,7 +115,7 @@ class ComponentGenerator extends React.Component {
 				                                           color={siteSetting.color}
 				                                           dragFunc={(e) => dragFunc(e, idNumber)}
 				                                           removeItemFunc={() => removeItemFunc(idNumber)}
-				                                           isDesktop={isDesktop} key={item.uniqueId}
+				                                           isDesktop={isDesktop}
 				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 				                                           item={item}/>}
 				{item.idType === "svg" && <SVGComponent fields={components.find(c => c.uid === item.uid)?.fields}
@@ -115,7 +124,7 @@ class ComponentGenerator extends React.Component {
 				                                        color={siteSetting.color}
 				                                        dragFunc={(e) => dragFunc(e, idNumber)}
 				                                        removeItemFunc={() => removeItemFunc(idNumber)}
-				                                        isDesktop={isDesktop} key={item.uniqueId}
+				                                        isDesktop={isDesktop}
 				                                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 				                                        item={item}/>}
 				{
@@ -128,7 +137,7 @@ class ComponentGenerator extends React.Component {
 					                 removeItemFunc={() => removeItemFunc(idNumber)}
 					                 isDesktop={isDesktop}
 					                 editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					                 key={item.uniqueId} item={item}/>
+					                 item={item}/>
 				}
 				{
 					item.idType === "wysiwygEditor" &&
@@ -140,11 +149,11 @@ class ComponentGenerator extends React.Component {
 					               removeItemFunc={() => removeItemFunc(idNumber)}
 					               isDesktop={isDesktop}
 					               editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					               key={item.uniqueId} item={item}/>
+					               item={item}/>
 				}
 				{
 					item.idType === "image" &&
-					<ImageComponent key={item.uniqueId} fields={components.find(c => c.uid === item.uid)?.fields}
+					<ImageComponent fields={components.find(c => c.uid === item.uid)?.fields}
 					                editDialogOpenComponentId={editDialogOpenComponentId}
 					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 					                dragFunc={(e) => dragFunc(e, idNumber)}
@@ -155,7 +164,7 @@ class ComponentGenerator extends React.Component {
 				}
 				{
 					item.idType === "video" &&
-					<VideoComponent key={item.uniqueId} fields={components.find(c => c.uid === item.uid)?.fields}
+					<VideoComponent fields={components.find(c => c.uid === item.uid)?.fields}
 					                editDialogOpenComponentId={editDialogOpenComponentId}
 					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
 					                dragFunc={(e) => dragFunc(e, idNumber)}
@@ -169,13 +178,13 @@ class ComponentGenerator extends React.Component {
 					           editDialogOpenComponentId={editDialogOpenComponentId}
 					           setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					           dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
-					           isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
+					           isDesktop={isDesktop} idNumber={idNumber} item={item}
 					           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{item.idType === "grid" &&
 					<Grid fields={components.find(c => c.uid === item.uid)?.fields} lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
 					      setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
 					      dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
-					      isDesktop={isDesktop} key={item.uniqueId} idNumber={idNumber} item={item}
+					      isDesktop={isDesktop} idNumber={idNumber} item={item}
 					      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{item.idType === "slider" &&
 					<SliderComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
@@ -184,7 +193,7 @@ class ComponentGenerator extends React.Component {
 					                 siteSetting={siteSetting}
 					                 dragFunc={(e) => dragFunc(e, idNumber)}
 					                 removeItemFunc={() => removeItemFunc(idNumber)}
-					                 isDesktop={isDesktop} key={item.uniqueId}
+					                 isDesktop={isDesktop}
 					                 idNumber={idNumber} item={item}
 					                 editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{/*{item.idType === "featuredSection" &&*/}
@@ -192,7 +201,7 @@ class ComponentGenerator extends React.Component {
 				{/*	                setEditDialogOpenComponentId={setEditDialogOpenComponentId}*/}
 				{/*	                color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}*/}
 				{/*	                removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}*/}
-				{/*	                key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}*/}
+				{/*	                editItem={(key, value) => editItem(idNumber, key, value)}*/}
 				{/*	                idNumber={idNumber} item={item}/>}*/}
 				{item.idType === "iconPicker" &&
 					<IconComponent fields={components.find(c => c.uid === item.uid)?.fields}
@@ -201,7 +210,7 @@ class ComponentGenerator extends React.Component {
 					               color={siteSetting.color}
 					               dragFunc={(e) => dragFunc(e, idNumber)}
 					               removeItemFunc={() => removeItemFunc(idNumber)}
-					               isDesktop={isDesktop} key={item.uniqueId}
+					               isDesktop={isDesktop}
 					               editItem={(key, value) => editItem(idNumber, key, value)}
 					               item={item}/>}
 				{item.idType === "blogPosts" &&
@@ -210,7 +219,7 @@ class ComponentGenerator extends React.Component {
 					                   setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					                   color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
 					                   removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                   key={item.uniqueId}
+					                  
 					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                   item={item}/>}
 				{/*{item.idType === "inventoryCard" &&*/}
@@ -218,7 +227,7 @@ class ComponentGenerator extends React.Component {
 				{/*	                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}*/}
 				{/*	                    dragFunc={(e) => dragFunc(e, idNumber)}*/}
 				{/*	                    removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}*/}
-				{/*	                    key={item.uniqueId} editItem={(key, value) => editItem(idNumber, key, value)}*/}
+				{/*	                    editItem={(key, value) => editItem(idNumber, key, value)}*/}
 				{/*	                    item={item}/>}*/}
 
 				{item.idType === "map" &&
@@ -226,7 +235,7 @@ class ComponentGenerator extends React.Component {
 					     editDialogOpenComponentId={editDialogOpenComponentId}
 					     setEditDialogOpenComponentId={setEditDialogOpenComponentId} color={siteSetting.color}
 					     dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
-					     isDesktop={isDesktop} key={item.uniqueId}
+					     isDesktop={isDesktop}
 					     editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)} item={item}/>}
 				{item.idType === "blogTags" &&
 					<BlogTagsComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
@@ -235,7 +244,7 @@ class ComponentGenerator extends React.Component {
 					                   color={siteSetting.color}
 					                   dragFunc={(e) => dragFunc(e, idNumber)}
 					                   removeItemFunc={() => removeItemFunc(idNumber)}
-					                   isDesktop={isDesktop} key={item.uniqueId}
+					                   isDesktop={isDesktop}
 					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                   item={item}/>}
 				{item.idType === "postTitle" &&
@@ -245,7 +254,7 @@ class ComponentGenerator extends React.Component {
 					                    color={siteSetting.color}
 					                    dragFunc={(e) => dragFunc(e, idNumber)}
 					                    removeItemFunc={() => removeItemFunc(idNumber)}
-					                    isDesktop={isDesktop} key={item.uniqueId}
+					                    isDesktop={isDesktop}
 					                    editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                    item={item}/>}
 				{item.idType === "postDateAdded" &&
@@ -256,7 +265,7 @@ class ComponentGenerator extends React.Component {
 					                        color={siteSetting.color}
 					                        dragFunc={(e) => dragFunc(e, idNumber)}
 					                        removeItemFunc={() => removeItemFunc(idNumber)}
-					                        isDesktop={isDesktop} key={item.uniqueId}
+					                        isDesktop={isDesktop}
 					                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                        item={item}/>}
 				{item.idType === "postContent" &&
@@ -266,7 +275,7 @@ class ComponentGenerator extends React.Component {
 					                      color={siteSetting.color}
 					                      dragFunc={(e) => dragFunc(e, idNumber)}
 					                      removeItemFunc={() => removeItemFunc(idNumber)}
-					                      isDesktop={isDesktop} key={item.uniqueId}
+					                      isDesktop={isDesktop}
 					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                      item={item}/>}
 				{item.idType === "postThumbnail" &&
@@ -277,7 +286,7 @@ class ComponentGenerator extends React.Component {
 					                        color={siteSetting.color}
 					                        dragFunc={(e) => dragFunc(e, idNumber)}
 					                        removeItemFunc={() => removeItemFunc(idNumber)}
-					                        isDesktop={isDesktop} key={item.uniqueId}
+					                        isDesktop={isDesktop}
 					                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                        item={item}/>}
 
@@ -289,7 +298,7 @@ class ComponentGenerator extends React.Component {
 					                          color={siteSetting.color}
 					                          dragFunc={(e) => dragFunc(e, idNumber)}
 					                          removeItemFunc={() => removeItemFunc(idNumber)}
-					                          isDesktop={isDesktop} key={item.uniqueId}
+					                          isDesktop={isDesktop}
 					                          editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                          item={item}/>}
 
@@ -300,7 +309,7 @@ class ComponentGenerator extends React.Component {
 					                   color={siteSetting.color}
 					                   dragFunc={(e) => dragFunc(e, idNumber)}
 					                   removeItemFunc={() => removeItemFunc(idNumber)}
-					                   isDesktop={isDesktop} key={item.uniqueId}
+					                   isDesktop={isDesktop}
 					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                   item={item}/>}
 				{item.idType === "shareButton" &&
@@ -310,12 +319,12 @@ class ComponentGenerator extends React.Component {
 					                      color={siteSetting.color}
 					                      dragFunc={(e) => dragFunc(e, idNumber)}
 					                      removeItemFunc={() => removeItemFunc(idNumber)}
-					                      isDesktop={isDesktop} key={item.uniqueId}
+					                      isDesktop={isDesktop}
 					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                      item={item}/>}
 
 
-				{/*{item.idType === "component" && <ComponentGenerator dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} key={item.uniqueId} editItem={(key,value)=>editItem(idNumber,key,value)} item={item.addedItems} />}*/}
+				{/*{item.idType === "component" && <ComponentGenerator dragFunc={(e)=>dragFunc(e,idNumber)} removeItemFunc={()=>removeItemFunc(idNumber)} isDesktop={isDesktop} editItem={(key,value)=>editItem(idNumber,key,value)} item={item.addedItems} />}*/}
 				{/*{item.idType === "iconPicker" && <Paragraph />}*/}
 			</div>
 		)

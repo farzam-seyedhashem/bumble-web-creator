@@ -14,7 +14,7 @@ import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
 import PostCard from "@admin/admin-panel/post-card/PostCard";
-import {ApiURL} from "@/config";
+
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
@@ -28,16 +28,15 @@ export default function TestimonialComponents({
                                                   isDesktop,
                                                   editItem,
                                                   item,
-                                                  key
                                               }) {
 
     const [localItem, setLocalItem] = useState(item)
     const {data, error, isLoading, mutate} = useSWR(
-        `${ApiURL}/posts`,
+        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/posts`,
         fetcher
     )
     const {data:postCardData, error:postCardErr, isLoading:postCardIsLoading, mutate:mutatePostCard} = useSWR(
-        `${ApiURL}/post-card`,
+        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/post-card`,
         fetcher
     )
     // useEffect(() => {

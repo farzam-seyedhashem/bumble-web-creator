@@ -27,9 +27,9 @@ export default function RootLayout({children}) {
         <html lang="en">
 
         <body className={` ${robotoFlex.variable} font-sans`}>
-        <ThemeProvider>
+        {/*<ThemeProvider>*/}
             {children}
-        </ThemeProvider>
+        {/*</ThemeProvider>*/}
         </body>
         </html>
     )

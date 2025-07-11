@@ -19,7 +19,6 @@ export default function IconComponent({
 	                                      isDesktop,
 	                                      editItem,
 	                                      item,
-	                                      key,
 	                                      removeItemFunc,
 	                                      dragFunc
                                       }) {
@@ -77,7 +76,7 @@ export default function IconComponent({
 			}}>
 
 				<Icon fill={isFill ? 1 : 0} weight={styles[isDesktop ? "desktop" : "mobile"].fontWeight}
-				      size={styles[isDesktop ? "desktop" : "mobile"].fontSize} id={key}
+				      size={styles[isDesktop ? "desktop" : "mobile"].fontSize} id={item.uniqueId}
 				      className={`relative ${item.uniqueId} w-full`}
 				      style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
 					{value}

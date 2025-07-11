@@ -2,19 +2,14 @@
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
 import {useState, Fragment, useEffect, useRef} from "react";
-import {Dialog, Transition} from "@headlessui/react";
-import IconButton from "@m3/icon_buttons/IconButton";
-import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
-import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import Icon from "@m3/assets/icons/Icon";
 import Switch from "@m3/switch/Switch";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
-import {StyleToClass} from "@/_helper/StyleToClass";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import Image from 'next/image'
-import {UploadFile} from "@frontend/client_action/File";
-import {FileUploadStorageURL} from "@/config";
+
+import {UploadFile} from "@controller/FileController";
 
 export default function Container({
 	                                  fields,
@@ -177,7 +172,7 @@ export default function Container({
 						<div style={{backgroundColor: imageOverlayColor}} className={"absolute inset-0 z-10"}/>}
 
 					{imageURL &&
-						<Image objectFit={imageStyle} alt={""} src={FileUploadStorageURL + imageURL} layout="fill"/>}
+						<Image objectFit={imageStyle} alt={""} src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + imageURL} layout="fill"/>}
 					{/*<div onClick={() => setIsSelected(true)} className={"z-10 absolute inset-0"}>*/}
 
 					{/*</div>*/}
@@ -263,7 +258,7 @@ export default function Container({
 								<label className={"text-on-surface-light dark:text-on-surface-dark"}
 								       htmlFor={"imageFile"}>
 									{imageURL ? <img className={"rounded-[4px] w-[64px] h-[64px]"}
-									                 src={FileUploadStorageURL + imageURL}/>
+									                 src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + imageURL}/>
 										:
 										<div
 											className={"rounded-[4px] dark:bg-surface-container-high-dark bg-surface-container-high-light flex justify-center items-center w-[64px] h-[64px]"}

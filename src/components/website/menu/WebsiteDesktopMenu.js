@@ -4,7 +4,7 @@ import IconButton from "@m3/icon_buttons/IconButton";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {FileUploadStorageURL} from "@/config";
+
 import Image from 'next/image'
 export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
     const {color} = siteSetting;
@@ -47,7 +47,7 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
 
                 {/*{!menuSetting.logoCenter && <div*/}
                 {/*    className={"mr-4 h-[40px] w-[170px] relative font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>*/}
-                {/*   <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>*/}
+                {/*   <Image layout={"fill"} objectFit={"contain"}  src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+siteSetting.logo.name}/>*/}
                 {/*</div>}*/}
                 {menuSetting.menuRight ? menuSetting.isSearchbarInput ?
                     <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto 400px`}>
@@ -109,7 +109,7 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
                 {menuSetting.logoCenter && <h1
                     className={"absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 flex-grow mr-4 font-black text-[24px] "}>
                    <div className={"relative h-[40px] w-[170px]"}>
-                    <Image layout={"fill"} objectFit={"contain"}  src={FileUploadStorageURL+siteSetting.logo.name}/>
+                    <Image layout={"fill"} objectFit={"contain"}  src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+siteSetting.logo.name}/>
                    </div>
                 </h1>}
             </div>

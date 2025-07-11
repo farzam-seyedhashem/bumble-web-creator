@@ -7,8 +7,6 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
 import TextArea from "@m3/TextArea";
 // import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 import Lottie from 'react-lottie';

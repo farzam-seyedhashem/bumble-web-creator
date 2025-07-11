@@ -6,7 +6,7 @@ import IconButton from "@m3/icon_buttons/IconButton";
 import Image from "next/image";
 import Icon from "@m3/assets/icons/Icon";
 
-import {FileUploadStorageURL} from "@/config";
+
 import {destroy} from '@controller/PostController'
 export default function PostList({data}) {
 	const remove = async (id) => {
@@ -58,7 +58,7 @@ export default function PostList({data}) {
 						<div className={"flex items-center"}>
 							{item.thumbnail ? <Image width={100} height={100} objectFit={"responsive"}
 							                         className={"w-[48px] h-[48px] rounded-full"}
-							                         src={FileUploadStorageURL + item.thumbnail.name}
+							                         src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + item.thumbnail.name}
 							                         alt={item.thumbnail.alt}/> : <div
 								className={"flex items-center justify-center bg-surface-variant-light dark:bg-surface-variant-dark text-on-surface-variant-light dark:text-on-surface-variant-dark w-[48px] h-[48px] rounded-full"}>
 								<Icon>

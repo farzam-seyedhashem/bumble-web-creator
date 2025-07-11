@@ -15,7 +15,7 @@ export default function BlogTitleComponent({
 	                                       editItem,
 	                                       item,
 	                                           lastPost,
-	                                       key
+
                                        }) {
 	let [Component, setComponent] = useState(item.type)
 	let [isSelected, setIsSelected] = useState(false)
@@ -63,7 +63,7 @@ export default function BlogTitleComponent({
 				alignItems: styles.mobile?.alignItems || "flex-start",
 				justifyContent: styles.mobile?.justifyContent || "flex-start"
 			}}>
-				<Component id={key}
+				<Component id={item.uniqueId}
 				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
 				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
 					{post.title}

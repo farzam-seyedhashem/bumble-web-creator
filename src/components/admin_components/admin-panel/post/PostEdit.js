@@ -12,11 +12,9 @@ import {convertToSlug} from "@/_helper/convertToSlug";
 import Image from 'next/image'
 import FilterChips from "@m3/chips/FilterChips";
 import BasicDialog from "@m3/dialogs/BasicDialog";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
 import Link from "next/link";
 import QuillEditor from "@admin/admin-panel/post/QuillEditor";
-import {ApiURL, FileUploadStorageURL} from "@/config";
+import {UploadFile} from "@controller/FileController";
 
 export default function PostEdit({post, siteSetting}) {
 	const [data, setData] = useState(post || {})
@@ -130,12 +128,12 @@ export default function PostEdit({post, siteSetting}) {
 	}, []);
 	const imageInputRef = useRef()
 	const [filterTag, setFilterTag] = useState('');
-	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:FileUploadStorageURL+post?.thumbnail.name} : null);
+	const [image, setImage] = useState(post?.thumbnail ? {...post.thumbnail,url:process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+post?.thumbnail.name} : null);
 	const [tagData, setTagData] = useState({});
 	const [postTags, setPostTags] = useState(post?.tags.map(item=>item._id) || []);
 	const [tags, setTags] = useState(null)
 	const getTags = async () => {
-		const res = await fetch(`${ApiURL}/post-tags`)
+		const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/post-tags`)
 		if (res.status === 200) {
 			setTags(await res.json())
 		}
@@ -162,7 +160,7 @@ export default function PostEdit({post, siteSetting}) {
 		}
 	}, [data.title])
 	const addTagSubmit = async () => {
-		const res = await fetch(`${ApiURL}/post-tags`, {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/post-tags`, {
 			method: "POST",
 			body: JSON.stringify(tagData),
 		})
@@ -174,7 +172,7 @@ export default function PostEdit({post, siteSetting}) {
 		// const delta = quill.getContents();
 		// console.log(html);
 		if (post) {
-			const res = await fetch(`${ApiURL}/posts/${post.slug}`, {
+			const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/posts/${post.slug}`, {
 				method: "PUT",
 
 				body: JSON.stringify({
@@ -190,7 +188,7 @@ export default function PostEdit({post, siteSetting}) {
 			})
 			await res.json()
 		}else{
-			const res = await fetch(`${ApiURL}/posts`, {
+			const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/posts`, {
 				method: "POST",
 
 				body: JSON.stringify({
@@ -211,9 +209,6 @@ export default function PostEdit({post, siteSetting}) {
 	}
 	let handleChangeValue = (value) => {
 		const file = JSON.parse(value)
-		console.log(file)
-		// console.log(file)
-		// console.log(file)
 		setImage(file)
 	}
 	return (
@@ -278,7 +273,7 @@ export default function PostEdit({post, siteSetting}) {
 										<div
 											className="relative flex overflow-hidden justify-center items-center relative h-[150px] w-[150px] rounded-[24px] bg-surface-container-highest-light dark:bg-surface-container-highest-dark">
 											{image ? <Image layout={"fill"} objectFit={"cover"} alt={""}
-											                src={`${image.url}`}/> : <Icon
+											                src={`${process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+image.name}`}/> : <Icon
 												className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
 												size={36}>
 												image
@@ -296,7 +291,7 @@ export default function PostEdit({post, siteSetting}) {
 											       onChange={async (e) => {
 												       const file = imageInputRef.current.files[0]
 												       const res = await UploadFile(file)
-												       handleChangeValue(await StoreFile(res))
+												       handleChangeValue(res)
 											       }}
 											       id={"thumbnail-upload-input"} type={"file"}
 											       className={"hidden w-0"}/>

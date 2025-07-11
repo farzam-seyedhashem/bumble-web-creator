@@ -3,20 +3,20 @@ import Button from "@m3/buttons/Button";
 import Icon from "@m3/assets/icons/Icon";
 import {useState} from "react";
 import TruncText from "@/_helper/TruncText";
-import {FileUploadStorageURL} from "@/config";
+
 import Link from "next/link";
 
 const {convert} = require('html-to-text');
 export default function PostCard({postCard, item}) {
 	const Component = postCard.postTitleType
-	console.log(FileUploadStorageURL + item.thumbnail.name)
+	console.log(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + item.thumbnail.name)
 	return (
 		<>
 			<div className={`blog-card`}>
 				{!postCard.imageCenter && <div
 					className={"image-container aspect-w-16 aspect-h-8 overflow-hidden relative"}>
 					<Image alt={""} objectFit={"cover"} layout={"fill"}
-					       src={item.thumbnail ? FileUploadStorageURL + item.thumbnail.name : ""}/>
+					       src={item.thumbnail ? process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + item.thumbnail.name : ""}/>
 				</div>}
 				<Link href={"/post/" + item.slug}>
 					<Component

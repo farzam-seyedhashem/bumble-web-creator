@@ -9,15 +9,15 @@ export default function PageTemplateSegmentedButton(props) {
     const items = [
         {
             title:"All",
-            link:"/admin/page-builder"
+            link:"/admin/layouts"
         },
         {
             title:"Pages",
-            link:"/admin/page-builder/pages"
+            link:"/admin/layouts/pages"
         },
         {
             title:"Templates",
-            link:"/admin/page-builder/templates"
+            link:"/admin/layouts/templates"
         }
     ]
     return (

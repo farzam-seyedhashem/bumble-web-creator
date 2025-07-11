@@ -1,5 +1,5 @@
 'use client'
-export default function FilledTextArea({value,onChange,label,className}) {
+export default function FilledTextArea({value,onChange,label,className,rowNumber}) {
     // after:content['']
     // pointer-events-none
     // absolute
@@ -37,9 +37,9 @@ export default function FilledTextArea({value,onChange,label,className}) {
     // peer-disabled:peer-placeholder-shown:text-blue-gray-500
     return (
         <div
-            className={`bg-surface-container-highest-light dark:bg-surface-container-highest-dark h-[100px] relative pt-6 rounded-t-[4px] w-full min-w-[200px] ${className}`}>
-            <textarea onChange={onChange || null} rows={3} value={value} placeholder={label}
-                      className="h-full resize-none overflow-hidden peer w-full border-0 border-b border-on-surface-variant-light dark:border-on-surface-variant-dark bg-transparent px-4 font-sans text-body-large font-normal text-on-surface-light dark:text-on-surface-dark outline outline-0 transition-all placeholder-shown:border-on-surface-variant-light dark:placeholder-shown:border-on-surface-variant-dark dark:focus:border-on-surface-variant-dark focus:border-on-surface-variant-light focus:outline-0 placeholder:opacity-0 "></textarea>
+            className={`bg-surface-container-highest-light dark:bg-surface-container-highest-dark h-fit border-b border-on-surface-variant-light dark:border-on-surface-variant-dark relative pt-6 pb-0 rounded-t-[4px] w-full min-w-[200px] ${className}`}>
+            <textarea onChange={onChange || null} rows={rowNumber || 3} value={value} placeholder={label}
+                      className="overflow-y-scroll mb-0 h-full resize-none overflow-hidden peer w-full   bg-transparent px-4 font-sans text-body-large font-normal text-on-surface-light dark:text-on-surface-dark outline outline-0 transition-all placeholder-shown:border-on-surface-variant-light dark:placeholder-shown:border-on-surface-variant-dark dark:focus:border-on-surface-variant-dark focus:border-on-surface-variant-light focus:outline-0 placeholder:opacity-0 "></textarea>
             {/*transform top-1/2 -translate-y-1/2*/}
             {/*peer-focus:top-2 peer-focus:translate-y-0*/}
             <label

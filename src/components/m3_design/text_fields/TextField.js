@@ -24,7 +24,7 @@ export default function TextField({label,className,onChange,defaultValue,id,type
                 <input type={type?type:"text"} {...other} value={value} onChange={(e)=>{
                     setValue(e.target.value)
                     onChange(e)
-                }} aria-invalid={"true"} id={id?id:label} className={"h-[calc(100%_-_1px)] border-0 bg-transparent text-on-surface-light dark:text-on-surface-dark outline-none px-4 w-full caret-primary-light "}/>
+                }} aria-invalid={"true"} id={id?id:label} className={"focus:!border-0 focus:!outline-none hover:!border-0 hover:!outline-none active:!border-0 ring-0 active:!outline-none h-[calc(100%_-_1px)] border-0 bg-transparent text-on-surface-light dark:text-on-surface-dark outline-none px-4 w-full caret-primary-light "}/>
                 <label htmlFor={id?id:label} className={`${value!==""?ValueLabelStyle:LabelStyle+" "+FocusLabelStyle} z-10 cursor-text inline-block absolute transform transition-all duration-300 ease-in-out tracking-[.5px]`}>
                     {label}
                 </label>

@@ -14,7 +14,7 @@ export default function PostDateAddedComponent({
 	                                  color,
 	                                  isDesktop,
 	                                  item,
-	                                  key,
+
 	                                  editItem,
 	lastPost,
 	                                  removeItemFunc,
@@ -61,7 +61,7 @@ export default function PostDateAddedComponent({
 			}}>
 
 				<div className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"} !w-fit  min-h-[24px] relative ${item.uniqueId}`}
-				   id={key}
+				   id={item.uniqueId}
 				   style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
 				   onClick={() => setIsSelected(true)}>
 					{post.createdAt}

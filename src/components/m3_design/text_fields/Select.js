@@ -1,6 +1,7 @@
 'use client'
 import React, {useRef, useState} from "react";
 import {useClickOutside} from "@lib/CustomHook";
+import Icon from "@m3/assets/icons/Icon";
 
 export default function Select({children,value, onChange, label, className, options,id}) {
     const FocusLabelStyle = " group-focus-within:px-1 group-focus-within:left-3 group-focus-within:text-primary-light dark:group-focus-within:text-primary-dark group-focus-within:-top-[2px] group-focus-within:-translate-y-1/2 group-focus-within:text-primary-light dark:group-focus-within:text-primary-dark group-focus-within:leading-[.5] group-focus-within:text-body-small group-focus-within:leading-[16px]"
@@ -26,7 +27,7 @@ export default function Select({children,value, onChange, label, className, opti
                             className={`${value !== "" ? "block" : "group-focus-within:block hidden"} opacity-0 px-1 inline-block w-fit`}>{label}</span>
                     </legend>
                     {!children&&<select onChange={onChange || null} value={value} aria-invalid={"true"} id={id ? id : label}
-                             className={"relative h-[calc(100%_-_1px)] border-0 bg-transparent text-on-surface-light dark:text-on-surface-dark outline-none px-4 w-full caret-primary-light "}>
+                             className={"appearance-none relative h-[calc(100%_-_1px)] border-0 bg-transparent text-on-surface-light dark:text-on-surface-dark outline-none px-4 w-full caret-primary-light "}>
                         {!children && options && options.map((op, index) => <option value={op?.value} label={op?.title}
                                                                                     key={index}>
 
@@ -42,6 +43,9 @@ export default function Select({children,value, onChange, label, className, opti
                         {label}
 
                     </label>
+                    <Icon className={"absolute text-on-surface-variant-light right-2 top-1/2 transform -translate-y-1/2"}>
+                        arrow_drop_down
+                    </Icon>
 
                 </fieldset>
             </div>

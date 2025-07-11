@@ -27,7 +27,7 @@ export default function PostTagsComponent({
 	                                          editItem,
 	lastPost,
 	                                          item,
-	                                          key
+
                                           }) {
 
 	const [localItem, setLocalItem] = useState(item)

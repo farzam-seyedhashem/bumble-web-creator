@@ -32,8 +32,7 @@ export default function FAQComponent({
 	                                     removeItemFunc,
 	                                     isDesktop,
 	                                     editItem,
-	                                     item,
-	                                     key
+	                                     item
                                      }) {
 
 	const [localItem, setLocalItem] = useState(item)

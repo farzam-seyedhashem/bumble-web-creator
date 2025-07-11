@@ -1,15 +1,10 @@
 'use client';
-import React, {useEffect, useState, Fragment, useRef} from "react";
-import TextField from "@m3/text_fields/TextField";
-import IconButton from "@m3/icon_buttons/IconButton";
+import React, {useState, Fragment, useRef} from "react";
 import Icon from "@m3/assets/icons/Icon";
-import {Transition, Dialog} from "@headlessui/react";
-import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
-// import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
+import {UploadFile} from "@controller/FileController";
+
 
 export default function ImageComponent({
 	                                       fields,
@@ -38,12 +33,14 @@ export default function ImageComponent({
 	let handleChangeValue = (value) => {
 		const file = JSON.parse(value)
 		// console.log("ffff",file.name)
-		setValue(file.url)
-		editItem("value", file.url)
+		setValue(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
+		editItem("value", process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
 	}
 	const copyToClipboard = () => {
 		localStorage.setItem("clipboard", JSON.stringify(item))
 	}
+	// const {display:desktopDisplay} = styles.desktop
+	// const {display:mobileDisplay} = styles.mobile
 	return (
 		<>
 			<style>{`
@@ -51,15 +48,8 @@ export default function ImageComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+
+			<div>
 
 				<div className={`relative hover:border hover:border-tertiary-light ${item.uniqueId}`}>
 					{value ?
@@ -167,8 +157,7 @@ export default function ImageComponent({
 
 								       const file = fileInputRef.current.files[0]
 								       const res = await UploadFile(file)
-								       console.log("rrrrr",res)
-								       handleChangeValue(await StoreFile(res))
+								       handleChangeValue(res)
 							       }}
 							       id={"imageFile"} type={"file"}
 							       className={"hidden w-0"}/>

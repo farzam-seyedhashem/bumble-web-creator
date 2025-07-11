@@ -7,9 +7,7 @@ import {Transition, Dialog} from "@headlessui/react";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import EditorDialog from "@page_builder/editor_components/EditorDialog";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
-import {UploadFile} from "@frontend/client_action/File";
-import {StoreFile} from "@backend/server_action/Files";
-import {FileUploadApiURL} from "@/config";
+import {UploadFile} from "@controller/FileController";
 // import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
 export default function VideoComponent({
@@ -42,13 +40,15 @@ export default function VideoComponent({
 	}
 	let handleChangeValue = (value) => {
 		const file = JSON.parse(value)
-		setValue(file.url)
-		editItem("value", file.url)
+		setValue(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
+
+		editItem("value", process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
+		console.log(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
 	}
 	let handleChangeImageCover = (value) => {
 		const file = JSON.parse(value)
-		setImageCover(file.url)
-		editItem("imageCover", file.url)
+		setImageCover(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
+		editItem("imageCover", process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+file.name)
 	}
 	const copyToClipboard = () => {
 		localStorage.setItem("clipboard", JSON.stringify(item))
@@ -58,7 +58,7 @@ export default function VideoComponent({
 		const formdata = new FormData();
 		formdata.append("files", fileInput, fileInput.name);
 
-		const response = await fetch(`${FileUploadApiURL}`, {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL}`, {
 			method: 'POST',
 			body: formdata
 		})
@@ -72,15 +72,7 @@ export default function VideoComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 
 				<div className={`relative hover:border hover:border-tertiary-light ${item.uniqueId}`}>
 					{value ?
@@ -205,7 +197,9 @@ export default function VideoComponent({
 
 								       const file = fileInputRef.current.files[0]
 								       const res = await UploadFile(file)
-								       handleChangeImageCover(await StoreFile(res))
+								       handleChangeImageCover(res)
+								       // const res = await UploadFile(file)
+								       // handleChangeImageCover(await StoreFile(res))
 							       }}
 							       id={"imageFile"} type={"file"}
 							       className={"hidden w-0"}/>
@@ -236,9 +230,9 @@ export default function VideoComponent({
 							       name={"files"}
 							       onChange={async (e) => {
 								       const file = videoInputRef.current.files[0]
-								       const res = await UploadVideoFile(file)
-								       console.log(res)
-								       handleChangeValue(await StoreFile(res))
+								       // handleChangeValue(await StoreFile(res))
+								       const res = await UploadFile(file)
+								       handleChangeValue(res)
 							       }}
 							       id={"videoFile"} type={"file"}
 							       className={"hidden w-0"}/>

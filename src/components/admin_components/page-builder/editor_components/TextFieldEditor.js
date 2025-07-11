@@ -23,12 +23,13 @@ export default function TextFieldEditor({defValue,onChange,id}) {
                 onChange={(e) => checkIsNumber(e.target.value) ? onChangeHandler(id, parseInt(e.target.value) + type) : (e.target.value===null || e.target.value === "") ? onChangeHandler(id, "auto") :  ""}
                 type={"text"}
                 value={value === "auto" ? "auto" : value.replace("px", "").replace("%","")}
-                className={"text-center text-body-large pr-8 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark "}/>
-            {value !== "auto" && <select value={type} onChange={(e) => {
+
+                className={"h-[46px] text-on-surface-light px-4 text-body-large  border border-outline-variant-light  bg-transparent w-full rounded-[8px]"}/>
+            {value !== "auto" && <select style={{appearance: "none"}} value={type} onChange={(e) => {
                 onChangeHandler(id, value.replace(type, "") + e.target.value)
                 setType(e.target.value)
             }}
-                                           className={"px-2 bg-transparent active:outline-0 focus:outline-0 focus-within:outline-0 outline-0 border-l border-outline-variant-dark font-medium text-label-large text-on-surface-variant-dark absolute top-1/2 transform -translate-y-1/2 right-1"}>
+                                           className={"text-on-surface-variant-light rounded-none border-l active-option:border-outline-variant-light border-outline-light appearance-none px-2 bg-transparent outline-0 border-0 font-medium text-label-large  absolute top-1/2 transform -translate-y-1/2 right-1"}>
                 <option value={"px"}>
                     PX
                 </option>
