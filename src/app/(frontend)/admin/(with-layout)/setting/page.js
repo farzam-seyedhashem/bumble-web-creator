@@ -3,15 +3,15 @@ import React from "react";
 // import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
 import PageList from "@admin/admin-panel/pages/PageList";
 // import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import Link from "next/link";
-import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
-import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
-import Icon from "@m3/assets/icons/Icon";
-import Appearance from "@admin/admin-panel/settings/Appearance";
-import WebsiteSetting from "@admin/admin-panel/settings/WebsiteSetting";
-import SEOSetting from "@admin/admin-panel/settings/SEOSetting";
-import WebsiteInfo from "@admin/admin-panel/settings/WebsiteInfo";
-import FontSetting from "@admin/admin-panel/settings/FontSetting";
+// import Link from "next/link";
+// import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
+// import InventoryEditor from "@admin/admin-panel/pages/InventoryEditor";
+// import Icon from "@m3/assets/icons/Icon";
+// import Appearance from "@admin/admin-panel/settings/Appearance";
+// import WebsiteSetting from "@admin/admin-panel/settings/WebsiteSetting";
+// import SEOSetting from "@admin/admin-panel/settings/SEOSetting";
+// import WebsiteInfo from "@admin/admin-panel/settings/WebsiteInfo";
+// import FontSetting from "@admin/admin-panel/settings/FontSetting";
 
 export default async function Page({params}) {
     const {slug} = params

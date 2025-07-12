@@ -214,7 +214,7 @@ async function destroy(req, res) {
 export {
 	index,
 	show,
-	UploadFile,
+	// UploadFile,
 	getById,
 	update,
 	destroy
