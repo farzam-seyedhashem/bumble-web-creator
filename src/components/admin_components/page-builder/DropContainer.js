@@ -134,13 +134,13 @@ export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
 
 
 			if (component.idType === "grid" || component.idType === "container") {
-				component = recursiveUpdateUniqueId(component)
+				component = {...recursiveUpdateUniqueId({...component})}
 			}else{
 				component.uniqueId = UniqueCharOTP(24)
 			}
-			if (component) {
+			// if (component) {
 				handleAddedItems(component, idNumber)
-			}
+			// }
 		} else {
 			const itemu = JSON.parse(item)
 			itemu.uniqueId = UniqueCharOTP(24)

@@ -2,6 +2,8 @@
  * @type {{components: [{group: {groupName: string, groupId: string}, uid: string, idType: string, icon: string, label: string, value: null, type: string, fields: [{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, value: string},null,null,null,null,null,null,null,null,null,null], styles: {mobile: {textAlign: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, fontWeight: string, fontSize: string}, desktop: {textAlign: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, fontWeight: string, fontSize: string}, global: {borderTopWidth: string, borderStyle: string, borderBottomWidth: string, borderLeftWidth: string, borderRightWidth: string, color: string, borderColor: string}}, className: string},{group: {groupName: string, groupId: string}, uid: string, idType: string, value: null, label: string, icon: string, fields: [{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, value: string},null,null,null,null,null,null,null,null,null,null], styles: {mobile: {display: string, justify: string, alignItems: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, fontWeight: string, fontSize: string}, desktop: {display: string, justify: string, alignItems: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, objectFit: string, fontSize: string, width: string}, global: {textAlign: string}}, className: string},{group: {groupName: string, groupId: string}, uid: string, idType: string, value: null, icon: string, label: string, fields: [{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, value: string},{type: string, onDeviceChange: boolean, enum: string[]},null,null,null,null,null], styles: {mobile: {paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, objectFit: string, width: string, height: string}, desktop: {paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, objectFit: string, width: string, height: string}, global: {borderRadius: string}}, className: string},{group: {groupName: string, groupId: string}, uid: string, idType: string, value: null, link: null, icon: string, label: string, fields: [{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},null,null,null,null,null,null,null,null,null,null,null], justify: string, styles: {mobile: {paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, fontWeight: string, height: string, width: string, fontSize: string}, desktop: {paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, fontWeight: string, height: string, width: string, fontSize: string}, global: {borderRadius: string, display: string, displayItems: string, justifyContent: string, alignItems: string}}, className: string},{group: {groupName: string, groupId: string}, uid: string, idType: string, icon: string, label: string, addedItems: *[], isBox: boolean, fields: [{type: string, value: string},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, onDeviceChange: boolean},{type: string, value: string},null,null,null,null,null,null,null,null,null], styles: {mobile: {display: string, justifyContent: string, alignItems: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, width: string, height: string}, desktop: {display: string, justifyContent: string, alignItems: string, marginTop: string, marginBottom: string, marginLeft: string, marginRight: string, paddingTop: string, paddingBottom: string, paddingLeft: string, paddingRight: string, width: string, height: string}, global: {borderRadius: string, backgroundColor: string}}, backgroundImageURL: null, backgroundImageStyle: string, imageOverlay: boolean, imageOverlayColor: string, className: string},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}}
  * All page builder components
  * Todo add these components [website_logo, navigation, mobile_menu, inventory_card, inventory_single_elements]
+ * Todo add component : timeline
+ * Todo add component : priceCalculator
  * Todo add these features [hover_focus_and_other_css_styles, meta_generator, json_ld_generator]
  */
 module.exports = {
@@ -1534,11 +1536,11 @@ module.exports = {
 		// },
 		/**
 		 * Website Content
-		 * Todo Testimonial slider not have arrow so should add and have diffrent arrow button and pagination
+		 * FIXME Testimonial slider not have arrow so should add and have diffrent arrow button and pagination
 		 * component[0] Testimonial Component use for Show Testimonial in pages
-		 * Todo Faq not work correct
+		 * FIXME Faq not work correct
 		 * component[1] FAQ Component use for show faq in pages
-		 * Todo Form component not have field generator and email sender
+		 * FIXME Form component not have field generator and email sender
 		 * component[2] Form Component use for show form in pages
 		 * component[3] Map Component use for add map in pages
 		 */
@@ -1796,15 +1798,15 @@ module.exports = {
 		},
 		/**
 		 * Blog & Post
-		 * Todo use another sort way in Blog Posts
+		 * FIXME use another sort way in Blog Posts
 		 * component[0] List of Blog Posts sort with date added time
-		 * Todo chack blog tags
+		 * FIXME chack blog tags
 		 * component[1] List of all Blog Tags
 		 * component[2] Title of post in post loop or post page
-		 * Todo add trunc to post content and chack correct in html decode
+		 * FIXME add trunc to post content and chack correct in html decode
 		 * component[3] Content of post in post loop or post page
 		 * component[4] Thumbnail of post in post loop or post page
-		 * Todo Check Post tags work correct
+		 * FIXME Check Post tags work correct
 		 * component[5] Tags of post in post loop or post page
 		 * component[6] Date Create of post in post loop or post page
 		 * component[7] Date Create of post in post loop or post page

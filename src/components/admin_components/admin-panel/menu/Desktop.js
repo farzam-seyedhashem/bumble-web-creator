@@ -60,12 +60,12 @@ export default function DesktopMenu() {
             link: "/admin/header",
             id: 1
         },
-        {
-            title: "Website Footer",
-            icon: "page_footer",
-            link: "/admin/footer",
-            id: 1
-        },
+        // {
+        //     title: "Website Footer",
+        //     icon: "page_footer",
+        //     link: "/admin/footer",
+        //     id: 1
+        // },
         // {
         //     title: "Inventory Page",
         //     icon: "directions_car",

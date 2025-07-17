@@ -93,7 +93,7 @@ function Column({
 			)}
 			<div className={"relative"}>
 				<DropContainer key={item.uniqueId + "-g"} idNumber={addedItems.length}
-				               handleAddedItems={handleAddedItemsToItem} firstItem={false}/>
+				               handleAddedItems={handleAddedItemsToItem} firstItem={addedItems.length === 0}/>
 			</div>
 		</div>
 	)
@@ -201,6 +201,7 @@ class Grid extends React.Component {
 		const gapHandler = (value) => {
 			isDesktop ? this.setState({gapDesktop: value}) : this.setState({gapMobile: value});
 			isDesktop ? editItem("gapDesktop", value) : editItem("gapMobile", value)
+
 		}
 		const checkIsNumber = (value) => {
 			return value.match("^\\d+$") && parseInt(value) >= 0
@@ -259,7 +260,7 @@ class Grid extends React.Component {
 			
 			`}</style>
 				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}} className={`p-4 hover:outline hover:outline-primary-light/[50%] w-full ${item.uniqueId}`}>
-					<div style={{justifyContent: "end", gap: item.gapDesktop + "px", ...renderStyles}}
+					<div style={{gap:isDesktop?this.state.gapDesktop+"px":this.state.gapMobile+"px"}}
 					     className={`${baseClass}  ${item.uniqueId}-content`}>
 
 						{this.state.addedItems.map((m, i) =>
@@ -339,7 +340,7 @@ class Grid extends React.Component {
 						{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
 							onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index}
 							field={field}/>)}
-						{editMode === "value" && <div>
+						{editMode === "value" && <div className={"px-4 py-4"}>
 							<div>
 								<label
 									className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>
@@ -350,10 +351,17 @@ class Grid extends React.Component {
                                 </span>
 								</label>
 								<div
-									className={"w-4/12 mt-2 rounded-full ml-auto"}>
+									className={"w-4/12 relative  mt-2 rounded-full ml-auto"}>
 									<input value={isDesktop ? this.state.gapDesktop : this.state.gapMobile}
-									       onChange={(e) => checkIsNumber(e.target.value) ? gapHandler(e.target.value) : (e.target.value === null || e.target.value === "") ? gapHandler(0) : ""}
-									       className={"mt-2 text-center text-body-large px-4 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark"}/>
+									       onChange={(e) => checkIsNumber(e.target.value) ?
+										       gapHandler(e.target.value)
+
+										       : (e.target.value === null || e.target.value === "") ?
+											       gapHandler(e.target.value) : ""}
+									       className={"py-3  text-center text-body-large pl-4 pr-8 bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-full border border-outline-light dark:border-outline-dark"}/>
+									<div className={"absolute right-3 text-on-surface-variant-light dark:text-on-surface-variant-dark text-label-medium top-1/2 transform -translate-y-1/2"}>
+										px
+									</div>
 								</div>
 							</div>
 							<div className={"grid grid-cols-12 gap-4 py-2"}>
