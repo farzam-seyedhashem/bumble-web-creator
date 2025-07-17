@@ -28,7 +28,6 @@ export default function BlogTagsComponent({
 	                                          isDesktop,
 	                                          editItem,
 	                                          item,
-	                                          key
                                           }) {
 
 	const [localItem, setLocalItem] = useState(item)

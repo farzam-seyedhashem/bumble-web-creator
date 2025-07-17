@@ -367,9 +367,9 @@ class Grid extends React.Component {
 										        type={"text"}
 										        value={renderStyles.alignItems}
 										        className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>
-											<option label={"start"} value={"start"}/>
+											<option label={"start"} value={"flex-start"}/>
 											<option label={"center"} value={"center"}/>
-											<option label={"end"} value={"end"}/>
+											<option label={"end"} value={"flex-end"}/>
 										</select>
 									</div>
 								</div>

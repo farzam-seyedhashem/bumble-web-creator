@@ -26,7 +26,6 @@ export default function TestimonialComponents({
 	                                              dragFunc,
 	                                              removeItemFunc,
 	                                              isDesktop,
-
 	                                              item,
 	                                              key
                                               }) {

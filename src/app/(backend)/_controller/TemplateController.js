@@ -133,7 +133,9 @@ async function getById(id) {
 
 async function getBySlug(slug) {
     return await Template.findOne({_id: slug})
-
+}
+async function getByTemplateId(templId) {
+    return await Template.findOne({templateId: templId})
 }
 async function getTemplateById(slug) {
     return await Template.findOne({_id: slug})
@@ -165,6 +167,7 @@ async function destroy(id) {
 }
 
 export {
+    getByTemplateId,
     getTemplates,
     getTemplateById,
     getBySlug,

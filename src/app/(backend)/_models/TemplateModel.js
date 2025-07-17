@@ -11,6 +11,10 @@ let TemplateSchema = new Schema({
         type: String,
         default: 'page',
     },
+    templateId:{
+        type: String,
+    },
+
 
     content: {
         type: String,

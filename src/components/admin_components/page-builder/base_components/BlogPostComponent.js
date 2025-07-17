@@ -1,4 +1,4 @@
-'use client';
+'use strict';
 import React, {useEffect, useState, Fragment} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";
@@ -14,12 +14,15 @@ import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
 import useSWR from 'swr'
 import {Swiper, SwiperSlide} from "swiper/react";
 import PostCard from "@admin/admin-panel/post-card/PostCard";
+import WebComponentGenerator from "@website/WebComponentGenerator";
+import DropContainer from "@page_builder/DropContainer";
 
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
-export default function TestimonialComponents({
+export default function BlogPostComponent({
                                                   fields,
+                                              siteSetting,
                                                   editDialogOpenComponentId,
                                                   setEditDialogOpenComponentId,
                                                   color,
@@ -36,7 +39,7 @@ export default function TestimonialComponents({
         fetcher
     )
     const {data:postCardData, error:postCardErr, isLoading:postCardIsLoading, mutate:mutatePostCard} = useSWR(
-        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/post-card`,
+        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/template/template-id/post-card`,
         fetcher
     )
     // useEffect(() => {
@@ -58,7 +61,7 @@ export default function TestimonialComponents({
         localStorage.setItem("clipboard", JSON.stringify(item))
     }
     if (isLoading || postCardIsLoading) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
+    if (error || postCardErr) return <div>Error: {error.message}</div>
     return (
 
         <>
@@ -70,16 +73,96 @@ export default function TestimonialComponents({
 			`}</style>
             <div className={`${item.uniqueId} hover:outline hover:outline-primary-light/[50%]  rounded-[4px] relative `}>
                 <div className={"w-full"}>
-                    {localItem.type === 1 && <Swiper className={" w-full"}>
-                        {data.data.map((item) => <SwiperSlide key={item._id}>
-                            <PostCard item={item} postCard={postCardData?.data}/>
-                        </SwiperSlide>)}
-                    </Swiper>}
-                    {localItem.type === 2 && <div
+                    {/*{localItem.type === 1 && <Swiper className={" w-full"}>*/}
+                    {/*    {data.data.map((item) => <SwiperSlide key={item._id}>*/}
+                    {/*        /!*<PostCard item={item} postCard={postCardData?.data}/>*!/*/}
+
+                    {/*    </SwiperSlide>)}*/}
+                    {/*</Swiper>}*/}
+                    { <div
                         className={`${isDesktop ? `grid-cols-${localItem.desktopColumn}` : `grid-cols-${localItem.mobileColumn}`} grid  gap-4`}>
-                        {data.data.map((item) => <SwiperSlide key={item._id}>
-                            <PostCard item={item} postCard={postCardData?.data}/>
-                        </SwiperSlide>)}
+                        <style>
+                            {`
+                   ${JSON.parse(postCardData.content).map((item, index) => {
+                                let desktopStyles = []
+                                let mobileStyles = []
+                                let mobileAlignItems="flex-start"
+                                let mobileJustifyContent="flex-start"
+                                let mobileDisplay="block"
+                                let desktopAlignItems="flex-start"
+                                let desktopJustifyContent="flex-start"
+                                let desktopDisplay="block"
+                                if (item.styles) {
+                                    if (item.styles?.mobile?.display) {
+                                        const {
+                                            display: mobileDisplayx,
+                                            alignItems: mobileAlignItemsx,
+                                            justifyContent: mobileJustifyContentx,
+                                            ...other
+                                        } = item.styles.mobile
+                                        mobileAlignItems = mobileAlignItemsx;
+                                        mobileJustifyContent = mobileJustifyContentx;
+                                        mobileDisplay = mobileDisplayx;
+                                        mobileStyles = other
+                                    }else{
+
+                                        mobileStyles = item.styles.mobile
+                                    }
+                                    if (item.styles.desktop?.display) {
+                                        const {
+                                            display: desktopDisplayx,
+                                            alignItems: desktopAlignItemsx,
+                                            justifyContent: desktopJustifyContentx,
+                                            ...other
+                                        } = item.styles.desktop
+                                        desktopStyles=other
+                                        desktopAlignItems = desktopAlignItemsx;
+                                        desktopJustifyContent = desktopJustifyContentx;
+                                        desktopDisplay = desktopDisplayx;
+                                    }else{
+                                        desktopStyles = item.styles.desktop
+                                    }
+
+                                    // const mobileStyles = item.styles.mobile
+                                    // const desktopStyles = item.styles.desktop
+                                    const globalStyles = item.styles.global
+                                    const mc = StyleToClass(desktopStyles, true, item.uniqueId)
+                                    const dc = StyleToClass(mobileStyles, false, item.uniqueId)
+                                    const gc = StyleToClass(globalStyles, false, item.uniqueId)
+                                    return gc + dc + mc + `.${item.uniqueId}-content{
+				align-items:${mobileAlignItems};
+				justify-content:${mobileJustifyContent};
+				display:${mobileDisplay};
+				}
+				@media only screen and (min-width: 840px) {
+				.${item.uniqueId}-content{
+				align-items:${desktopAlignItems};
+				justify-content:${desktopJustifyContent};
+				display:${desktopDisplay};
+				}
+				}`
+                                }
+                            }).join("")}
+				
+                `}
+                        </style>
+                        {data.data.map((post) => <div key={post._id}>
+                            {postCardData.content !== null && JSON.parse(postCardData.content).map((item, i) =>
+                                <div key={"webcomponent-blog"+item.uniqueId+postCardData.content.uniqueId+i} className={"relative  group"}>
+                                    {/*<ComponentGenerator lastPost={*/}
+                                    {/*    {data:[post]}*/}
+                                    {/*}*/}
+                                    {/*                    editDialogOpenComponentId={editDialogOpenComponentId}*/}
+                                    {/*                    setEditDialogOpenComponentId={setEditDialogOpenComponentId}*/}
+                                    {/*                    siteSetting={siteSetting} dragFunc={()=>{}}*/}
+                                    {/*                    removeItemFunc={()=>{}} isDesktop={isDesktop}*/}
+                                    {/*                    editItem={editItem} idNumber={i}*/}
+                                    {/*                    item={item}/>*/}
+                                    <WebComponentGenerator  post={post} slug={'mmmm'} item={item}/>
+
+                                </div>
+                            )}
+                        </div>)}
                     </div>}
                 </div>
                 <div

@@ -5,12 +5,14 @@ import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import React from "react";
 import {getPageBySlug} from "@controller/PageController";
+import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function PostPage({params}) {
 
 	const data = JSON.parse(await getPageBySlug("post"))
 	const slug = params.slug
 	const postData = JSON.stringify(await getPostBySlug(slug))
+	const siteSetting = JSON.parse(await getSiteSetting());
 
 	return (
 		<div>
@@ -84,7 +86,7 @@ export default async function PostPage({params}) {
 				</style>
 
 				{data.content !== null && JSON.parse(data.content).map((item, index) =>
-					<WebComponentGenerator post={JSON.parse(postData)} key={index} item={item}/>
+					<WebComponentGenerator siteSetting={siteSetting} post={JSON.parse(postData)} key={index} item={item}/>
 				)}
 			</div>
 		</div>

@@ -63,6 +63,7 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
 							</div>
 						</Link>
 					)}
+
 				</div>
 			</div>}
 			{menuSetting.showSearchBarFull ?
@@ -95,7 +96,10 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
 							className={"left-4 mr-6 appbar-primary-icon"}>
 							menu
 						</Icon>}
-					<div className={"flex-1"}>
+					<div className={" h-[40px] w-[80px] relative"}>
+						{siteSetting?.logo?.name && <Image  alt={"logo"} layout={"fill"} objectFit={"contain"}
+						                                   src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + siteSetting.logo.name}/>}
+
 						{/*<div className={"h-[24px] relative "}>*/}
 						{/*    <Image quality={100} width={120} height={24} objectFit={"contain"}  src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+siteSetting.logo.name} alt={"logo"}/>*/}
 

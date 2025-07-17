@@ -1,7 +1,7 @@
 'use client'
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
-export default function Typography({item, key, Style}) {
+export default function Typography({item, Style}) {
     const Component = item.type
     // const desktopStyles = item.desktopStyles;
     // console.log(item)

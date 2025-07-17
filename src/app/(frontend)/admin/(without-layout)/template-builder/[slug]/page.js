@@ -1,6 +1,7 @@
 import PageBuilder from "@page_builder/PageBuilder";
 import {getSiteSetting} from "@controller/SiteSettingController";
 import {getTemplateById} from "@controller/TemplateController";
+import {getPosts} from "@controller/PostController";
 // async function getData(slug) {
 //     'use server'
 //
@@ -15,9 +16,11 @@ import {getTemplateById} from "@controller/TemplateController";
 
 
 export default async function page({params}) {
-    const data = await getTemplateById(params.slug)
-    const siteSetting = JSON.parse(await getSiteSetting())
+    const data = JSON.stringify(await getTemplateById(params.slug))
+    const siteSetting = await getSiteSetting()
+    let lastPost =JSON.stringify(await getPosts(1,1))
+
     return (
-        <PageBuilder type={"template"} siteSetting={siteSetting} slug={params.slug} data={data}/>
+        <PageBuilder lastPost={JSON.parse(lastPost)} type={"template"} siteSetting={JSON.parse(siteSetting)} slug={params.slug} data={JSON.parse(data)}/>
     )
 }

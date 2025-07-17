@@ -3,6 +3,7 @@ import WebComponentGenerator from "@website/WebComponentGenerator";
 import {StyleToClass} from "@/_helper/StyleToClass";
 import {getPageBySlug} from "@controller/PageController";
 import {notFound} from "next/navigation";
+import {getSiteSetting} from "@controller/SiteSettingController";
 
 // async function getData(slug) {
 //     'use server'
@@ -23,6 +24,7 @@ export default async function Page({params}) {
 	const data = JSON.parse(await getPageBySlug(slug))
 	if (!data) notFound();
 	// const Style = await import(`@/app/(styles)/${slug}.module.css`)
+	const siteSetting = JSON.parse(await getSiteSetting());
 
 	return (
 		<div>
@@ -94,7 +96,7 @@ export default async function Page({params}) {
                 `}
 			</style>
 			{JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
+				<WebComponentGenerator siteSetting={siteSetting} slug={'mmmm'} key={index} item={item}/>
 			)}
 		</div>
 	)

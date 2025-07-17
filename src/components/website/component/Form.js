@@ -1,4 +1,4 @@
-'use client';
+
 import React, {useEffect, useState, Fragment} from "react";
 import TextField from "@m3/text_fields/TextField";
 import IconButton from "@m3/icon_buttons/IconButton";

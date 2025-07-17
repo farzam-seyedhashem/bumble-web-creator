@@ -1,6 +1,6 @@
 'use client'
 import React, {useContext, useEffect, useRef, useState} from "react";
-import Data from '../../../Components.json'
+import Data from '../../../Components.js'
 // import {v4 as uuidv4} from 'uuid';
 import {UniqueCharOTP} from "unique-string-generator";
 // import VanillaContextMenu from 'vanilla-context-menu';
@@ -57,7 +57,7 @@ function deepFreeze(object) {
 }
 
 export default function DropContainer({handleAddedItems, firstItem, idNumber}) {
-	// const file = await fs.readFile(process.cwd() + '/app/Components.json', 'utf8');
+	// const file = await fs.readFile(process.cwd() + '/app/Components.js', 'utf8');
 	// const Data = JSON.parse(file);
 	const [onDrag, setOnDrag] = React.useState(false)
 	const [onDrop, setOnDrop] = React.useState(false)

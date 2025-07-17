@@ -1,6 +1,6 @@
 
 
-export default async function PostTitle({post, item}) {
+export default  function PostTitle({post, item}) {
 	const Component = item.type
 	console.log('ffff',post)
 	return (

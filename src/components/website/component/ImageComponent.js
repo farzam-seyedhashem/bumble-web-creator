@@ -1,7 +1,7 @@
-'use server';
+
 import Image from "next/image";
 
-export default async function ImageComponent({item}) {
+export default function ImageComponent({item}) {
    
     return (
         <>

@@ -1,10 +1,10 @@
-'use server'
+'use client'
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import {StyleToClass} from "@/_helper/StyleToClass";
 import Image from 'next/image'
 
 
-export default async function Container({item, post}) {
+export default  function Container({siteSetting,item, post}) {
 
 	return (
 		<>
@@ -88,7 +88,7 @@ export default async function Container({item, post}) {
 				{/*"imageOverlayColor": "#000",*/}
 				<div className={`${item.uniqueId}-content ${item.isBox ? "w-full " : "container mx-auto"} z-[100]`}>
 					{item?.addedItems.map((l, i) =>
-						<WebComponentGenerator post={post? post : {}}  key={item.uniqueId+"co"} item={l}/>
+						<WebComponentGenerator siteSetting={siteSetting} post={post? post : {}}  key={item.uniqueId+i+"cont"} item={l}/>
 					)}
 				</div>
 

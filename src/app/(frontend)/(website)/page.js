@@ -1,9 +1,12 @@
+'use server'
 import {StyleToClass} from "@/_helper/StyleToClass";
 import WebComponentGenerator from "@website/WebComponentGenerator";
 import {getPageBySlug} from "@controller/PageController";
+import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function Page() {
 	const data = JSON.parse(await getPageBySlug("home"))
+	const siteSetting = JSON.parse(await getSiteSetting());
 
 	return (
 		<div>
@@ -75,7 +78,7 @@ export default async function Page() {
 			</style>
 
 			{data.content !== null && JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator key={index} item={item}/>
+				<WebComponentGenerator siteSetting={siteSetting} key={index} item={item}/>
 			)}
 		</div>
 	)

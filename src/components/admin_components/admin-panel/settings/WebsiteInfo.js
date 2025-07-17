@@ -100,7 +100,9 @@ export default function WebsiteInfo({data}) {
 						<div className={"flex items-center space-x-4"}>
 							<div
 								className="flex justify-center items-center relative h-[150px] w-[150px] rounded-[12px] bg-surface-container-highest-light dark:bg-surface-container-highest-dark">
-								{pageInfo.logo?<Image layout={"fixed"} width={1080} height={1080} src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+pageInfo.logo.name}/>:<Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
+								{pageInfo.logo?
+									<Image alt={"logo"} layout={"fixed"} width={1080} height={1080} src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+pageInfo.logo.name}/>
+									: <Icon className={"text-on-surface-variant-light dark:text-on-surface-variant-dark"}
 								       size={36}>
 									image
 								</Icon>}
@@ -110,9 +112,11 @@ export default function WebsiteInfo({data}) {
 								       name={"files"}
 								       onChange={async (e) => {
 									       const file = logoInputRef.current.files[0]
-									       const res = await UploadFile(file)
-									       const saveFile = JSON.parse(res)
-									       handleChangeWebsiteInfo('logo',saveFile)
+									       const res = JSON.parse(await UploadFile(file))
+									       // const saveFile = JSON.parse(res)
+									       // console.log(process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+res.name)
+									       console.log(res)
+									       handleChangeWebsiteInfo('logo',res)
 								       }}
 								       id={"logo-upload-input"} type={"file"}
 								       className={"hidden w-0"}/>

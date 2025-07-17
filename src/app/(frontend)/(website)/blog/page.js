@@ -5,10 +5,12 @@ import React from "react";
 import {getPageBySlug} from "@controller/PageController";
 import {getPosts} from "@controller/PostController";
 import { unstable_noStore as noStore } from 'next/cache';
+import {getSiteSetting} from "@controller/SiteSettingController";
 
 export default async function Blog() {
 	noStore()
 	const data = JSON.parse(await getPageBySlug("blog"))
+	const siteSetting = JSON.parse(await getSiteSetting());
 
 	return (
 		<div>
@@ -80,7 +82,7 @@ export default async function Blog() {
 			</style>
 
 			{data.content !== null && JSON.parse(data.content).map((item, index) =>
-				<WebComponentGenerator slug={'mmmm'} key={index} item={item}/>
+				<WebComponentGenerator siteSetting={siteSetting} slug={'mmmm'} key={index} item={item}/>
 			)}
 		</div>
 	)

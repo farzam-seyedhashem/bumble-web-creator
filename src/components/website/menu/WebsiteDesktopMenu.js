@@ -45,10 +45,11 @@ export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
             <div
                 className={"fixed appbarStyle z-[999] w-full border-outline-variant-light dark:border-outline-variant-dark items-center px-6 flex h-[64px] "}>
 
-                {/*{!menuSetting.logoCenter && <div*/}
-                {/*    className={"mr-4 h-[40px] w-[170px] relative font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>*/}
-                {/*   <Image layout={"fill"} objectFit={"contain"}  src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL+siteSetting.logo.name}/>*/}
-                {/*</div>}*/}
+                <div
+                    className={"mr-4 h-[40px] w-[170px] relative font-black text-[24px] text-on-surface-light dark:text-on-surface-dark"}>
+                    {siteSetting?.logo?.name && <Image alt={"logo"} layout={"fill"} objectFit={"contain"}
+                                                       src={process.env.NEXT_PUBLIC_FILE_UPLOAD_STORAGE_URL + siteSetting.logo.name}/>}
+                </div>
                 {menuSetting.menuRight ? menuSetting.isSearchbarInput ?
                     <div className={`${!menuSetting.logoCenter && "ml-2"} mr-auto 400px`}>
                         <div className={"relative w-full"}>

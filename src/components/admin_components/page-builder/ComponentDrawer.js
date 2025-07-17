@@ -4,12 +4,15 @@ import {useState, Fragment, useRef, useEffect} from "react";
 import Icon from "@m3/assets/icons/Icon";
 import IconButton from "@m3/icon_buttons/IconButton";
 import Button from "@m3/buttons/Button";
-import Components from "@/Components.json";
+import Components from "@/Components.js";
 import {rgbaObjToRgba} from "@/_helper/rgbaObjtoRgba";
 
 function ItemView({item, viewMode,dragFunc,onDragEnd}) {
 	return (
-		<div onDragEnd={()=>{
+		<div onDragLeave={()=>{
+			document.getElementById("search-component-dialog").classList.add('offscreen');
+
+		}} onDragEnd={()=>{
 			onDragEnd()
 			// document.getElementById("search-component-dialog").style.visibility = "visible"
 		}} id={item.uid} onDragStart={(e) => {
@@ -74,10 +77,17 @@ export default function ComponentDrawer({dragFunc}) {
 	const searchComponentDialogRef = useRef(null)
 	const dragFuncHandler = (e) => {
 		dragFunc(e)
-		// document.getElementById("search-component-dialog").style.visibility = "hidden"
+		const dragGhost = e.target.cloneNode(true); // کپی از عنصر اصلی
+		dragGhost.style.position = 'absolute';
+		dragGhost.style.left = '-1000px'; // منتقل کردن به خارج از دید
+		e.dataTransfer.setDragImage(dragGhost, 24, 24); // تنظیم تصویر شبح
+		document.body.appendChild(dragGhost);
+		setTimeout(() => {
+			dragGhost.remove();
+		}, 0);
 	}
 	const onDragEnd = () =>{
-		setIsSearchMenuOpen(false)
+		document.getElementById("search-component-dialog").classList.remove('offscreen');
 		setSearchText("")
 	}
 

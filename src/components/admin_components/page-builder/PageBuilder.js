@@ -148,7 +148,8 @@ export default function PageBuilder({lastPost, type, siteSetting, data, slug}) {
 					</Link>
 					<h1
 						className={"flex-1 font-medium text-title-large text-on-surface-light dark:text-on-surface-dark"}>
-						{data.title + " Page"}
+						{/*{data.title + }*/}
+						{`${data.title} ${type==="template"?"Template":" Page"}`}
 					</h1>
 				</div>
 
@@ -279,8 +280,9 @@ export default function PageBuilder({lastPost, type, siteSetting, data, slug}) {
 				</div>
 			</div>
 			}
+			{console.log(data.type)}
 			<div
-				className={`  py-4 transition-all duration-300 mx-auto ease-in-out w-full ${device === 0 ? "md:max-w-[490px] w-[490px] min-w-[490px]" : "md:w-[calc(100%)]"} `}>
+				className={`  py-4 transition-all duration-300  ease-in-out w-full ${device === 0 ? "md:max-w-[490px] w-[490px] min-w-[490px] mx-auto" : ` ${data.type==="loop"?"md:max-w-[600px] w-[600px] min-w-[600px]":"md:w-[calc(100%)] mx-auto"}`} `}>
 				<div
 					className={"z-10 rounded-[16px] min-h-screen bg-surface-light"}>
 					{addedItems.map((item, i) =>

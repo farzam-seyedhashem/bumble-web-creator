@@ -1,9 +1,9 @@
-'use server'
+
 import React from 'react'
 import WebComponentGenerator from "@website//WebComponentGenerator";
 import {StyleToClass} from "@/_helper/StyleToClass";
 
-function Column({columnSizeDesktop, columnSizeMobile, item, Style,post}) {
+function Column({columnSizeDesktop, columnSizeMobile, item, Style,post,siteSetting}) {
 
 	return (
 		<>
@@ -25,7 +25,7 @@ function Column({columnSizeDesktop, columnSizeMobile, item, Style,post}) {
 			<div key={item.uniqueId + "-gridm"}
 			     className={`${item.uniqueId} z-[100] md:col-span-${columnSizeDesktop} col-span-${columnSizeMobile}`}>
 				{item.addedItems.map((l, i) =>
-					<WebComponentGenerator post={post || {}} Style={Style} key={i} item={l}/>
+					<WebComponentGenerator siteSetting={siteSetting} post={post || {}} Style={Style} key={i} item={l}/>
 				)}
 
 			</div>
@@ -33,7 +33,7 @@ function Column({columnSizeDesktop, columnSizeMobile, item, Style,post}) {
 	)
 }
 
-function Grid({item, Style,post}) {
+function Grid({item, Style,post,siteSetting}) {
 	// const baseClass = `  w-full`
 	return (
 		<>
@@ -104,7 +104,7 @@ function Grid({item, Style,post}) {
 			</style>
 			<div style={{alignItems: item.styles.alignItems, gap: item.gapDesktop + "px"}} className={`${"grid grid-cols-12 w-full"} ${item.uniqueId}`}>
 				{item.addedItems.map((m, i) =>
-					(i!==item.addedItems.length - 1) && <Column post={post||{}} Style={Style} columnSizeDesktop={item.columnSizeDesktop[i]}
+					(i!==item.addedItems.length - 1) && <Column siteSetting={siteSetting} post={post||{}} Style={Style} columnSizeDesktop={item.columnSizeDesktop[i]}
 					        columnSizeMobile={item.columnSizeMobile[i]} id={item.uniqueId}
 					        key={item.uniqueId + i + "-grid"}
 					        idNumber={i}

@@ -28,7 +28,6 @@ export default function TestimonialComponents({
 	                                              isDesktop,
 	                                              editItem,
 	                                              item,
-	                                              key
                                               }) {
 	const slideRef = useRef(item.uniqueId);
 

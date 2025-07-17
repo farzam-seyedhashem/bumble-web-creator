@@ -20,11 +20,13 @@ const styleCss = [
     {style:"display",cssStyle:"display"},
     {style:"alignItems",cssStyle:"align-items"},
     {style:"justifyContent",cssStyle:"justify-content"},
-    {style:"borderLeft",cssStyle:"border-left"},
-    {style:"borderRight",cssStyle:"border-right"},
-    {style:"borderBottom",cssStyle:"border-bottom"},
-    {style:"borderTop",cssStyle:"border-top"},
+    {style:"borderLeftWidth",cssStyle:"border-left-width"},
+    {style:"borderRightWidth",cssStyle:"border-right-width"},
+    {style:"borderBottomWidth",cssStyle:"border-bottom-width"},
+    {style:"borderTopWidth",cssStyle:"border-top-width"},
+    {style:"borderTop",cssStyle:"border-top-width"},
     {style:"borderColor",cssStyle:"border-color"},
+    {style:"borderStyle",cssStyle:"border-style"},
 ]
 export function StyleToClass(style,isLargeDevice,componentId) {
     if(typeof style === 'undefined'){
