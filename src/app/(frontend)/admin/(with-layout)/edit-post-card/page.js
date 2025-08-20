@@ -12,7 +12,6 @@ export default async function Page({params}) {
 	const siteSetting = JSON.parse(await getSiteSetting())
 
 	// const templates = await getTemplates();
-	// const menuSetting = await getMenu();
 	const postCard = await getPostCard();
 	// const footer = await getFooter();
 	const tabs = [

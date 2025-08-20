@@ -68,7 +68,6 @@ export default async function Page({params}) {
     // const data = await getData(slug);
     // const siteSetting = await getSiteSettingData();
     // const templates = await getTemplates();
-    // const menuSetting = await getMenu();
     // const inventoryPage = await getInventoryPage();
     // const footer = await getFooter();
     const tabs = [

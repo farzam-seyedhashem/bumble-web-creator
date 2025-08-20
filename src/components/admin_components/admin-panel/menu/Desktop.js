@@ -54,10 +54,16 @@ export default function DesktopMenu() {
             link: "/admin/layouts",
             id: 1
         },
+        // {
+        //     title: "Website Header",
+        //     icon: "page_header",
+        //     link: "/admin/header",
+        //     id: 1
+        // },
         {
-            title: "Website Header",
+            title: "Menus",
             icon: "page_header",
-            link: "/admin/header",
+            link: "/admin/menu",
             id: 1
         },
         // {

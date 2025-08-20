@@ -10,13 +10,17 @@ import Switch from "@m3/switch/Switch";
 import {Tooltip} from "@m3/tooltips/Tooltip";
 
 export default function StyleFieldGenerator({field, onChange, isDesktop, styles}) {
-	const [style, setStyle] = useState(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"])
+	const [pseudo,setPseudo]=useState('base')
+
+	const [style, setStyle] = useState(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"][pseudo])
+
 	useEffect(() => {
-		setStyle(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"])
+		setStyle(styles[field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global"]['base'])
 	}, [styles])
 	const onChangeValue = (name, value) => {
-		onChange(name, value, field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global")
+		onChange(name, value, field.onDeviceChange ? isDesktop ? "desktop" : "mobile" : "global",pseudo)
 	}
+
 
 
 	return (

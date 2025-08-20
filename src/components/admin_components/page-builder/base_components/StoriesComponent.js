@@ -26,9 +26,13 @@ export default function TextComponents({
 		setValue(value)
 		editItem("value", value, item.uniqueId)
 	}
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)

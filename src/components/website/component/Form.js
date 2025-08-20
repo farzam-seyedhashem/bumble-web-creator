@@ -48,9 +48,13 @@ export default function Form({
 	const [editMode, setEditMode] = useState('value')
 	let [styles, setStyles] = useState(item?.styles)
 
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)

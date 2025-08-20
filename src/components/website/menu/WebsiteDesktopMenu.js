@@ -6,7 +6,7 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 
 import Image from 'next/image'
-export default function WebsiteDesktopMenu({siteSetting, menuSetting}) {
+export default function WebsiteDesktopMenu({siteSetting,menuSetting}) {
     const {color} = siteSetting;
     const desktopColors = menuSetting.desktopMenuColors
     const pathname = usePathname()

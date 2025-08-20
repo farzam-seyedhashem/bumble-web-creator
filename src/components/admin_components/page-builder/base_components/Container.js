@@ -33,13 +33,20 @@ export default function Container({
 	const [imageOverlayColor, setImageOverlayColor] = useState(item?.imageOverlayColor)
 	const [editMode, setEditMode] = useState("value");
 	let [isBox, setIsBox] = useState(item?.isBox)
-	let onChangeStyles = (name, value, type) => {
+	let onChangeStyles = (name, value, type, pseudo, fieldId) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesField = {...nStyles[fieldId]}
+		let nStylesType = {...nStylesField[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStylesField[type] = nStylesType
+		nStyles[fieldId] = nStylesField
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
 	}
+
 	useEffect(() => {
 		console.log(item, item.uniqueId)
 	}, [])
@@ -165,7 +172,7 @@ export default function Container({
 						</button>
 					</div>
 				</div>
-				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+				<div style={isDesktop ? {...styles.basic.global.base, ...styles.basic.desktop.base} : {...styles.basic.mobile.base, ...styles.basic.global.base}}
 				     className={`${item?.className}    relative ${isBox ? "" : "container mx-auto"}`}>
 					{/*{item.uniqueId}*/}
 					{imageOverlay &&
@@ -177,15 +184,7 @@ export default function Container({
 
 					{/*</div>*/}
 					<div className={`${item.uniqueId + "-content"} w-full py-3 z-20`}>
-						<div style={isDesktop ? {
-							display: styles.desktop?.display || "block",
-							alignItems: styles.desktop?.alignItems || "flex-start",
-							justifyContent: styles.desktop?.justifyContent || "flex-start"
-						} : {
-							display: styles.mobile?.display || "block",
-							alignItems: styles.mobile?.alignItems || "flex-start",
-							justifyContent: styles.mobile?.justifyContent || "flex-start"
-						}}>
+						<div>
 							{addedItems.map((l, i) =>
 								<div key={item.uniqueId + i + "-container"} className={"relative "}>
 									<DropContainer idNumber={i} selected={addedItems}
@@ -220,20 +219,26 @@ export default function Container({
 						{editMode === "value" && <div
 							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 					</div>
-					<div onClick={() => setEditMode("style")}
-					     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
-						<Icon className={"mr-2"}>
-							style
-						</Icon>
-						Style
-						{editMode === "style" && <div
-							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+					{fields.map((fieldsCat, i) =>
+						<div key={i} onClick={() => {
+							setEditMode(fieldsCat.id)
+						}}
+						     className={`${editMode === fieldsCat.id ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+							{fieldsCat.name}
+							{editMode === fieldsCat.id && <div
+								className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 
-					</div>
+						</div>
+					)}
 				</div>
 
-				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
-					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index} field={field}/>)}
+				{fields.map((fieldCat, i) =>
+					(editMode === fieldCat.id && fieldCat.fields) && fieldCat.fields.map((field, index) =>
+						<StyleFieldGenerator
+							onChange={(name, value, type, pseudo) => onChangeStyles(name, value, type, pseudo, fieldCat.id)}
+							isDesktop={isDesktop} styles={styles[fieldCat.id]}
+							key={item.uniqueId + fieldCat.id + field.type + "style-field-generator" + index} field={field}/>)
+				)}
 				{editMode === "value" && <div>
 					<h3 className={"px-4 pt-3 pb-2 mt-6  border-outline-variant-light dark:border-outline-variant-dark w-full text-title-medium font-bold text-on-surface-light dark:text-on-surface-dark "}>
 						Container Style

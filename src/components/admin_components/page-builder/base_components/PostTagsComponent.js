@@ -36,9 +36,13 @@ export default function PostTagsComponent({
 	// 	fetcher
 	// )
 	let [styles, setStyles] = useState(item?.styles)
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -75,7 +79,7 @@ export default function PostTagsComponent({
 			<div className={`${item.uniqueId} hover:outline hover:outline-primary-light/[50%]  rounded-[4px] relative`}>
 				<div className={"w-full"}>
 					{lastPost?.data[0].tags.map((item, index) =>
-						<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}} key={index} className={`inline-flex items-center justify-center`}>
+						<div style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}} key={index} className={`inline-flex items-center justify-center`}>
 							{item.title}
 						</div>
 					)}

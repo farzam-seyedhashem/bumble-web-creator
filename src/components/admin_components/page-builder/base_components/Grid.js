@@ -9,6 +9,7 @@ import TextField from "@m3/text_fields/TextField";
 import ColorPicker from "@m3/color_pricker/ColorPicker";
 import TextFieldEditor from "@page_builder/editor_components/TextFieldEditor";
 import StyleFieldGenerator from "@page_builder/StyleFieldGenerator";
+import {components} from "@/Components";
 
 function Column({
 	                editDialogOpenComponentId,
@@ -113,8 +114,6 @@ class Grid extends React.Component {
 			isSelected: false,
 			editMode:"value",
 			styles:this.props.item.styles
-
-
 		}
 	}
 
@@ -135,28 +134,7 @@ class Grid extends React.Component {
 		columnSizesDesktop.push(6);
 		columnSizesMobile.push(12);
 		if (items[items.length - 1]?.addedItems?.length !== 0) {
-			items = [...items, {
-				"addedItems": [],
-				"widthNumber": 1,
-				"styles": {
-					"general": {
-						"padding": [
-							0,
-							0,
-							0,
-							0
-						],
-						"height": "auto",
-						"borderRadius": "0"
-					},
-					"light": {
-						"backgroundColor": "transparent"
-					},
-					"dark": {
-						"backgroundColor": "transparent"
-					}
-				}
-			}]
+			items = [...items, ...components.find(item=>item.idType === "grid").addedItems]
 		}
 		this.setState({addedItems: items})
 		this.setState({columnSizeDesktop: columnSizesDesktop})
@@ -235,13 +213,15 @@ class Grid extends React.Component {
 		const setEditMode = (v) => {
 			this.setState({editMode: v})
 		}
-		let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type, pseudo, fieldId) => {
 			let nStyles = {...styles}
-			if (!nStyles[type]){
-				nStyles[type] = {}
-			}
-			nStyles[type] = {...nStyles[type], [name]: value}
-			console.log(nStyles)
+			let nStylesField = {...nStyles[fieldId]}
+			let nStylesType = {...nStylesField[type]}
+			nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+			nStylesField[type] = nStylesType
+			nStyles[fieldId] = nStylesField
+			editItem("styles", nStyles, item.uniqueId)
+			setStyles(nStyles)
 			editItem("styles", nStyles, item.uniqueId)
 			setStyles(nStyles)
 			console.log("styles", nStyles)
@@ -259,7 +239,7 @@ class Grid extends React.Component {
 				}
 			
 			`}</style>
-				<div style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}} className={`p-4 hover:outline hover:outline-primary-light/[50%] w-full ${item.uniqueId}`}>
+				<div  style={isDesktop ? {...styles.basic.global.base, ...styles.basic.desktop.base} : {...styles.basic.mobile.base, ...styles.basic.global.base}} className={`p-4 hover:outline hover:outline-primary-light/[50%] w-full ${item.uniqueId}`}>
 					<div style={{gap:isDesktop?this.state.gapDesktop+"px":this.state.gapMobile+"px"}}
 					     className={`${baseClass}  ${item.uniqueId}-content`}>
 
@@ -325,21 +305,26 @@ class Grid extends React.Component {
 								{editMode === "value" && <div
 									className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 							</div>
-							<div onClick={() => setEditMode("style")}
-							     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
-								<Icon className={"mr-2"}>
-									style
-								</Icon>
-								Style
-								{editMode === "style" && <div
-									className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+							{fields.map((fieldsCat, i) =>
+								<div key={i} onClick={() => {
+									setEditMode(fieldsCat.id)
+								}}
+								     className={`${editMode === fieldsCat.id ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+									{fieldsCat.name}
+									{editMode === fieldsCat.id && <div
+										className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 
-							</div>
+								</div>
+							)}
 						</div>
 
-						{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
-							onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={index}
-							field={field}/>)}
+						{fields.map((fieldCat, i) =>
+							(editMode === fieldCat.id && fieldCat.fields) && fieldCat.fields.map((field, index) =>
+								<StyleFieldGenerator
+									onChange={(name, value, type, pseudo) => onChangeStyles(name, value, type, pseudo, fieldCat.id)}
+									isDesktop={isDesktop} styles={styles[fieldCat.id]}
+									key={item.uniqueId + fieldCat.id + field.type + "style-field-generator" + index} field={field}/>)
+						)}
 						{editMode === "value" && <div className={"px-4 py-4"}>
 							<div>
 								<label

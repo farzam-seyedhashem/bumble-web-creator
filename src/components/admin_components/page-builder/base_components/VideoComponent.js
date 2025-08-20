@@ -79,10 +79,10 @@ export default function VideoComponent({
 						<>
 							{((imageCover && videoPlaying) || (!imageCover && !videoPlaying)) &&
 								<video controls autoPlay ref={videoPlayerRef}
-								       style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+								       style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}
 								       src={value}/>}
 							{(imageCover && !videoPlaying) && <> <img className={"z-[1]"}
-							                                          style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+							                                          style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}
 							                                          onClick={() => {
 								                                          setIsSelected(true)
 

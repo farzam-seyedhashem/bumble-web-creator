@@ -13,7 +13,7 @@ import WebComponentGenerator from "@website/WebComponentGenerator";
 
 export default async function layout({children}) {
 	const siteSetting = JSON.parse(await getSiteSetting());
-	const menuSetting = JSON.stringify(await getMenu())
+
 	const footer = await getByTemplateId('footer')
 	const footerSetting = await getFooter()
 	return (
@@ -29,9 +29,9 @@ export default async function layout({children}) {
 
 			<div className={" page-style min-h-screen"}>
 
-				<WebsiteDesktopMenu menuSetting={JSON.parse(menuSetting)} siteSetting={siteSetting}/>
+				{/*<WebsiteDesktopMenu siteSetting={siteSetting}/>*/}
 
-				<WebsiteMobileMenu menuSetting={JSON.parse(menuSetting)} siteSetting={siteSetting}/>
+				{/*<WebsiteMobileMenu siteSetting={siteSetting}/>*/}
 				<div className={"min-h-screen md:pt-[64px] md:pb-0 pb-[80px] pt-[64px]"}>
 					{children}
 				</div>

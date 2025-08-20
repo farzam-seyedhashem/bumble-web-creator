@@ -50,15 +50,7 @@ export default function LottieFileComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 
 				<div className={`relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
 

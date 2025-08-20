@@ -1,7 +1,7 @@
 'use strict';
 import MenuEditor from "@admin/admin-panel/pages/MenuEditor";
 import {getSiteSetting} from "@controller/SiteSettingController";
-import {getMenu} from "@controller/MenuController";
+import {getAllMenus} from "@controller/MenuController";
 import {getPages} from "@controller/PageController";
 // async function getData(slug) {
 // 	'use server'
@@ -24,14 +24,16 @@ import {getPages} from "@controller/PageController";
 // 	return res.json()
 // }
 export default async function Page() {
-	const data = await getPages();
+	const data = JSON.stringify(await getPages());
 	const siteSetting = JSON.parse(await getSiteSetting())
+	const allMenus = JSON.parse(await getAllMenus())
+	// const menuSetting = await getMenu();
 
 	return (
 		<>
 
 			<div className={" border-l border-outline-variant-light dark:border-outline-variant-dark"}>
-				<MenuEditor  data={data} siteSetting={siteSetting}/>
+				<MenuEditor allMenus={allMenus}  data={JSON.parse(data)} siteSetting={siteSetting}/>
 			</div>
 		</>
 

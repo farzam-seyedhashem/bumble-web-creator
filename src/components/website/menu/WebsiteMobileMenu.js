@@ -56,13 +56,13 @@ export default function WebsiteMobileMenu({siteSetting, menuSetting}) {
 			</style>
 			{open&&<div onClick={()=>setOpen(false)} className={"z-[100001] inset-0 fixed bg-black/[20%]"}>
 				<div className={"w-[300px] h-full bg-surface-container-light dark:bg-surface-container-dark"}>
-					{menuSetting.menuItems.mobileAppbar.map((item, index) =>
-						<Link key={index} href={"/" + item.slug}>
-							<div className={"h-[56px] px-4 flex items-center"}>
-								{item.title}
-							</div>
-						</Link>
-					)}
+					{/*{menuSetting.menuItems.mobileAppbar.map((item, index) =>*/}
+					{/*	<Link key={index} href={"/" + item.slug}>*/}
+					{/*		<div className={"h-[56px] px-4 flex items-center"}>*/}
+					{/*			{item.title}*/}
+					{/*		</div>*/}
+					{/*	</Link>*/}
+					{/*)}*/}
 
 				</div>
 			</div>}

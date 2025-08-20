@@ -28,19 +28,25 @@ export default function ButtonComponent({
 	let [justify, setJustify] = useState(item.justify || "start")
 	let [styles, setStyles] = useState(item?.styles)
 	const [editMode, setEditMode] = useState("value")
-	let onChangeStyles = (name, value, type) => {
+	let onChangeStyles = (name, value, type, pseudo, fieldId) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesField = {...nStyles[fieldId]}
+		let nStylesType = {...nStylesField[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStylesField[type] = nStylesType
+		nStyles[fieldId] = nStylesField
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
 	}
 	useEffect(() => {
-		if (!styles.global.color) {
-			onChangeStyles('color', rgbaObjToRgba(color.onPrimary), 'global')
+		if (!styles.basic.global.base.color) {
+			onChangeStyles('color', rgbaObjToRgba(color.onPrimary), 'global','base','basic')
 		}
-		if (!styles.global.backgroundColor) {
-			onChangeStyles('backgroundColor', rgbaObjToRgba(color.primary), 'global')
+		if (!styles.basic.global.base.backgroundColor) {
+			onChangeStyles('backgroundColor', rgbaObjToRgba(color.primary), 'global','base','basic')
 		}
 	}, [styles])
 	const changeHandler = (key, value) => {
@@ -56,20 +62,12 @@ export default function ButtonComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 
 				<div className={`flex relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
 
 					<button
-						style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+						style={isDesktop ? {...styles.basic.global.base, ...styles.basic.desktop.base} : {...styles.basic.mobile.base, ...styles.basic.global.base}}>
 						{value}
 					</button>
 
@@ -126,16 +124,17 @@ export default function ButtonComponent({
 						{editMode === "value" && <div
 							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 					</div>
-					<div onClick={() => setEditMode("style")}
-					     className={`${editMode === "style" ? "text-primary-light dark:text-primary-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
-						<Icon className={"mr-2"}>
-							style
-						</Icon>
-						Style
-						{editMode === "style" && <div
-							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+					{fields.map((fieldsCat, i) =>
+						<div key={i} onClick={() => {
+							setEditMode(fieldsCat.id)
+						}}
+						     className={`${editMode === fieldsCat.id ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+							{fieldsCat.name}
+							{editMode === fieldsCat.id && <div
+								className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 
-					</div>
+						</div>
+					)}
 				</div>
 				{editMode === "value" && <div className={"px-4 mt-6"}>
 					<TextField id={"ef"} key={1} label={"Text"}
@@ -185,187 +184,13 @@ export default function ButtonComponent({
 						</div>
 					</div>
 				</div>}
-				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
-					onChange={onChangeStyles} isDesktop={isDesktop}
-					styles={styles} key={index} field={field}/>)}
-
-
-				{/*<div className={"flex justify-between items-center pt-4 pb-2"}>*/}
-				{/*    <label*/}
-				{/*        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*    Text Color*/}
-				{/*    </label>*/}
-				{/*    <ColorPicker value={globalRenderStyles.color}*/}
-				{/*                 onChange={(color) => onChangeGlobal("color", color)}/>*/}
-				{/*</div>*/}
-				{/*<div className={"flex justify-between items-center pt-4 pb-2"}>*/}
-				{/*    <label*/}
-				{/*        className={"text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*        Background Color*/}
-				{/*    </label>*/}
-				{/*    <ColorPicker value={globalRenderStyles.backgroundColor}*/}
-				{/*                 onChange={(color) => onChangeGlobal("backgroundColor", color)}/>*/}
-
-				{/*</div>*/}
-				{/*<div className={"grid grid-cols-12 gap-4 py-2"}>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Width*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"width"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.width}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Height*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"height"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.height}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Rounded*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"borderRadius"} onChange={onChange}*/}
-				{/*                             defValue={globalRenderStyles.borderRadius}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-8 justify-between items-center "}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Font Weight*/}
-				{/*        </label>*/}
-				{/*        <div className={"w-full mt-2 justify-end"}>*/}
-				{/*            <select onChange={(e) => onChange("fontWeight", e.target.value)}*/}
-				{/*                    type={"text"}*/}
-				{/*                    value={deviceStyle.fontWeight}*/}
-				{/*                    className={"w-full text-center bg-transparent text-on-surface-light rounded-[8px] dark:text-on-surface-dark w-4/12 border border-outline-light dark:border-outline-dark "}>*/}
-				{/*                <option label={"light"} value={"300"}/>*/}
-				{/*                <option label={"normal"} value={"400"}/>*/}
-				{/*                <option label={"medium"} value={"500"}/>*/}
-				{/*                <option label={"bold"} value={"700"}/>*/}
-				{/*                <option label={"black"} value={"900"}/>*/}
-				{/*            </select>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*    <div className={"col-span-4 justify-between items-center"}>*/}
-				{/*        <label*/}
-				{/*            className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*            Font Size*/}
-				{/*        </label>*/}
-				{/*        <div className={"mt-2"}>*/}
-				{/*            <TextFieldEditor id={"fontSize"} onChange={onChange}*/}
-				{/*                             defValue={deviceStyle.fontSize}/>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*</div>*/}
-				{/*<div className={"block items-center justify-between py-2"}>*/}
-				{/*    <label*/}
-				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*        Padding*/}
-				{/*    </label>*/}
-				{/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"paddingTop"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.paddingTop}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Top*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"paddingRight"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.paddingRight}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Right*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"paddingBottom"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.paddingBottom}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Bottom*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"paddingLeft"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.paddingLeft}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Left*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*</div>*/}
-				{/*<div className={"block items-center justify-between py-2"}>*/}
-				{/*    <label*/}
-				{/*        className={" text-title-medium font-medium text-on-surface-light dark:text-on-surface-dark"}>*/}
-				{/*        Margin*/}
-				{/*    </label>*/}
-				{/*    <div className={"grid mt-2  ml-auto grid-cols-2 gap-2 items-center"}>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"marginTop"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.marginTop}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Top*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"marginRight"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.marginRight}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Right*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"marginBottom"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.marginBottom}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Bottom*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*        <div className={"w-full"}>*/}
-				{/*            <div>*/}
-				{/*                <TextFieldEditor id={"marginLeft"} onChange={onChange}*/}
-				{/*                                 defValue={deviceStyle.marginLeft}/>*/}
-				{/*            </div>*/}
-				{/*            <div*/}
-				{/*                className={"mt-1 text-label-small mx-auto !justify-center text-center w-full  text-on-surface-variant-light dark:text-on-surface-variant-dark"}>*/}
-				{/*                Left*/}
-				{/*            </div>*/}
-				{/*        </div>*/}
-				{/*    </div>*/}
-				{/*</div>*/}
-
-
+				{fields.map((fieldCat, i) =>
+					(editMode === fieldCat.id && fieldCat.fields) && fieldCat.fields.map((field, index) =>
+						<StyleFieldGenerator
+							onChange={(name, value, type, pseudo) => onChangeStyles(name, value, type, pseudo, fieldCat.id)}
+							isDesktop={isDesktop} styles={styles[fieldCat.id]}
+							key={item.uniqueId + fieldCat.id + field.type + "style-field-generator" + index} field={field}/>)
+				)}
 			</EditorDialog>
 
 		</>

@@ -54,10 +54,10 @@ export default function ImageComponent({
 				<div className={`relative hover:border hover:border-tertiary-light ${item.uniqueId}`}>
 					{value ?
 						<img className={"z-[1]"}
-						     style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+						     style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}
 						     onClick={() => setIsSelected(true)} src={value}/> :
 						<div
-							style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+							style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}
 							onClick={() => setIsSelected(true)}
 							className={"flex justify-center items-center bg-surface-variant-light dark:bg-surface-variant-dark " + item?.className}>
 							<Icon

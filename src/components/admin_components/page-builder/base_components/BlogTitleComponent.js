@@ -28,9 +28,13 @@ export default function BlogTitleComponent({
 	// 	// setValue(value)
 	// 	editItem("value", value, item.uniqueId)
 	// }
-	let onChangeStyles = (name, value, type) => {
+	let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -54,18 +58,10 @@ export default function BlogTitleComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 				<Component id={item.uniqueId}
 				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
-				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+				           style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}>
 					{post.title}
 					<div
 						className={`absolute hidden ${item.uniqueId}-panel z-[888]   -top-[32px] right-0  transform `}>

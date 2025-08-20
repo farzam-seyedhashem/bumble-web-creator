@@ -30,9 +30,13 @@ export default function Map({
 	let [globalRenderStyles, setGlobalRenderStyles] = useState(item.styles["global"])
 	const [editMode, setEditMode] = useState("value")
 	let [styles, setStyles] = useState(item?.styles)
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -75,7 +79,7 @@ export default function Map({
 
 				<div id={item.uniqueId}
 				     className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
-				     style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+				     style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}>
 
 					<iframe
 						ref={mapRaf}

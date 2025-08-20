@@ -4,7 +4,7 @@ import React, {useRef} from "react";
 import Icon from "../assets/icons/Icon";
 
 export default function IconButton(props) {
-    const {component,color, onClick, type, children, className, selected, ...other} = props
+    const {component,color, onClick, type, children, className, selected,rooClassName, ...other} = props
     let Component = `${component || 'button'}`
     let classes = null
     switch (type) {
@@ -24,7 +24,7 @@ export default function IconButton(props) {
         <Component onClick={(e) => {
             // createRipple(e)
             onClick && onClick()
-        }} {...other} className={`group/icon-button icon-button-container`}>
+        }} {...other} className={`group/icon-button icon-button-container ${rooClassName}`}>
             <div className={`icon-button ${classes} ${className}`}>
                 <div className={"icon-button-state-layer"}>
                     {!selected ? <Icon size={24} type={"outline"}>

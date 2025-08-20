@@ -29,9 +29,13 @@ export default function ButtonComponent({
 	let [justify, setJustify] = useState(item.justify || "start")
 	let [styles, setStyles] = useState(item?.styles)
 	const [editMode, setEditMode] = useState("value")
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -71,20 +75,12 @@ export default function ButtonComponent({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 
 				<div className={`!w-fit flex relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
 
 					{<button
-						style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+						style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}>
 						<Icon className={"mr-2"} size={20}>
 							Share
 						</Icon>

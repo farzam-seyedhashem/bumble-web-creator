@@ -35,9 +35,15 @@ export default function TextComponents({
 		setValue(value)
 		editItem("value", value, item.uniqueId)
 	}
-	let onChangeStyles = (name, value, type) => {
+	let onChangeStyles = (name, value, type, pseudo, fieldId) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesField = {...nStyles[fieldId]}
+		let nStylesType = {...nStylesField[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStylesField[type] = nStylesType
+		nStyles[fieldId] = nStylesField
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -59,18 +65,10 @@ export default function TextComponents({
 				display: block;
 			}
 			`}</style>
-			<div style={isDesktop ? {
-				display: styles.desktop?.display || "block",
-				alignItems: styles.desktop?.alignItems || "flex-start",
-				justifyContent: styles.desktop?.justifyContent || "flex-start"
-			} : {
-				display: styles.mobile?.display || "block",
-				alignItems: styles.mobile?.alignItems || "flex-start",
-				justifyContent: styles.mobile?.justifyContent || "flex-start"
-			}}>
+			<div>
 				<Component id={item.uniqueId}
 				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}  rounded-[4px] relative ${item.uniqueId}`}
-				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+				           style={isDesktop ? {...styles.basic.global.base, ...styles.basic.desktop.base} : {...styles.basic.mobile.base, ...styles.basic.global.base}}>
 					{value}
 					<div
 						className={`absolute hidden ${item.uniqueId}-panel z-[888]   -top-[32px] right-0  transform `}>
@@ -122,30 +120,33 @@ export default function TextComponents({
 					className={" flex border-b *:text-title-small *:font-medium border-outline-variant-light dark:border-outline-variant-dark items-center h-[48px]"}>
 					<div onClick={() => setEditMode("value")}
 					     className={`${editMode === "value" ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} w-6/12 relative flex justify-center items-center h-full`}>
-						<Icon className={"mr-2"}>
-							Title
-						</Icon>
 						Value
 						{editMode === "value" && <div
 							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 					</div>
-					<div onClick={() => setEditMode("style")}
-					     className={`${editMode === "style" ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
-						<Icon className={"mr-2"}>
-							style
-						</Icon>
-						Style
-						{editMode === "style" && <div
-							className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
+					{fields.map((fieldsCat, i) =>
+						<div key={i} onClick={() => {
+							setEditMode(fieldsCat.id)
+						}}
+						     className={`${editMode === fieldsCat.id ? "text-on-surface-light dark:text-on-surface-dark" : "text-on-surface-variant-light dark:text-on-surface-variant-dark"} relative w-6/12 flex justify-center items-center h-full`}>
+							{fieldsCat.name}
+							{editMode === fieldsCat.id && <div
+								className={"w-full absolute bottom-[-1px] h-[3px] bg-primary-light dark:bg-primary-dark "}/>}
 
-					</div>
+						</div>
+					)}
 				</div>
-				{(editMode === "style" && fields) && fields.map((field, index) => <StyleFieldGenerator
-					onChange={onChangeStyles} isDesktop={isDesktop} styles={styles} key={item.uniqueId+field.type+"style-field-generator"+index} field={field}/>)}
+				{fields.map((fieldCat, i) =>
+					(editMode === fieldCat.id && fieldCat.fields) && fieldCat.fields.map((field, index) =>
+						<StyleFieldGenerator
+							onChange={(name, value, type, pseudo) => onChangeStyles(name, value, type, pseudo, fieldCat.id)}
+							isDesktop={isDesktop} styles={styles[fieldCat.id]}
+							key={item.uniqueId + fieldCat.id + field.type + "style-field-generator" + index} field={field}/>)
+				)}
 				{editMode === "value" && <div className={"mt-4 "}>
 					<div className={"px-4"}>
 						<FilledTextField label={"Text"} onChange={(e) => valueChangeHandler(e.target.value)}
-						           value={value}/>
+						                 value={value}/>
 					</div>
 					<div className={" mt-3 justify-end"}>
 						<label

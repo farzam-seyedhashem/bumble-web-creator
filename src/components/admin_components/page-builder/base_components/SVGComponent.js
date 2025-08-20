@@ -64,7 +64,7 @@ export default function SVGComponent({
 				<div className={`relative hover:outline hover:outline-tertiary-light ${item.uniqueId}`}>
 
 					<div
-						style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}
+						style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}
 						dangerouslySetInnerHTML={{__html: value}}>
 					</div>
 					<div

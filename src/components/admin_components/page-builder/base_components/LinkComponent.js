@@ -41,9 +41,13 @@ export default function LinkComponent({
 		setLink(link)
 		editItem("link", link, item.uniqueId)
 	}
-	let onChangeStyles = (name, value, type) => {
+		let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
@@ -68,7 +72,7 @@ export default function LinkComponent({
 			<div className={"w-full block"}>
 				<div id={item.uniqueId}
 				           className={`${isSelected ? "outline outline-primary-light" : "hover:outline hover:outline-primary-light/[50%]"}   rounded-[4px] relative ${item.uniqueId}`}
-				           style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+				           style={isDesktop ? {...styles.global['base'], ...styles.desktop['base']} : {...styles.mobile['base'], ...styles.global['base']}}>
 					{value}
 					<div
 						className={`absolute hidden ${item.uniqueId}-panel z-[888]   -top-[32px] right-0  transform `}>

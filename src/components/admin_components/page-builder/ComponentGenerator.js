@@ -65,60 +65,6 @@ class ComponentGenerator extends React.Component {
 					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
 					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					            item={item}/>}
-
-				{item.idType === "link" &&
-					<LinkComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					            editDialogOpenComponentId={editDialogOpenComponentId}
-					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					            item={item}/>}
-				{item.idType === "story" &&
-					<StoriesComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					            editDialogOpenComponentId={editDialogOpenComponentId}
-					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-
-					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					            item={item}/>}
-				{item.idType === "lottie" &&
-					<LottieFileComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					            editDialogOpenComponentId={editDialogOpenComponentId}
-					            setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					            color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					            removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					            editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					            item={item}/>}
-				{item.idType === "testimonial" &&
-					<TestimonialComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					                      editDialogOpenComponentId={editDialogOpenComponentId}
-					                      setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					                      color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					                      removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                     
-					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					                      item={item}/>}
-				{item.idType === "faq" &&
-					<FAQComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					              editDialogOpenComponentId={editDialogOpenComponentId}
-					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					             
-					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					              item={item}/>}
-				{item.idType === "form" &&
-					<FormComponent fields={components.find(c => c.uid === item.uid)?.fields}
-					              editDialogOpenComponentId={editDialogOpenComponentId}
-					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
-					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
-					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					             
-					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-					              item={item}/>}
-
 				{item.idType === "paragraph" && <Paragraph fields={components.find(c => c.uid === item.uid)?.fields}
 				                                           editDialogOpenComponentId={editDialogOpenComponentId}
 				                                           setEditDialogOpenComponentId={setEditDialogOpenComponentId}
@@ -128,15 +74,6 @@ class ComponentGenerator extends React.Component {
 				                                           isDesktop={isDesktop}
 				                                           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 				                                           item={item}/>}
-				{item.idType === "svg" && <SVGComponent fields={components.find(c => c.uid === item.uid)?.fields}
-				                                        editDialogOpenComponentId={editDialogOpenComponentId}
-				                                        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-				                                        color={siteSetting.color}
-				                                        dragFunc={(e) => dragFunc(e, idNumber)}
-				                                        removeItemFunc={() => removeItemFunc(idNumber)}
-				                                        isDesktop={isDesktop}
-				                                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
-				                                        item={item}/>}
 				{
 					item.idType === "button" &&
 					<ButtonComponent fields={components.find(c => c.uid === item.uid)?.fields}
@@ -161,6 +98,88 @@ class ComponentGenerator extends React.Component {
 					               editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					               item={item}/>
 				}
+				{item.idType === "container" &&
+					<Container lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
+					           editDialogOpenComponentId={editDialogOpenComponentId}
+					           setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
+					           dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
+					           isDesktop={isDesktop} idNumber={idNumber} item={item}
+					           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>
+				}
+				{item.idType === "grid" &&
+					<Grid fields={components.find(c => c.uid === item.uid)?.fields} lastPost={lastPost}
+					      editDialogOpenComponentId={editDialogOpenComponentId}
+					      setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
+					      dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
+					      isDesktop={isDesktop} idNumber={idNumber} item={item}
+					      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>
+				}
+
+				{item.idType === "link" &&
+					<LinkComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					               editDialogOpenComponentId={editDialogOpenComponentId}
+					               setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					               color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					               removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					               editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					               item={item}/>}
+				{item.idType === "story" &&
+					<StoriesComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                  editDialogOpenComponentId={editDialogOpenComponentId}
+					                  setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					                  color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					                  removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+
+					                  editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                  item={item}/>}
+				{item.idType === "lottie" &&
+					<LottieFileComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                     editDialogOpenComponentId={editDialogOpenComponentId}
+					                     setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					                     color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					                     removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+					                     editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                     item={item}/>}
+				{item.idType === "testimonial" &&
+					<TestimonialComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					                      editDialogOpenComponentId={editDialogOpenComponentId}
+					                      setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					                      color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					                      removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+
+					                      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					                      item={item}/>}
+				{item.idType === "faq" &&
+					<FAQComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					              editDialogOpenComponentId={editDialogOpenComponentId}
+					              setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					              color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					              removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+
+					              editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					              item={item}/>}
+				{item.idType === "form" &&
+					<FormComponent fields={components.find(c => c.uid === item.uid)?.fields}
+					               editDialogOpenComponentId={editDialogOpenComponentId}
+					               setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
+					               color={siteSetting.color} dragFunc={(e) => dragFunc(e, idNumber)}
+					               removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
+
+					               editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+					               item={item}/>}
+
+
+				{item.idType === "svg" && <SVGComponent fields={components.find(c => c.uid === item.uid)?.fields}
+				                                        editDialogOpenComponentId={editDialogOpenComponentId}
+				                                        setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+				                                        color={siteSetting.color}
+				                                        dragFunc={(e) => dragFunc(e, idNumber)}
+				                                        removeItemFunc={() => removeItemFunc(idNumber)}
+				                                        isDesktop={isDesktop}
+				                                        editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
+				                                        item={item}/>}
+
+
 				{
 					item.idType === "image" &&
 					<ImageComponent fields={components.find(c => c.uid === item.uid)?.fields}
@@ -174,14 +193,15 @@ class ComponentGenerator extends React.Component {
 				}
 				{
 					item.idType === "logo" &&
-					<WebsiteLogoComponent siteSetting={siteSetting} fields={components.find(c => c.uid === item.uid)?.fields}
-					                editDialogOpenComponentId={editDialogOpenComponentId}
-					                setEditDialogOpenComponentId={setEditDialogOpenComponentId}
-					                dragFunc={(e) => dragFunc(e, idNumber)}
-					                removeItemFunc={() => removeItemFunc(idNumber)}
-					                isDesktop={isDesktop}
-					                editItem={(key, value) => editItem(idNumber, key, value)}
-					                item={item}/>
+					<WebsiteLogoComponent siteSetting={siteSetting}
+					                      fields={components.find(c => c.uid === item.uid)?.fields}
+					                      editDialogOpenComponentId={editDialogOpenComponentId}
+					                      setEditDialogOpenComponentId={setEditDialogOpenComponentId}
+					                      dragFunc={(e) => dragFunc(e, idNumber)}
+					                      removeItemFunc={() => removeItemFunc(idNumber)}
+					                      isDesktop={isDesktop}
+					                      editItem={(key, value) => editItem(idNumber, key, value)}
+					                      item={item}/>
 				}
 				{
 					item.idType === "video" &&
@@ -194,19 +214,6 @@ class ComponentGenerator extends React.Component {
 					                editItem={(key, value) => editItem(idNumber, key, value)}
 					                item={item}/>
 				}
-				{item.idType === "container" &&
-					<Container lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
-					           editDialogOpenComponentId={editDialogOpenComponentId}
-					           setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
-					           dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
-					           isDesktop={isDesktop} idNumber={idNumber} item={item}
-					           editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
-				{item.idType === "grid" &&
-					<Grid fields={components.find(c => c.uid === item.uid)?.fields} lastPost={lastPost} editDialogOpenComponentId={editDialogOpenComponentId}
-					      setEditDialogOpenComponentId={setEditDialogOpenComponentId} siteSetting={siteSetting}
-					      dragFunc={(e) => dragFunc(e, idNumber)} removeItemFunc={() => removeItemFunc(idNumber)}
-					      isDesktop={isDesktop} idNumber={idNumber} item={item}
-					      editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}/>}
 				{item.idType === "slider" &&
 					<SliderComponent lastPost={lastPost} fields={components.find(c => c.uid === item.uid)?.fields}
 					                 editDialogOpenComponentId={editDialogOpenComponentId}
@@ -240,7 +247,7 @@ class ComponentGenerator extends React.Component {
 					                   setEditDialogOpenComponentId={(v) => setEditDialogOpenComponentId(v)}
 					                   siteSetting={siteSetting} dragFunc={(e) => dragFunc(e, idNumber)}
 					                   removeItemFunc={() => removeItemFunc(idNumber)} isDesktop={isDesktop}
-					                  
+
 					                   editItem={(key, value, uniqueId) => editItem(idNumber, key, value, uniqueId)}
 					                   item={item}/>}
 				{/*{item.idType === "inventoryCard" &&*/}

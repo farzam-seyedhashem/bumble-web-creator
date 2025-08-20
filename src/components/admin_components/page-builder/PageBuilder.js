@@ -2,7 +2,7 @@
 import IconButton from "@m3/icon_buttons/IconButton";
 import Button from "@m3/buttons/Button";
 import Icon from "@m3/assets/icons/Icon";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ComponentDrawer from "@admin/page-builder/ComponentDrawer";
 import DropContainer from "@admin/page-builder/DropContainer";
 import ComponentGenerator from "@admin/page-builder/ComponentGenerator";
@@ -48,6 +48,39 @@ export default function PageBuilder({lastPost, type, siteSetting, data, slug}) {
 	const [className, setClassName] = useState({})
 	const [editDialogOpenComponentId, setEditDialogOpenComponentId] = useState("wlkd")
 	const [isSettingDialogOpen, setIsSettingDialogOpen] = useState(false)
+	function changeStyle(nAddedItems){
+		const addedItemsCopy = [...nAddedItems]
+		nAddedItems.map((item,index)=>{
+			if (item.styles){
+				if (item.styles.mobile){
+					if (!item.styles.mobile?.base) {
+						const newClssM = {...item.styles.mobile}
+						addedItemsCopy[index].styles.mobile = {"base": newClssM}
+					}
+				}
+				if (item.styles.desktop){
+					if (!item.styles.desktop?.base) {
+						const newClssD = {...item.styles.desktop}
+						addedItemsCopy[index].styles.desktop = {"base": newClssD}
+					}
+				}
+				if (item.styles.global){
+					if (!item.styles.global?.base) {
+						const newClssG = {...item.styles.global}
+						addedItemsCopy[index].styles.global = {"base": newClssG}
+					}
+				}
+
+			}
+			if (item?.addedItems){
+				return changeStyle(item?.addedItems)
+			}
+		})
+		setAddedItems(addedItemsCopy)
+	}
+	useEffect(()=>{
+		changeStyle(addedItems)
+	},[])
 	const handleAddedItems = (component, number) => {
 		let items = [...addedItems]
 		if (number === 0) {

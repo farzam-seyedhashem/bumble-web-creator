@@ -46,14 +46,18 @@ export default function FormComponent({
 	const [activeQuestion, setActiveQuestion] = useState(1)
 	const [editMode,setEditMode] = useState('value')
 	let [styles, setStyles] = useState(item?.styles)
-
-	let onChangeStyles = (name, value, type) => {
+	let onChangeStyles = (name, value, type,pseudo) => {
 		let nStyles = {...styles}
-		nStyles[type] = {...nStyles[type], [name]: value}
+		let nStylesType = {...nStyles[type]}
+		nStylesType[pseudo] = {...nStylesType[pseudo], [name]: value}
+		nStyles[type]=nStylesType
+		editItem("styles", nStyles, item.uniqueId)
+		setStyles(nStyles)
 		editItem("styles", nStyles, item.uniqueId)
 		setStyles(nStyles)
 		console.log("styles", nStyles)
 	}
+
 	// const [faqLists,setFaqLists] = useState(item.faqLists)
 	// useEffect(() => {
 	// 	// mutate()
@@ -120,7 +124,7 @@ export default function FormComponent({
 			}
 			`}</style>
 			<div className={`${item.uniqueId} w-full hover:outline hover:outline-primary-light/[50%]  rounded-[4px] relative`}>
-				<form style={isDesktop ? {...styles.global, ...styles.desktop} : {...styles.mobile, ...styles.global}}>
+				<form style={isDesktop ? {...styles.global.base, ...styles.desktop.base} : {...styles.mobile.base, ...styles.global.base}}>
 				<div  className={"w-full grid grid-cols-12 gap-4"}>
 					{addedItems.map((item,index)=> <div
 						className={`${isDesktop ? ("col-span-" + item.desktopColumn) : ("col-span-" + item.mobileColumn)}`}
